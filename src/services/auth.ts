@@ -1,10 +1,11 @@
 import api from "./api";
 
-type RegistrationDataTypes = {
+export type RegistrationDataTypes = {
     firstname: string;
     lastname: string;
     email: string;
     password: string;
+    role: string;
 }
 
 export const registerUser = async(data: RegistrationDataTypes) => {

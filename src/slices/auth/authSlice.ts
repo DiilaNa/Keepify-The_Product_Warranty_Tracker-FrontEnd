@@ -1,0 +1,37 @@
+import { createSlice } from "@reduxjs/toolkit";
+import { registerUserThunk } from "./authThunk";
+
+export interface AuthState {
+    user: any | null;
+    loading: boolean;
+    error: string | null;
+}
+
+const initialState: AuthState = {
+    user: null,
+    loading: false,
+    error: null,
+};
+
+const authSlice = createSlice({
+    name: "auth",
+    initialState,
+    reducers: {},
+
+    extraReducers: (builder) => {
+        builder
+        .addCase(registerUserThunk.pending,(state) => {
+            state.loading = true;
+        })
+        .addCase(registerUserThunk.fulfilled,(state) => {
+            state.loading = false;
+        })
+        .addCase(registerUserThunk.rejected,(state,action) => {
+            state.loading = false;
+            state.error = action.payload as string;
+        })
+
+    }
+})
+
+export const authReducer = authSlice.reducer;
