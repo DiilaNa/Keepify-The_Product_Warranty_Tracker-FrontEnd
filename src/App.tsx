@@ -1,9 +1,13 @@
 import './App.css'
+import { ThemeProvider } from './components/theme-provider'
 import Router from './routes/Route'
 
 function App() {
   return (
-      <Router />
+     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <Router />
+     </ThemeProvider>
+      
   )
 }
 
