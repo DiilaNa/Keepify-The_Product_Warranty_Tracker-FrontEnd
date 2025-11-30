@@ -50,7 +50,7 @@ export default function RegisterPage() {
   return (
     <div>
       <NavBarComponent />
-      <div className={cn("flex flex-col gap-6 max-w-md mx-auto  px-4 mt-10")}>
+      <div className={cn("flex flex-col gap-6 max-w-md mx-auto  px-4 mt-8")}>
         <Card className="w-full">
           <CardHeader className="text-center">
             <CardTitle className="text-xl">Create your account</CardTitle>

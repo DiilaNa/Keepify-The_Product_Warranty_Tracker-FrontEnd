@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button";
-
 import { ThemeToggle } from "./DropDown";
 // import { MobileMenuToggle } from "./MobileMenuToggle";
 
@@ -20,12 +18,10 @@ export function NavBarComponent() {
           Contact
         </a>
         <ThemeToggle />
-        <Button>Get Started</Button>
       </div>
-      {/* Mobile menu toggle */}
-      {/* <div className="md:hidden">
+       {/* <div className="md:hidden">
         <MobileMenuToggle />
-      </div> */}
+      </div>  */}
     </nav>
   );
 }
