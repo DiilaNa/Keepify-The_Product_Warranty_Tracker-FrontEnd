@@ -1,16 +1,18 @@
+import LoginPage from "@/pages/LoginPage";
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const Register = lazy(() => import("../pages/RegisterPage"))
 
 export default function Router(){
-    return(
-        <BrowserRouter>
-            <Suspense fallback={<div>Loading ...</div>}>
-                <Routes>
-                    <Route path="/" element={<Register/>} />
-                </Routes>
-            </Suspense>
-        </BrowserRouter>
-    )
+    return (
+      <BrowserRouter>
+        <Suspense fallback={<div>Loading ...</div>}>
+          <Routes>
+            <Route path="/" element={<Register />} />
+            <Route path="/login" element={<LoginPage />} />
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+    );
 }
