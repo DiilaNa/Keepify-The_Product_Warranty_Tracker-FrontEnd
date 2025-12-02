@@ -21,16 +21,16 @@ import { Link } from "react-router-dom";
 export default function LoginPage() {
   return (
     <div>
-      <NavBarComponent />
-      <div className={cn("flex flex-col gap-6")}>
-        <Card>
+     <NavBarComponent />
+      <div className={cn("flex flex-col gap-6 max-w-md mx-auto px-9 mt-28")}>
+        <Card className="w-full">
           <CardHeader>
             <CardTitle>Login to your account</CardTitle>
             <CardDescription>
               Enter your email below to login to your account
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-6">
             <form>
               <FieldGroup>
                 <Field>

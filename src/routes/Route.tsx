@@ -1,5 +1,6 @@
 import UserDashBoard from "@/pages/DashBoard";
 import LoginPage from "@/pages/LoginPage";
+import WelcomePage from "@/pages/WelcomePage";
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -10,8 +11,9 @@ export default function Router(){
       <BrowserRouter>
         <Suspense fallback={<div>Loading ...</div>}>
           <Routes>
+            <Route path="" element={<WelcomePage />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/" element={<LoginPage />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/user" element={<UserDashBoard />} />
           </Routes>
         </Suspense>

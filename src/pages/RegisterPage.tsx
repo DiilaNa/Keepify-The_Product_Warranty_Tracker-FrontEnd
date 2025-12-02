@@ -50,7 +50,7 @@ export default function RegisterPage() {
   return (
     <div>
       <NavBarComponent />
-      <div className={cn("flex flex-col gap-6 max-w-md mx-auto  px-4 mt-8")}>
+      <div className={cn("flex flex-col gap-8 max-w-md mx-auto px-4 mt-8")}>
         <Card className="w-full">
           <CardHeader className="text-center">
             <CardTitle className="text-xl">Create your account</CardTitle>
@@ -58,7 +58,7 @@ export default function RegisterPage() {
               Enter your email below to create your account
             </CardDescription>
           </CardHeader>
-          <CardContent className="p-6">
+          <CardContent className="p-3">
             <form>
               <FieldGroup>
                 <Field>
@@ -134,7 +134,7 @@ export default function RegisterPage() {
                     {loading ? "Processing..." : "Create Account"}
                   </Button>
                   <FieldDescription className="text-center">
-                    Already have an account?<Link to="/">Sign in</Link>
+                    Already have an account ? <Link to="/login">Sign in</Link>
                   </FieldDescription>
                 </Field>
               </FieldGroup>
