@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { NavBarComponent } from "@/components/custom/NavBar";
+import { Link } from "react-router-dom";
 
 
 export default function LoginPage() {
@@ -55,11 +56,9 @@ export default function LoginPage() {
                 </Field>
                 <Field>
                   <Button type="submit">Login</Button>
-                  <Button variant="outline" type="button">
-                    Login with Google
-                  </Button>
+                  <Link to="/user">Test</Link>
                   <FieldDescription className="text-center">
-                    Don&apos;t have an account? <a href="#">Sign up</a>
+                    Don&apos;t have an account? <Link to="/register">Sign up</Link>
                   </FieldDescription>
                 </Field>
               </FieldGroup>

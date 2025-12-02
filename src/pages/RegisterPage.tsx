@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/hook";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { registerUserThunk } from "../slices/auth/authThunk";
 import { NavBarComponent } from "@/components/custom/NavBar";
 import { cn } from "@/lib/utils";
@@ -134,7 +134,7 @@ export default function RegisterPage() {
                     {loading ? "Processing..." : "Create Account"}
                   </Button>
                   <FieldDescription className="text-center">
-                    Already have an account? <a href="#">Sign in</a>
+                    Already have an account?<Link to="/">Sign in</Link>
                   </FieldDescription>
                 </Field>
               </FieldGroup>

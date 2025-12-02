@@ -10,8 +10,8 @@ export default function Router(){
       <BrowserRouter>
         <Suspense fallback={<div>Loading ...</div>}>
           <Routes>
-            <Route path="/" element={<Register />} />
-            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/" element={<LoginPage />} />
             <Route path="/user" element={<UserDashBoard />} />
           </Routes>
         </Suspense>
