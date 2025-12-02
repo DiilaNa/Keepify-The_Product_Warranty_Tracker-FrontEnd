@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { ThemeToggle } from "./DropDown";
 // import { MobileMenuToggle } from "./MobileMenuToggle";
 
@@ -15,11 +16,12 @@ export function NavBarComponent() {
           About
         </a>
         <a href="#" className="hover:text-blue-600 transition">
-          Contact
+          Login
         </a>
         <ThemeToggle />
+        <Link to="/login">hi</Link>
       </div>
-       {/* <div className="md:hidden">
+      {/* <div className="md:hidden">
         <MobileMenuToggle />
       </div>  */}
     </nav>
