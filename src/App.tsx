@@ -4,11 +4,10 @@ import Router from './routes/Route'
 
 function App() {
   return (
-     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <Router />
-     </ThemeProvider>
-      
-  )
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <Router />
+    </ThemeProvider>
+  );
 }
 
 export default App
