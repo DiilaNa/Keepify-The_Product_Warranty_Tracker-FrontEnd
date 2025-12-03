@@ -1,6 +1,7 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { SectionCards } from "@/components/section-cards";
 import { SiteHeader } from "@/components/site-header";
+import SearchAppBar from "@/components/ui/search";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 
@@ -22,6 +23,7 @@ export default function UserDashBoard() {
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
               <SectionCards />
               <div className="px-4 lg:px-6">
+              <SearchAppBar />
                 {/* <ChartAreaInteractive /> */}
               </div>
             </div>
