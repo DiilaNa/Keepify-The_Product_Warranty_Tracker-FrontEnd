@@ -19,6 +19,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 
 export default function RegisterPage() {
@@ -42,8 +43,10 @@ export default function RegisterPage() {
     );
 
     if (registerUserThunk.fulfilled.match(result)) {
-      alert("Registration successful");
+      toast.success("Registration Successful")
       navigate("/login");
+    }else{
+      toast.error("Registration failed")
     }
   };
 

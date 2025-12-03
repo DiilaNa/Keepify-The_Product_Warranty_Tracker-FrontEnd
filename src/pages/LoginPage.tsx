@@ -19,6 +19,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { useState, type FormEvent } from "react";
 import { loginUserThunk } from "@/slices/auth/authThunk";
+import { toast } from "sonner";
 
 
 export default function LoginPage() {
@@ -38,6 +39,8 @@ const handleLogin = async(e: FormEvent) => {
 
   if(loginUserThunk.fulfilled.match(result)){
     navigate("/user")
+  }else{
+    toast.error("Login Failed")
   }
 }
 
