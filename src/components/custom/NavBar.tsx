@@ -9,17 +9,16 @@ export function NavBarComponent() {
         Keepify
       </div>
       <div className="hidden md:flex space-x-6 items-center">
-        <a href="#" className="hover:text-blue-600 transition">
+        <Link to="/" className="hover:text-blue-600 transition">
           Home
-        </a>
+        </Link>
         <a href="#" className="hover:text-blue-600 transition">
           About
         </a>
-        <a href="#" className="hover:text-blue-600 transition">
+        <Link to="login" className="hover:text-blue-600 transition">
           Login
-        </a>
+        </Link>
         <ThemeToggle />
-        <Link to="/login">hi</Link>
       </div>
       {/* <div className="md:hidden">
         <MobileMenuToggle />

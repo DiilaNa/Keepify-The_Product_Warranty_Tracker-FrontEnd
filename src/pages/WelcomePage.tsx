@@ -2,6 +2,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import ActionAreaCard from "@/components/custom/ActionCard";
 import { NavBarComponent } from "@/components/custom/NavBar";
+import { Footer } from "@/components/custom/Footer";
 
 const images = [
   "https://images.unsplash.com/photo-1605629713998-167cdc70afa2",
@@ -46,6 +47,7 @@ export default function HeroSlider() {
         <ActionAreaCard />
         <ActionAreaCard />
       </div>
+      <Footer/>
     </>
   );
 }
