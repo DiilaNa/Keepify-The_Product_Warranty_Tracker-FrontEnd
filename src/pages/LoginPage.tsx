@@ -15,13 +15,35 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { NavBarComponent } from "@/components/custom/NavBar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "@/hooks/hook";
+import { useState, type FormEvent } from "react";
+import { loginUserThunk } from "@/slices/auth/authThunk";
 
 
 export default function LoginPage() {
+const dispatch = useAppDispatch();
+const navigate = useNavigate();
+const {loading} = useAppSelector((state) => state.auth);
+
+const [email,setEmail]= useState("");
+const[password,setPassword] = useState("");
+
+const handleLogin = async(e: FormEvent) => {
+  e.preventDefault();
+
+  const result = await dispatch(
+    loginUserThunk({email,password})
+  );
+
+  if(loginUserThunk.fulfilled.match(result)){
+    navigate("/user")
+  }
+}
+
   return (
     <div>
-     <NavBarComponent />
+    <NavBarComponent />
       <div className={cn("flex flex-col gap-6 max-w-md mx-auto px-9 mt-28")}>
         <Card className="w-full">
           <CardHeader>
@@ -40,6 +62,8 @@ export default function LoginPage() {
                     type="email"
                     placeholder="m@example.com"
                     required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </Field>
                 <Field>
@@ -52,10 +76,22 @@ export default function LoginPage() {
                       Forgot your password?
                     </a>
                   </div>
-                  <Input id="password" type="password" required />
+                  <Input 
+                  id="password" 
+                  type="password" 
+                  required 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  />
                 </Field>
                 <Field>
-                  <Button type="submit">Login</Button>
+                  <Button 
+                  type="submit"
+                  disabled={loading}
+                  onClick={handleLogin}
+                  >
+                    Login
+                  </Button>
                   <Link to="/user">Test</Link>
                   <FieldDescription className="text-center">
                     Don&apos;t have an account? <Link to="/register">Sign up</Link>
