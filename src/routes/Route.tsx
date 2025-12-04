@@ -1,11 +1,11 @@
-import UserDashBoard from "@/pages/UserDashBoard";
-import LoginPage from "@/pages/LoginPage";
-import WelcomePage from "@/pages/WelcomePage";
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AdminDashBoard from "@/pages/AdminDashBoard";
 
 const Register = lazy(() => import("../pages/RegisterPage"))
+const LoginPage = lazy(() => import("../pages/LoginPage"))
+const WelcomePage = lazy(() => import("../pages/WelcomePage"));
+const UserDashBoard = lazy(() => import("../pages/UserDashBoard"));
+const AdminDashBoard = lazy(() => import("../pages/AdminDashBoard"));
 
 export default function Router(){
     return (
