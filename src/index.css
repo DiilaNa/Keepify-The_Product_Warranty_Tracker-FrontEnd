@@ -122,3 +122,17 @@
   }
 }
 
+/*-------------------AUTO FILL Suggestions BG Color-------------------------*/
+/* Chrome, Safari, Edge autofill fix */
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #1c1818 inset !important;
+    -webkit-text-fill-color: #fff !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* For Firefox */
+input:autofill {
+    box-shadow: 0 0 0px 1000px #1d1b1b inset !important;
+    -webkit-text-fill-color: #fff !important;
+}
+
