@@ -26,6 +26,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Link } from "react-router-dom";
+import { AdminPopup } from "./custom/PopUps";
 
 const data = {
   user: {
@@ -104,7 +105,28 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
+      <hr />
+      <SidebarContent className="mt-4">
+        <AdminPopup
+          triggerLabel="Add Announcements"
+          title="Add a new Announcement"
+          description="Add a new announcement for the system."
+          fields={[
+            {
+              id: "title",
+              label: "Title",
+              type: "text",
+              placeholder: "Enter title",
+            },
+            { id: "image", label: "Image", type: "file" },
+            {
+              id: "description",
+              label: "Description",
+              type: "textarea",
+              placeholder: "Describe the announcement",
+            },
+          ]}
+        />
         <NavMain items={data.navMain} />
         <NavDocuments items={data.documents} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />

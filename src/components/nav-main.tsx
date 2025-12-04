@@ -7,7 +7,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Popup } from "../pages/UserPopUps/PopUp"
 
 export function NavMain({
   items,
@@ -23,7 +22,6 @@ export function NavMain({
       <SidebarGroupContent className="flex flex-col gap-2">
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">
-            <Popup />
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>

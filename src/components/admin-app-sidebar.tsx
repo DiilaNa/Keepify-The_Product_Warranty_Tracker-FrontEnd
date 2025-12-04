@@ -19,9 +19,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Link } from "react-router-dom";
-import { AddCategoriesPopup } from "@/pages/AdminPage/AddCategories";
-import { AddBrandsPopup } from "@/pages/AdminPage/AddBrands";
-import { AddAnnouncementsPopup } from "@/pages/AdminPage/AddAnnouncements";
+import { AdminPopup } from "./custom/PopUps";
 
 const data = {
   user: {
@@ -58,7 +56,9 @@ const data = {
   ],
 };
 
-export function AdminAppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AdminAppSidebar({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -78,14 +78,70 @@ export function AdminAppSidebar({ ...props }: React.ComponentProps<typeof Sideba
       </SidebarHeader>
       <hr />
       <SidebarContent className="mt-5">
-        <div className="mt-5">
-        <AddCategoriesPopup />
+        <div className="mt-7">
+          <AdminPopup
+            triggerLabel="Add Announcements"
+            title="Add a new Announcement"
+            description="Add a new announcement for the system."
+            fields={[
+              {
+                id: "title",
+                label: "Title",
+                type: "text",
+                placeholder: "Enter title",
+              },
+              { id: "image", label: "Image", type: "file" },
+              {
+                id: "description",
+                label: "Description",
+                type: "textarea",
+                placeholder: "Describe the announcement",
+              },
+            ]}
+          />
         </div>
         <div className="mt-5">
-         <AddBrandsPopup />
+          <AdminPopup
+            triggerLabel="Add a new Brand"
+            title="Add a new Brand"
+            description="Add a new brand for the system."
+            fields={[
+              {
+                id: "categoryId",
+                label: "Category",
+                type: "text",
+                placeholder: "Smartphones",
+              },
+              {
+                id: "brandName",
+                label: "Brand Name",
+                type: "text",
+                placeholder: "Samsung Galaxy",
+              },
+            ]}
+            // onSubmit={(data) => {
+            //   dispatch(createBrand(data));
+            // }}
+          />
         </div>
         <div className="mt-5">
-         <AddAnnouncementsPopup />
+          <AdminPopup
+            triggerLabel="Add Categories"
+            title="Add a new Category"
+            description="Add a new category for the system."
+            fields={[
+              {
+                id: "name",
+                label: "Category Name",
+                type: "text",
+                placeholder: "Smartphones",
+              },
+              { id: "image", label: "Image", type: "file" },
+            ]}
+            // onSubmit={(data) => {
+            //   dispatch(createCategory(data));
+            // }}
+          />
         </div>
       </SidebarContent>
       <SidebarFooter>
