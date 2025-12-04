@@ -20,8 +20,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Link } from "react-router-dom";
 import { Popup } from "@/pages/UserPopUps/PopUp";
-import { AddCategoriesPopup } from "@/pages/adminPopUps/addCategory";
-
+import { AddCategoriesPopup } from "../pages/adminPopUps/addCategory";
 const data = {
   user: {
     name: "shadcn",

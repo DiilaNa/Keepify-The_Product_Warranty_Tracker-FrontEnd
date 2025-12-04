@@ -36,7 +36,7 @@ export function AddCategoriesPopup() {
               <Label htmlFor="name-1">Name</Label>
               <Input id="name-1" name="name" placeholder="Smart Phones" />
             </div>
-           <InputFile />
+            <InputFile />
           </div>
           <DialogFooter>
             <DialogClose asChild>
