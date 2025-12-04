@@ -19,9 +19,9 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Link } from "react-router-dom";
-import { Popup } from "@/pages/UserPopUps/PopUp";
 import { AddCategoriesPopup } from "@/pages/AdminPage/AddCategories";
 import { AddBrandsPopup } from "@/pages/AdminPage/AddBrands";
+import { AddAnnouncementsPopup } from "@/pages/AdminPage/AddAnnouncements";
 
 const data = {
   user: {
@@ -85,7 +85,7 @@ export function AdminAppSidebar({ ...props }: React.ComponentProps<typeof Sideba
          <AddBrandsPopup />
         </div>
         <div className="mt-5">
-          <Popup />
+         <AddAnnouncementsPopup />
         </div>
       </SidebarContent>
       <SidebarFooter>
