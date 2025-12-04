@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Link } from "react-router-dom";
 import { Popup } from "@/pages/UserPopUps/PopUp";
-import { AddCategoriesPopup } from "../pages/adminPopUps/addCategory";
+
 const data = {
   user: {
     name: "shadcn",
@@ -77,7 +77,7 @@ export function AdminAppSidebar({ ...props }: React.ComponentProps<typeof Sideba
       <hr />
       <SidebarContent className="mt-5">
         <div className="mt-5">
-          <AddCategoriesPopup />
+        <Popup />
         </div>
         <div className="mt-5">
           <Popup />
