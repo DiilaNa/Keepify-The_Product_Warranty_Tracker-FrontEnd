@@ -49,6 +49,7 @@ export default function HeroSlider() {
 
         <div className="w-full bg-[#0d0f12] py-16">
           <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8">
+            <ActionAreaCard role="ADMIN"/>
             <ActionAreaCard />
           </div>
         </div>

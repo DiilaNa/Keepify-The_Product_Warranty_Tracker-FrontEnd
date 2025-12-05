@@ -1,68 +1,139 @@
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import CardActionArea from "@mui/material/CardActionArea";
-import { Box, Button } from "@mui/material";
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  CardActionArea,
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogActions,
+} from "@mui/material";
 
-export default function ActionAreaCard() {
+export default function ActionAreaCard({ role = "USER" }) {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Card
-      sx={{
-        maxWidth: 455,
-        marginBottom:3,
-        borderRadius: 3, // rounded corners
-        boxShadow: "0 8px 20px rgba(0,0,0,0.12)", // soft shadow
-        transition: "transform 0.3s, box-shadow 0.3s",
-        "&:hover": {
-          transform: "translateY(-5px)",
-          boxShadow: "0 12px 24px rgba(0,0,0,0.2)",
-        },
-      }}
-    >
-      <CardActionArea>
-        <Box sx={{ position: "relative" }}>
-          <CardMedia
-            component="img"
-            height="180"
-            image="https://imgs.search.brave.com/O9Aa_px-IXGUzI9yGK1hZ9j1pDYiM7rLvwhxnxuFfQ4/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzE1LzA1LzY3Lzg2/LzM2MF9GXzE1MDU2/Nzg2OTFfZ0ZQd0pr/MFdxa3VLdnpTYWNj/V2tMamZwRWdZZUx1/emwuanBn"
-            alt="green iguana"
-            sx={{ borderTopLeftRadius: 12, borderTopRightRadius: 12 }}
-          />
-          {/* Optional gradient overlay */}
-          <Box
-            sx={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              background:
-                "linear-gradient(to top, rgba(0,0,0,0.4), rgba(0,0,0,0))",
-              borderTopLeftRadius: 12,
-              borderTopRightRadius: 12,
-            }}
-          />
-        </Box>
-
-        <CardContent>
-          <Typography
-            gutterBottom
-            variant="h6"
-            component="div"
-            sx={{ fontWeight: 600 }}
-          >
+    <>
+      {/* POPUP */}
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle sx={{ fontWeight: 700 }}>Announcement Details</DialogTitle>
+        <DialogContent dividers>
+          <Typography variant="h6" sx={{ mb: 1 }}>
             Modern Card Title
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica.
+          <Typography variant="body1" color="text.secondary">
+            Full description or details about this announcement goes here.
           </Typography>
-          <Button variant="contained" size="small" color="primary">
-            Learn More
-          </Button>
-        </CardContent>
-      </CardActionArea>
-    </Card>
+        </DialogContent>
+
+        <DialogActions>
+          {role === "ADMIN" && (
+            <>
+              <Button color="warning">Unpublish</Button>
+              <Button color="secondary">Edit</Button>
+              <Button color="error">Delete</Button>
+            </>
+          )}
+          <Button onClick={() => setOpen(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* CARD */}
+      <Card
+        sx={{
+          maxWidth: 455,
+          marginBottom: 3,
+          borderRadius: 3,
+          boxShadow: "0 8px 20px rgba(0,0,0,0.12)",
+          transition: "transform 0.3s, box-shadow 0.3s",
+          "&:hover": {
+            transform: "translateY(-5px)",
+            boxShadow: "0 12px 24px rgba(0,0,0,0.2)",
+          },
+        }}
+      >
+        <CardActionArea onClick={() => role === "USER" && setOpen(true)}>
+          <Box sx={{ position: "relative" }}>
+            {/* IMAGE */}
+            <CardMedia
+              component="img"
+              height="200"
+              image="https://images.unsplash.com/photo-1503796964332-e25e282e390f"
+              alt="image"
+              sx={{ borderTopLeftRadius: 12, borderTopRightRadius: 12 }}
+            />
+
+            {/* DARK GRADIENT */}
+            <Box
+              sx={{
+                position: "absolute",
+                inset: 0,
+                background:
+                  "linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0))",
+                borderRadius: "12px 12px 0 0",
+              }}
+            />
+
+            {/* TEXT ON TOP OF IMAGE */}
+            <Box
+              sx={{
+                position: "absolute",
+                bottom: 12,
+                left: 12,
+                color: "white",
+              }}
+            >
+              <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                Modern Card Title
+                <CardContent>
+                  <Typography variant="body2" color="white" sx={{ mb: 2 }}>
+                    Lizards are a widespread group of squamate reptiles with
+                    over 6,000 species.
+                  </Typography>
+
+                  {/* BUTTONS BASED ON ROLE */}
+                  {role === "USER" && (
+                    <Button
+                      variant="contained"
+                      size="small"
+                      onClick={() => setOpen(true)}
+                    >
+                      Learn More
+                    </Button>
+                  )}
+
+                  {role === "ADMIN" && (
+                    <Box sx={{ display: "flex", gap: 1 }}>
+                      <Button variant="contained" color="warning">
+                        Unpublish
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => setOpen(true)}
+                      >
+                        Edit
+                      </Button>
+                      <Button variant="contained" color="error">
+                        Delete
+                      </Button>
+                    </Box>
+                  )}
+                </CardContent>
+              </Typography>
+            </Box>
+          </Box>
+        </CardActionArea>
+      </Card>
+    </>
   );
 }
