@@ -77,8 +77,8 @@ export function AdminAppSidebar({
         </SidebarMenu>
       </SidebarHeader>
       <hr />
-      <SidebarContent className="mt-5">
-        <div className="mt-7">
+      <SidebarContent>
+        <div className="flex mt-5">
           <AdminPopup
             triggerLabel="Add Announcements"
             title="Add a new Announcement"
@@ -100,7 +100,7 @@ export function AdminAppSidebar({
             ]}
           />
         </div>
-        <div className="mt-5">
+        <div className="flex mt-5">
           <AdminPopup
             triggerLabel="Add a new Brand"
             title="Add a new Brand"
@@ -124,7 +124,7 @@ export function AdminAppSidebar({
             // }}
           />
         </div>
-        <div className="mt-5">
+        <div className="flex mt-5">
           <AdminPopup
             triggerLabel="Add Categories"
             title="Add a new Category"
@@ -145,7 +145,7 @@ export function AdminAppSidebar({
         </div>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={data.user} role={"ADMIN"}/>
       </SidebarFooter>
     </Sidebar>
   );
