@@ -37,7 +37,7 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar();
   const isAdmin = role === "ADMIN";
-  const popupRef = useRef<HTMLButtonElement>(null);
+  const adminPopupRef = useRef<HTMLButtonElement>(null);
 
   return (
     <>
@@ -90,13 +90,7 @@ export function NavUser({
                 </DropdownMenuItem>
                 {isAdmin && (
                   <DropdownMenuItem
-                    onClick={() =>
-                      document
-                        .querySelector<HTMLButtonElement>(
-                          '[data-admin-popup-trigger="true"]'
-                        )
-                        ?.click()
-                    }
+                    onClick={() => adminPopupRef.current?.click()}
                   >
                     <IconUserCircle />
                     Add Admin User
@@ -122,11 +116,11 @@ export function NavUser({
 
       {isAdmin && (
         <AdminPopup
-          ref={popupRef}
+          ref={adminPopupRef} // Attach the ref here
+          hideTrigger={true}
           triggerLabel="Add Admin User"
           title="Register Admin User"
           description="Create a new administrator account."
-          hideTrigger={true}
           fields={[
             {
               id: "firstname",

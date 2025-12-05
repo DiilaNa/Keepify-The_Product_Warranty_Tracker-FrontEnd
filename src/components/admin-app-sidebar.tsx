@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Link } from "react-router-dom";
 import { AdminPopup } from "./custom/PopUps";
+import { ComboboxDemo } from "./custom/combobox";
 
 const data = {
   user: {
@@ -109,8 +110,9 @@ export function AdminAppSidebar({
               {
                 id: "categoryId",
                 label: "Category",
-                type: "text",
+                component: <ComboboxDemo/>,
                 placeholder: "Smartphones",
+                type: "text"
               },
               {
                 id: "brandName",
@@ -145,7 +147,7 @@ export function AdminAppSidebar({
         </div>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} role={"ADMIN"}/>
+        <NavUser user={data.user} role={"ADMIN"} />
       </SidebarFooter>
     </Sidebar>
   );

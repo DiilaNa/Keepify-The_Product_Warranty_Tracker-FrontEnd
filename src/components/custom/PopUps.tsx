@@ -138,6 +138,7 @@ interface Field {
   label: string;
   type: "text" | "textarea" | "file" | "password" | "email";
   placeholder?: string;
+  component?: React.ReactNode;
 }
 
 interface AdminPopupProps {
@@ -183,37 +184,35 @@ export const AdminPopup = forwardRef<HTMLButtonElement, AdminPopupProps>(
                 <div key={field.id} className="grid gap-3">
                   <Label htmlFor={field.id}>{field.label}</Label>
 
-                  {field.type === "text" && (
+                  {field.component ? (
+                    field.component
+                  ) : field.type === "text" ? (
                     <Input
                       id={field.id}
                       name={field.id}
                       placeholder={field.placeholder}
                     />
-                  )}
-                  {field.type === "password" && (
+                  ) : field.type === "password" ? (
                     <Input
                       id={field.id}
                       name={field.id}
                       placeholder={field.placeholder}
                     />
-                  )}
-                  {field.type === "email" && (
+                  ) : field.type === "email" ? (
                     <Input
                       id={field.id}
                       name={field.id}
                       placeholder={field.placeholder}
                     />
-                  )}
-                  {field.type === "textarea" && (
+                  ) : field.type === "textarea" ? (
                     <Textarea
                       id={field.id}
                       name={field.id}
                       placeholder={field.placeholder}
                     />
-                  )}
-                  {field.type === "file" && (
+                  ) : field.type === "file" ? (
                     <Input type="file" id={field.id} name={field.id} />
-                  )}
+                  ) : null}
                 </div>
               ))}
             </div>
