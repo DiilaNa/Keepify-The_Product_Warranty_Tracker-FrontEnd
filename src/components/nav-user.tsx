@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/sidebar";
 import { AdminPopup } from "./custom/PopUps";
 import { useRef } from "react";
+import { NotificationsSheet } from "./NotifySheet";
+import React from "react";
 
 export function NavUser({
   user,
@@ -38,6 +40,9 @@ export function NavUser({
   const { isMobile } = useSidebar();
   const isAdmin = role === "ADMIN";
   const adminPopupRef = useRef<HTMLButtonElement>(null);
+  const [unreadCount, setUnreadCount] = React.useState(0);
+  const notifyPopupRef = useRef<HTMLButtonElement>(null);
+
 
   return (
     <>
@@ -98,9 +103,19 @@ export function NavUser({
                 )}
 
                 {!isAdmin && (
-                  <DropdownMenuItem>
-                    <IconNotification />
-                    Notifications
+                  <DropdownMenuItem
+                    onClick={() => notifyPopupRef.current?.click()}
+                    className="relative flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-2">
+                      <IconNotification />
+                      Notifications
+                    </div>
+                    {unreadCount > 0 && (
+                      <span className="bg-red-500 text-white text-xs font-bold px-1 rounded-full">
+                        {unreadCount}
+                      </span>
+                    )}
                   </DropdownMenuItem>
                 )}
               </DropdownMenuGroup>
@@ -113,6 +128,10 @@ export function NavUser({
           </DropdownMenu>
         </SidebarMenuItem>
       </SidebarMenu>
+
+      <NotificationsSheet
+        ref={notifyPopupRef}
+        onUnreadChange={setUnreadCount}     />
 
       {isAdmin && (
         <AdminPopup

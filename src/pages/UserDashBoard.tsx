@@ -53,7 +53,6 @@ export default function UserDashBoard() {
 
               <div className="px-4 lg:px-6">
                 <SearchAppBar />
-
                 {posts.map((p) => (
                   <WarrantyCard
                     key={p.id}
