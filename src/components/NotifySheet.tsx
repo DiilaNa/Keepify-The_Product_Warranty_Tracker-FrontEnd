@@ -52,7 +52,7 @@ export const NotificationsSheet = React.forwardRef<
         <Button ref={ref} className="hidden" />
       </SheetTrigger>
 
-      <SheetContent side="right" className="w-80 bg-gray-900 text-gray-100">
+      <SheetContent side="right" className=" w-80 bg-gray-900 text-gray-100">
         <SheetHeader>
           <SheetTitle>Notifications</SheetTitle>
           <SheetDescription>
@@ -67,7 +67,7 @@ export const NotificationsSheet = React.forwardRef<
           {notifications.map((n) => (
             <div
               key={n.id}
-              className={`flex justify-between items-center p-3 rounded-lg transition ${
+              className={`flex justify-between items-center p-3 rounded-lg transition ml-4 mr-1 ${
                 n.read
                   ? "bg-gray-800 text-gray-500 line-through"
                   : "bg-gray-700 hover:bg-gray-600"

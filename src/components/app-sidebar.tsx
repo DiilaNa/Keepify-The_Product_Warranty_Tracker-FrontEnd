@@ -1,15 +1,11 @@
 import * as React from "react";
 import {
-  IconChartBar,
   IconDashboard,
-  IconFolder,
   IconHelp,
   IconInnerShadowTop,
   IconListDetails,
+  IconNotification,
   IconReport,
-  IconSearch,
-  IconSettings,
-  IconUsers,
 } from "@tabler/icons-react";
 
 import { NavDocuments } from "@/components/nav-documents";
@@ -27,7 +23,14 @@ import {
 } from "@/components/ui/sidebar";
 import { Link } from "react-router-dom";
 import { AdminPopup } from "./custom/PopUps";
+import { useRef } from "react";
+import { NotificationsSheet } from "./NotifySheet";
 
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+
+const notificationRef = useRef<HTMLButtonElement>(null);
+  const [unreadCount, setUnreadCount] = React.useState(0);
+  
 const data = {
   user: {
     name: "shadcn",
@@ -41,41 +44,23 @@ const data = {
       icon: IconDashboard,
     },
     {
-      title: "Lifecycle",
+      title: "Posts",
       url: "#",
       icon: IconListDetails,
     },
     {
-      title: "Analytics",
+      title: "Notifications",
       url: "#",
-      icon: IconChartBar,
-    },
-    {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder,
-    },
-    {
-      title: "Team",
-      url: "#",
-      icon: IconUsers,
+      icon: IconNotification,
+      onClick: () => notificationRef.current?.click(),
+      showUnread: true,
     },
   ],
   navSecondary: [
     {
-      title: "Settings",
-      url: "#",
-      icon: IconSettings,
-    },
-    {
       title: "Get Help",
       url: "#",
       icon: IconHelp,
-    },
-    {
-      title: "Search",
-      url: "#",
-      icon: IconSearch,
     },
   ],
   documents: [
@@ -87,7 +72,6 @@ const data = {
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -145,8 +129,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             },
           ]}
         />
+        {/* NotificationsSheet with callback to update unread count */}
+        <NotificationsSheet
+          ref={notificationRef}
+          onUnreadChange={setUnreadCount}
+        />
 
-        <NavMain items={data.navMain} />
+        {/* Pass unreadCount to NavMain */}
+        <NavMain items={data.navMain} unreadCount={unreadCount} />
         <NavDocuments items={data.documents} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
