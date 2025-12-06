@@ -108,31 +108,50 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <hr />
       <SidebarContent className="mt-4">
         <AdminPopup
-          triggerLabel="Add Announcements"
-          title="Add a new Announcement"
-          description="Add a new announcement for the system."
+          triggerLabel="Add a post"
+          title="Add New Warranty"
+          description="Fill the details to save a new warranty."
+          onSubmit={(form) => console.log("Add Warranty", form)}
           fields={[
             {
-              id: "title",
-              label: "Title",
+              id: "name",
+              label: "Product Name",
               type: "text",
-              placeholder: "Enter title",
             },
-            { id: "image", label: "Image", type: "file" },
             {
               id: "description",
               label: "Description",
               type: "textarea",
-              placeholder: "Describe the announcement",
+            },
+            {
+              id: "purchase_date",
+              label: "Purchase Date",
+              type: "date",
+            },
+            {
+              id: "expiry_date",
+              label: "Expiry Date",
+              type: "date",
+            },
+            {
+              id: "serial_number",
+              label: "Serial Number",
+              type: "text",
+            },
+            {
+              id: "bill_image",
+              label: "Bill Image",
+              type: "file",
             },
           ]}
         />
+
         <NavMain items={data.navMain} />
         <NavDocuments items={data.documents} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} role="USER"/>
+        <NavUser user={data.user} role="USER" />
       </SidebarFooter>
     </Sidebar>
   );
