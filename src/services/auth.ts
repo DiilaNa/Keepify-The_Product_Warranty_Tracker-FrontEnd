@@ -17,3 +17,8 @@ export const loginUser = async(data:{email:string, password:string}) =>{
     const res = await api.post("/auth/login",data);
     return res.data;
 }
+
+export const refreshTokens = async(refreshToken:string) => {
+    const res = await api.post("/auth/refresh",{token: refreshToken});
+    return res.data;
+}

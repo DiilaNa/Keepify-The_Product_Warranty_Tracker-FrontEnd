@@ -15,7 +15,12 @@ export const registerUserThunk = createAsyncThunk(
 export const loginUserThunk = createAsyncThunk("/auth/login",
     async(data: {email:string, password:string},thunkAPI) => {
         try{
-            return await loginUser(data);
+            const res =  await loginUser(data);
+            localStorage.setItem("accessToken", res.data.accessToken);
+            localStorage.setItem("refreshToken", res.data.refreshToken);
+            console.log(res.data);
+            
+            return res.data;
         }catch(err:any){
             return thunkAPI.rejectWithValue(err.response?.data?.message || "Login Failed")
         }
