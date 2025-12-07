@@ -21,45 +21,62 @@ import {
 import { Link } from "react-router-dom";
 import { AdminPopup } from "./custom/PopUps";
 import { ComboboxDemo } from "./custom/combobox";
-
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "#",
-      icon: IconDashboard,
-    },
-    {
-      title: "Lifecycle",
-      url: "#",
-      icon: IconListDetails,
-    },
-    {
-      title: "Analytics",
-      url: "#",
-      icon: IconChartBar,
-    },
-    {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder,
-    },
-    {
-      title: "Team",
-      url: "#",
-      icon: IconUsers,
-    },
-  ],
-};
+import { saveCategoryThunk } from "@/slices/category/categoryThunk";
+import { useAppDispatch } from "@/hooks/hook";
 
 export function AdminAppSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
+
+  const data = {
+    user: {
+      name: "shadcn",
+      email: "m@example.com",
+      avatar: "/avatars/shadcn.jpg",
+    },
+    navMain: [
+      {
+        title: "Dashboard",
+        url: "#",
+        icon: IconDashboard,
+      },
+      {
+        title: "Lifecycle",
+        url: "#",
+        icon: IconListDetails,
+      },
+      {
+        title: "Analytics",
+        url: "#",
+        icon: IconChartBar,
+      },
+      {
+        title: "Projects",
+        url: "#",
+        icon: IconFolder,
+      },
+      {
+        title: "Team",
+        url: "#",
+        icon: IconUsers,
+      },
+    ],
+  };
+
+  const dispatch = useAppDispatch();
+
+  const handleAddCategory = (formValues: any) => {
+    console.log("Data from popup:", formValues);
+
+    const formData = new FormData();
+    formData.append("name", formValues.name);
+    if (formValues.image) {
+      formData.append("image", formValues.image);
+    }
+
+    dispatch(saveCategoryThunk(formData));
+  };
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -110,9 +127,9 @@ export function AdminAppSidebar({
               {
                 id: "categoryId",
                 label: "Category",
-                component: <ComboboxDemo/>,
+                component: <ComboboxDemo />,
                 placeholder: "Smartphones",
-                type: "text"
+                type: "text",
               },
               {
                 id: "brandName",
@@ -140,9 +157,7 @@ export function AdminAppSidebar({
               },
               { id: "image", label: "Image", type: "file" },
             ]}
-            // onSubmit={(data) => {
-            //   dispatch(createCategory(data));
-            // }}
+            onSubmit={handleAddCategory}
           />
         </div>
       </SidebarContent>
