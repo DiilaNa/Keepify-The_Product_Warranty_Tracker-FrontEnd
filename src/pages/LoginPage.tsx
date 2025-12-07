@@ -37,16 +37,19 @@ const handleLogin = async(e: FormEvent) => {
     loginUserThunk({email,password})
   );
 
-  if(loginUserThunk.fulfilled.match(result)){
-    navigate("/user")
-  }else{
-    toast.error("Login Failed")
+  if (loginUserThunk.fulfilled.match(result)) {
+    toast.success("Login success"); 
+    setTimeout(() => {
+      navigate("/user"); 
+    }, 200); 
+  } else if (loginUserThunk.rejected.match(result)) {
+    toast.error("Login  Failed");
   }
 }
 
   return (
     <div>
-    <NavBarComponent />
+      <NavBarComponent />
       <div className={cn("flex flex-col gap-6 max-w-md mx-auto px-9 mt-28")}>
         <Card className="w-full">
           <CardHeader>
@@ -56,7 +59,7 @@ const handleLogin = async(e: FormEvent) => {
             </CardDescription>
           </CardHeader>
           <CardContent className="p-6">
-            <form>
+            <form onSubmit={handleLogin}>
               <FieldGroup>
                 <Field>
                   <FieldLabel htmlFor="email">Email</FieldLabel>
@@ -79,25 +82,22 @@ const handleLogin = async(e: FormEvent) => {
                       Forgot your password?
                     </a>
                   </div>
-                  <Input 
-                  id="password" 
-                  type="password" 
-                  required 
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  <Input
+                    id="password"
+                    type="password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </Field>
                 <Field>
-                  <Button 
-                  type="submit"
-                  disabled={loading}
-                  onClick={handleLogin}
-                  >
-                    Login
+                  <Button type="submit" disabled={loading}>
+                    {loading ? "Logging in..." : "Login"}
                   </Button>
                   <Link to="/user">Test</Link>
                   <FieldDescription className="text-center">
-                    Don&apos;t have an account? <Link to="/register">Sign up</Link>
+                    Don&apos;t have an account?{" "}
+                    <Link to="/register">Sign up</Link>
                   </FieldDescription>
                 </Field>
               </FieldGroup>

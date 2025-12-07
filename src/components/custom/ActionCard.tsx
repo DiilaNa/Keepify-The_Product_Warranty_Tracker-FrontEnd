@@ -94,42 +94,43 @@ export default function ActionAreaCard({ role = "USER" }) {
             >
               <Typography variant="h6" sx={{ fontWeight: 700 }}>
                 Modern Card Title
-                <CardContent>
-                  <Typography variant="body2" color="white" sx={{ mb: 2 }}>
-                    Lizards are a widespread group of squamate reptiles with
-                    over 6,000 species.
-                  </Typography>
+              </Typography>
+              <CardContent>
+                <Typography variant="body2" color="white" sx={{ mb: 2 }}>
+                  Lizards are a widespread group of squamate reptiles with over
+                  6,000 species.
+                </Typography>
 
-                  {/* BUTTONS BASED ON ROLE */}
-                  {role === "USER" && (
+                {/* BUTTONS BASED ON ROLE */}
+                {role === "USER" && (
+                  <Button
+                    component="div"
+                    variant="contained"
+                    size="small"
+                    onClick={() => setOpen(true)}
+                  >
+                    Learn More
+                  </Button>
+                )}
+
+                {role === "ADMIN" && (
+                  <Box sx={{ display: "flex", gap: 1 }}>
+                    <Button variant="contained" color="warning">
+                      Unpublish
+                    </Button>
                     <Button
                       variant="contained"
-                      size="small"
+                      color="secondary"
                       onClick={() => setOpen(true)}
                     >
-                      Learn More
+                      Edit
                     </Button>
-                  )}
-
-                  {role === "ADMIN" && (
-                    <Box sx={{ display: "flex", gap: 1 }}>
-                      <Button variant="contained" color="warning">
-                        Unpublish
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={() => setOpen(true)}
-                      >
-                        Edit
-                      </Button>
-                      <Button variant="contained" color="error">
-                        Delete
-                      </Button>
-                    </Box>
-                  )}
-                </CardContent>
-              </Typography>
+                    <Button variant="contained" color="error">
+                      Delete
+                    </Button>
+                  </Box>
+                )}
+              </CardContent>
             </Box>
           </Box>
         </CardActionArea>
