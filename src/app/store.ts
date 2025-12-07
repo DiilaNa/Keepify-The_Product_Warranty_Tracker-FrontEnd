@@ -1,8 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authReducer } from "../slices/auth/authSlice"; // adjust the path as needed
+import { categoryReducer } from "@/slices/category/categorySlice";
 
 const store =  configureStore({
-    reducer: {auth: authReducer},
+    reducer: {
+        auth: authReducer,
+        category: categoryReducer
+
+    },
 
 })
 

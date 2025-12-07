@@ -14,6 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { IconCirclePlusFilled } from "@tabler/icons-react";
 import { forwardRef } from "react";
+import { useAppSelector } from "@/hooks/hook";
 
 interface Field {
   id: string;
@@ -30,15 +31,21 @@ interface AdminPopupProps {
   fields: Field[];
   hideTrigger?: boolean;
   onSubmit?: (data: FormData) => void;
+  closeButtonRef?: React.RefObject<HTMLButtonElement | null>;
 }
 
 // Use forwardRef to expose the button for programmatic click
 export const AdminPopup = forwardRef<HTMLButtonElement, AdminPopupProps>(
-  ({ triggerLabel, title, description, fields, onSubmit ,hideTrigger }, ref) => {
+  ({ triggerLabel, title, description, fields, onSubmit, hideTrigger, closeButtonRef }, ref) => {
+
+    const { loading } = useAppSelector((state) => state.category);
+
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
       e.preventDefault();
       const formData = new FormData(e.currentTarget);
       onSubmit?.(formData);
+
+
     }
 
     return (
@@ -108,9 +115,11 @@ export const AdminPopup = forwardRef<HTMLButtonElement, AdminPopupProps>(
 
             <DialogFooter className="mt-4">
               <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
+                <Button ref={closeButtonRef} variant="outline">Cancel</Button>
               </DialogClose>
-              <Button type="submit">Save changes</Button>
+              <Button type="submit" disabled={loading}>
+                {loading ? "Saving..." : "Save changes"}
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>

@@ -23,6 +23,7 @@ import { AdminPopup } from "./custom/PopUps";
 import { ComboboxDemo } from "./custom/combobox";
 import { saveCategoryThunk } from "@/slices/category/categoryThunk";
 import { useAppDispatch } from "@/hooks/hook";
+import { toast } from "sonner";
 
 export function AdminAppSidebar({
   ...props
@@ -64,19 +65,23 @@ export function AdminAppSidebar({
   };
 
   const dispatch = useAppDispatch();
+  const closeButtonRef = React.useRef<HTMLButtonElement>(null);
 
-  const handleAddCategory = (formValues: any) => {
-    console.log("Data from popup:", formValues);
+  const handleAddCategory = async(formData: FormData) => {
+    try {
+      const result = await dispatch(saveCategoryThunk(formData));
 
-    const formData = new FormData();
-    formData.append("name", formValues.name);
-    if (formValues.image) {
-      formData.append("image", formValues.image);
+      if (saveCategoryThunk.fulfilled.match(result)) {
+        toast.success("Category saved successfully!");
+        closeButtonRef.current?.click();
+      } else {
+        toast.error((result.payload as string) || "Saving failed");
+      }
+    } catch (err) {
+      toast.error("Saving failed");
     }
-
-    dispatch(saveCategoryThunk(formData));
   };
-
+  
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -116,6 +121,7 @@ export function AdminAppSidebar({
                 placeholder: "Describe the announcement",
               },
             ]}
+            closeButtonRef={closeButtonRef}
           />
         </div>
         <div className="flex mt-5">
@@ -141,6 +147,7 @@ export function AdminAppSidebar({
             // onSubmit={(data) => {
             //   dispatch(createBrand(data));
             // }}
+            closeButtonRef={closeButtonRef}
           />
         </div>
         <div className="flex mt-5">
@@ -158,6 +165,7 @@ export function AdminAppSidebar({
               { id: "image", label: "Image", type: "file" },
             ]}
             onSubmit={handleAddCategory}
+            closeButtonRef={closeButtonRef}
           />
         </div>
       </SidebarContent>
