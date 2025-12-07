@@ -22,15 +22,14 @@ api.interceptors.response.use(
     return response;
   },
   async (err: AxiosError) => {
-    const originalRequset: any = err.config;
+    const originalRequest: any = err.config;
 
     const isPublic = PUBLIC_ENDPOINTS.some((url) =>
-      originalRequset.url?.includes(url)
+      originalRequest.url?.includes(url)
     );
 
-    if (err.response?.status === 401 && !isPublic && !originalRequset._retry) {
-      originalRequset._retry = true;
-
+    if (err.response?.status === 401 && !isPublic && !originalRequest._retry) {
+      originalRequest._retry = true;
       try {
         const refreshToken = localStorage.getItem("refreshToken");
 
@@ -41,8 +40,8 @@ api.interceptors.response.use(
         const res = await refreshTokens(refreshToken);
         localStorage.setItem("accessToken", res.accessToken);
 
-        originalRequset.headers.Authorization = `Bearer ${res.accessToken}`;
-        return axios(originalRequset);
+        originalRequest.headers.Authorization = `Bearer ${res.accessToken}`;
+        return axios(originalRequest);
 
       } catch (err) {
         localStorage.clear();
