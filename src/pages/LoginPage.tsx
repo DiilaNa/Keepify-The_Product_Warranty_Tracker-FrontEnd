@@ -38,10 +38,20 @@ const handleLogin = async(e: FormEvent) => {
   );
 
   if (loginUserThunk.fulfilled.match(result)) {
-    toast.success("Login success"); 
-    setTimeout(() => {
-      navigate("/user"); 
-    }, 200); 
+    const user = result.payload
+  
+    if(user.role === "USER"){
+      toast.success("Login success!");
+      setTimeout(() => {
+        navigate("/user");
+      }, 200); 
+    }else{
+      toast.success("Login success as an admin!!");
+      setTimeout(() => {
+        navigate("/admin");
+      }, 200); 
+    }
+    
   } else if (loginUserThunk.rejected.match(result)) {
     toast.error("Login  Failed");
   }
