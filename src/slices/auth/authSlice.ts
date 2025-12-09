@@ -14,37 +14,42 @@ const initialState: AuthState = {
 };
 
 const authSlice = createSlice({
-    name: "auth",
-    initialState,
-    reducers: {},
+  name: "auth",
+  initialState,
+  reducers: {
+    logout: (state) => {
+        state.user = null;
+        state.error = null;
+        state.loading = false;
+    },
+  },
 
-    extraReducers: (builder) => {
-        builder
-        .addCase(registerUserThunk.pending,(state) => {
-            state.loading = true;
-        })
-        .addCase(registerUserThunk.fulfilled,(state) => {
-            state.loading = false;
-        })
-        .addCase(registerUserThunk.rejected,(state,action) => {
-            state.loading = false;
-            state.error = action.payload as string;
-        })
-        .addCase(loginUserThunk.pending,(state) => {
-            state.loading = true;
-            state.error = null;
-        })
+  extraReducers: (builder) => {
+    builder
+      .addCase(registerUserThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(registerUserThunk.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(registerUserThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(loginUserThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
 
-        .addCase(loginUserThunk.fulfilled,(state,action)=> {
-            state.loading = false;
-            state.user = action.payload;
-        })
-        .addCase(loginUserThunk.rejected,(state,action) => {
-            state.loading = false;
-            state.error = action.payload as string;
-        })
-
-    }
-})
-
+      .addCase(loginUserThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+      })
+      .addCase(loginUserThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+  },
+});
+export const { logout } = authSlice.actions;
 export const authReducer = authSlice.reducer;

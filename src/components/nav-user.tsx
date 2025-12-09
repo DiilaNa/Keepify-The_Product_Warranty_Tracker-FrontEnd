@@ -25,6 +25,7 @@ import { AdminPopup } from "./custom/PopUps";
 import { useRef } from "react";
 import { NotificationsSheet } from "./NotifySheet";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export function NavUser({
   user,
@@ -37,11 +38,23 @@ export function NavUser({
   };
   role: "ADMIN" | "USER";
 }) {
+
+
+  const navigate = useNavigate();
   const { isMobile } = useSidebar();
   const isAdmin = role === "ADMIN";
   const adminPopupRef = useRef<HTMLButtonElement>(null);
   const [unreadCount, setUnreadCount] = React.useState(0);
   const notifyPopupRef = useRef<HTMLButtonElement>(null);
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken")
+    localStorage.removeItem("refreshToken")
+    localStorage.removeItem(role)
+    localStorage.clear() 
+
+    navigate("/login")
+  }
 
 
   return (
@@ -120,7 +133,7 @@ export function NavUser({
                 )}
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>
                 <IconLogout />
                 Log out
               </DropdownMenuItem>
