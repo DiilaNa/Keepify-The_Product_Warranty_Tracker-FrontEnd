@@ -30,7 +30,7 @@ interface AdminPopupProps {
   description: string;
   fields: Field[];
   hideTrigger?: boolean;
-  onSubmit?: (data: FormData) => void;
+  onSubmit?: (data: FormData | any) => void;
   closeButtonRef?: React.RefObject<HTMLButtonElement | null>;
 }
 

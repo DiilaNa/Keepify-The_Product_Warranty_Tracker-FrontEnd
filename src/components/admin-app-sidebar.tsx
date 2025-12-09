@@ -24,11 +24,12 @@ import { Combobox } from "./custom/combobox";
 import { saveCategoryThunk } from "@/slices/category/categoryThunk";
 import { useAppDispatch } from "@/hooks/hook";
 import { toast } from "sonner";
+import type { BrandsDataTypes } from "@/services/brands";
+import { saveBrandsThunk } from "@/slices/brands/brandsThunk";
 
 export function AdminAppSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
-
   const data = {
     user: {
       name: "shadcn",
@@ -65,9 +66,10 @@ export function AdminAppSidebar({
   };
 
   const dispatch = useAppDispatch();
+  const [selectedCategory, setSelectedCategory] = React.useState("");
   const closeButtonRef = React.useRef<HTMLButtonElement>(null);
 
-  const handleAddCategory = async(formData: FormData) => {
+  const handleAddCategory = async (formData: FormData) => {
     try {
       const result = await dispatch(saveCategoryThunk(formData));
 
@@ -81,7 +83,27 @@ export function AdminAppSidebar({
       toast.error("Saving failed");
     }
   };
-  
+
+  const saveBrands = async (formData: FormData) => {
+    const brand_name = formData.get("brand_name") as string;
+
+    const data: BrandsDataTypes = {
+      brand_name,
+      category: selectedCategory,
+    };
+    try {
+      const result = await dispatch(saveBrandsThunk(data));
+
+      if (saveBrandsThunk.fulfilled.match(result)) {
+        toast.success("Brands added successfully");
+      } else {
+        toast.error((result.payload as string) || "Brands saving failed");
+      }
+    } catch (err) {
+      toast.error("Saving Brands Failed");
+    }
+  };
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -131,27 +153,25 @@ export function AdminAppSidebar({
             description="Add a new brand for the system."
             fields={[
               {
-                id: "categoryId",
+                id: "category",
                 label: "Category",
                 component: (
                   <Combobox
                     placeholder="Select Category"
-                    onChange={(val) => console.log("Selected Category:", val)}
+                    onChange={(val) => setSelectedCategory(val)}
                   />
                 ),
                 placeholder: "Smartphones",
                 type: "text",
               },
               {
-                id: "brandName",
+                id: "brand_name",
                 label: "Brand Name",
                 type: "text",
                 placeholder: "Samsung Galaxy",
               },
             ]}
-            // onSubmit={(data) => {
-            //   dispatch(createBrand(data));
-            // }}
+            onSubmit={saveBrands}
             closeButtonRef={closeButtonRef}
           />
         </div>
