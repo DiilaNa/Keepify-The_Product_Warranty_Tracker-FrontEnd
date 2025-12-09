@@ -1,4 +1,4 @@
-import { saveCategoryService } from "@/services/category";
+import { loadCategoriesInComboBox, saveCategoryService } from "@/services/category";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const saveCategoryThunk = createAsyncThunk(
@@ -11,3 +11,17 @@ export const saveCategoryThunk = createAsyncThunk(
         }
     }
 )
+
+export const loadCategoryInComboThunk = createAsyncThunk(
+  "/categories/loadCategoriesInCombo",
+  async(_, thunkAPI) => {
+    try{
+        const data =  await loadCategoriesInComboBox();
+        return data
+    }catch(err:any){
+        return thunkAPI.rejectWithValue(
+          err.response?.data?.message || "Failed to load categories in the combo box"
+        );
+    }
+  }
+);

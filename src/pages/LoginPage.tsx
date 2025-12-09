@@ -40,7 +40,7 @@ const handleLogin = async(e: FormEvent) => {
   if (loginUserThunk.fulfilled.match(result)) {
     const user = result.payload
   
-    if(user.role === "USER"){
+    if(user.roles === "USER"){
       toast.success("Login success!");
       setTimeout(() => {
         navigate("/user");

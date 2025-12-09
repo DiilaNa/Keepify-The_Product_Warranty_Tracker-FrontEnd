@@ -9,3 +9,8 @@ export const saveCategoryService = async (formData: FormData) => {
 
   return res.data;
 };
+
+export const loadCategoriesInComboBox = async() => {
+  const res = await api.get("/categories/loadCategoriesInCombo");
+  return res.data
+}

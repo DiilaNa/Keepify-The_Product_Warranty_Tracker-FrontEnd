@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { saveCategoryThunk } from "./categoryThunk";
+import { loadCategoryInComboThunk, saveCategoryThunk } from "./categoryThunk";
 
 export interface CategoryState{
     categories: any[];
@@ -31,7 +31,22 @@ const categorySlice = createSlice({
           .addCase(saveCategoryThunk.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload as string;
+          })
+
+          .addCase(loadCategoryInComboThunk.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+          })
+          .addCase(loadCategoryInComboThunk.fulfilled, (state, action) => {
+            state.loading = false;
+            state.categories= action.payload;
+          })
+          .addCase(loadCategoryInComboThunk.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload as string;
           });
+
+
     }
 })
 

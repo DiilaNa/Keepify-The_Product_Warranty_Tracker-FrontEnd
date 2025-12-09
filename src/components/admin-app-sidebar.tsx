@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Link } from "react-router-dom";
 import { AdminPopup } from "./custom/PopUps";
-import { ComboboxDemo } from "./custom/combobox";
+import { Combobox } from "./custom/combobox";
 import { saveCategoryThunk } from "@/slices/category/categoryThunk";
 import { useAppDispatch } from "@/hooks/hook";
 import { toast } from "sonner";
@@ -133,7 +133,12 @@ export function AdminAppSidebar({
               {
                 id: "categoryId",
                 label: "Category",
-                component: <ComboboxDemo />,
+                component: (
+                  <Combobox
+                    placeholder="Select Category"
+                    onChange={(val) => console.log("Selected Category:", val)}
+                  />
+                ),
                 placeholder: "Smartphones",
                 type: "text",
               },
