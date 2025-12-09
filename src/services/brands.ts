@@ -5,7 +5,7 @@ export type BrandsDataTypes = {
     brand_name:string;
 }
 
-export const saveBrands = async(data:BrandsDataTypes) => {
+export const saveBrandsService = async(data:BrandsDataTypes) => {
     const res = await api.post("brands/saveBrand",data);
     return res.data
 }

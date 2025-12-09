@@ -26,10 +26,12 @@ import { useAppDispatch } from "@/hooks/hook";
 import { toast } from "sonner";
 import type { BrandsDataTypes } from "@/services/brands";
 import { saveBrandsThunk } from "@/slices/brands/brandsThunk";
+import { saveAnnouncementsThunk } from "@/slices/announcements/announcementsThunk";
 
 export function AdminAppSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
+
   const data = {
     user: {
       name: "shadcn",
@@ -69,13 +71,26 @@ export function AdminAppSidebar({
   const [selectedCategory, setSelectedCategory] = React.useState("");
   const closeButtonRef = React.useRef<HTMLButtonElement>(null);
 
+  const handleAddAnnouncements = async(formdata:FormData) => {
+    try{
+      const result = await dispatch(saveAnnouncementsThunk(formdata));
+
+      if(saveAnnouncementsThunk.fulfilled.match(result)){
+        toast.success("save announcements successfully")
+      }else{
+        toast.error((result.payload as string) || "adding announcements failed")
+      }
+    }catch(err:any){
+      toast.error("announcements saving failed")
+    }
+  }
+
   const handleAddCategory = async (formData: FormData) => {
     try {
       const result = await dispatch(saveCategoryThunk(formData));
 
       if (saveCategoryThunk.fulfilled.match(result)) {
         toast.success("Category saved successfully!");
-        closeButtonRef.current?.click();
       } else {
         toast.error((result.payload as string) || "Saving failed");
       }
@@ -143,6 +158,7 @@ export function AdminAppSidebar({
                 placeholder: "Describe the announcement",
               },
             ]}
+            onSubmit={handleAddAnnouncements}
             closeButtonRef={closeButtonRef}
           />
         </div>
