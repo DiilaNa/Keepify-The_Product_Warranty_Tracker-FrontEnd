@@ -77,6 +77,7 @@ export function AdminAppSidebar({
 
       if(saveAnnouncementsThunk.fulfilled.match(result)){
         toast.success("save announcements successfully")
+        closeButtonRef.current?.click();
       }else{
         toast.error((result.payload as string) || "adding announcements failed")
       }
@@ -88,9 +89,9 @@ export function AdminAppSidebar({
   const handleAddCategory = async (formData: FormData) => {
     try {
       const result = await dispatch(saveCategoryThunk(formData));
-
       if (saveCategoryThunk.fulfilled.match(result)) {
         toast.success("Category saved successfully!");
+        closeButtonRef.current?.click();
       } else {
         toast.error((result.payload as string) || "Saving failed");
       }
@@ -111,6 +112,7 @@ export function AdminAppSidebar({
 
       if (saveBrandsThunk.fulfilled.match(result)) {
         toast.success("Brands added successfully");
+        closeButtonRef.current?.click();
       } else {
         toast.error((result.payload as string) || "Brands saving failed");
       }
@@ -149,6 +151,21 @@ export function AdminAppSidebar({
                 label: "Title",
                 type: "text",
                 placeholder: "Enter title",
+              },
+              {
+                id: "category",
+                label: "Category",
+                component: (
+                  <>
+                  <Combobox
+                    placeholder="Select Category"
+                    onChange={(val) => setSelectedCategory(val)}
+                    />
+                    <input type="hidden" name="category" value={selectedCategory} />
+                  </>
+                ),
+                placeholder: "Smartphones",
+                type: "text",
               },
               { id: "image", label: "Image", type: "file" },
               {
