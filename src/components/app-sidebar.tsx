@@ -25,52 +25,53 @@ import { Link } from "react-router-dom";
 import { AdminPopup } from "./custom/PopUps";
 import { useRef } from "react";
 import { NotificationsSheet } from "./NotifySheet";
+import { Combobox } from "./custom/combobox";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-
-const notificationRef = useRef<HTMLButtonElement>(null);
+  const notificationRef = useRef<HTMLButtonElement>(null);
   const [unreadCount, setUnreadCount] = React.useState(0);
-  
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "#",
-      icon: IconDashboard,
+  const [selectedCategory, setSelectedCategory] = React.useState("");
+
+  const data = {
+    user: {
+      name: "shadcn",
+      email: "m@example.com",
+      avatar: "/avatars/shadcn.jpg",
     },
-    {
-      title: "Posts",
-      url: "#",
-      icon: IconListDetails,
-    },
-    {
-      title: "Notifications",
-      url: "#",
-      icon: IconNotification,
-      onClick: () => notificationRef.current?.click(),
-      showUnread: true,
-    },
-  ],
-  navSecondary: [
-    {
-      title: "Get Help",
-      url: "#",
-      icon: IconHelp,
-    },
-  ],
-  documents: [
-    {
-      name: "Reports",
-      url: "#",
-      icon: IconReport,
-    },
-  ],
-};
+    navMain: [
+      {
+        title: "Dashboard",
+        url: "#",
+        icon: IconDashboard,
+      },
+      {
+        title: "Posts",
+        url: "#",
+        icon: IconListDetails,
+      },
+      {
+        title: "Notifications",
+        url: "#",
+        icon: IconNotification,
+        onClick: () => notificationRef.current?.click(),
+        showUnread: true,
+      },
+    ],
+    navSecondary: [
+      {
+        title: "Get Help",
+        url: "#",
+        icon: IconHelp,
+      },
+    ],
+    documents: [
+      {
+        name: "Reports",
+        url: "#",
+        icon: IconReport,
+      },
+    ],
+  };
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
@@ -107,35 +108,52 @@ const data = {
               label: "Description",
               type: "textarea",
             },
+
             {
-              id: "purchase_date",
-              label: "Purchase Date",
-              type: "date",
+              type: "row",
+              fields: [
+                { id: "purchase_date", label: "Purchase Date", type: "date" },
+                { id: "expiry_date", label: "Expiry Date", type: "date" },
+              ],
             },
             {
-              id: "expiry_date",
-              label: "Expiry Date",
-              type: "date",
-            },
-            {
-              id: "serial_number",
-              label: "Serial Number",
+              id: "category",
+              label: "Category",
               type: "text",
+              component: (
+                <>
+                  <Combobox
+                    placeholder="Select Category"
+                    onChange={(val) => setSelectedCategory(val)}
+                  />
+                  <input
+                    type="hidden"
+                    name="category"
+                    value={selectedCategory}
+                  />
+                </>
+              ),
             },
             {
-              id: "bill_image",
-              label: "Bill Image",
-              type: "file",
+              id: "brand_id",
+              label: "Brand",
+              type: "text",
+              component: <Combobox />,
+            },
+            {
+              type: "row",
+              fields: [
+                { id: "serial_number", label: "Serial Number", type: "text" },
+                { id: "bill_image", label: "Bill Image", type: "file" },
+              ],
             },
           ]}
         />
-        {/* NotificationsSheet with callback to update unread count */}
         <NotificationsSheet
           ref={notificationRef}
           onUnreadChange={setUnreadCount}
         />
 
-        {/* Pass unreadCount to NavMain */}
         <NavMain items={data.navMain} unreadCount={unreadCount} />
         <NavDocuments items={data.documents} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />

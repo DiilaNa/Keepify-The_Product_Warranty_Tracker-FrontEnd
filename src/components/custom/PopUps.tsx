@@ -17,11 +17,21 @@ import { forwardRef } from "react";
 import { useAppSelector } from "@/hooks/hook";
 
 interface Field {
-  id: string;
-  label: string;
-  type: "text" | "textarea" | "file" | "password" | "email" |"date";
+  id?: string;
+  label?: string;
+  type:
+    | "text"
+    | "textarea"
+    | "file"
+    | "password"
+    | "email"
+    | "date"
+    | "custom"
+    | "row";
   placeholder?: string;
   component?: React.ReactNode;
+  fields?: Field[];
+  render?: () => React.ReactNode;
 }
 
 interface AdminPopupProps {
@@ -36,16 +46,62 @@ interface AdminPopupProps {
 
 // Use forwardRef to expose the button for programmatic click
 export const AdminPopup = forwardRef<HTMLButtonElement, AdminPopupProps>(
-  ({ triggerLabel, title, description, fields, onSubmit, hideTrigger, closeButtonRef }, ref) => {
-
+  (
+    {
+      triggerLabel,
+      title,
+      description,
+      fields,
+      onSubmit,
+      hideTrigger,
+      closeButtonRef,
+    },
+    ref
+  ) => {
     const { loading } = useAppSelector((state) => state.category);
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
       e.preventDefault();
       const formData = new FormData(e.currentTarget);
       onSubmit?.(formData);
+    }
 
+    function renderField(field: Field) {
+      if (field.component) return field.component;
 
+      switch (field.type) {
+        case "text":
+        case "password":
+        case "email":
+          return (
+            <Input
+              id={field.id}
+              name={field.id}
+              placeholder={field.placeholder}
+            />
+          );
+
+        case "textarea":
+          return (
+            <Textarea
+              id={field.id}
+              name={field.id}
+              placeholder={field.placeholder}
+            />
+          );
+
+        case "file":
+          return <Input type="file" id={field.id} name={field.id} />;
+
+        case "date":
+          return <Input type="date" id={field.id} name={field.id} />;
+
+        case "custom":        
+          return field.render ? field.render() : null;
+
+        default:
+          return null;
+      }
     }
 
     return (
@@ -69,53 +125,34 @@ export const AdminPopup = forwardRef<HTMLButtonElement, AdminPopupProps>(
             </DialogHeader>
 
             <div className="grid gap-4 mt-4">
-              {fields.map((field) => (
-                <div key={field.id} className="grid gap-3">
-                  <Label htmlFor={field.id}>{field.label}</Label>
-
-                  {field.component ? (
-                    field.component
-                  ) : field.type === "text" ? (
-                    <Input
-                      id={field.id}
-                      name={field.id}
-                      placeholder={field.placeholder}
-                    />
-                  ) : field.type === "password" ? (
-                    <Input
-                      id={field.id}
-                      name={field.id}
-                      placeholder={field.placeholder}
-                    />
-                  ) : field.type === "email" ? (
-                    <Input
-                      id={field.id}
-                      name={field.id}
-                      placeholder={field.placeholder}
-                    />
-                  ) : field.type === "textarea" ? (
-                    <Textarea
-                      id={field.id}
-                      name={field.id}
-                      placeholder={field.placeholder}
-                    />
-                  ) : field.type === "file" ? (
-                    <Input type="file" id={field.id} name={field.id} />
-                  ) : field.type === "date" ? (
-                    <Input
-                      type="date"
-                      id={field.id}
-                      name={field.id}
-                      defaultValue={field.placeholder}
-                    />
-                  ) : null}
-                </div>
-              ))}
+              {fields.map((field) =>
+                field.type === "row" ? (
+                  <div
+                    key={JSON.stringify(field.fields)}
+                    className="grid grid-cols-2 gap-4"
+                  >
+                    {field.fields?.map((subField) => (
+                      <div key={subField.id} className="grid gap-4">
+                        <Label htmlFor={subField.id}>{subField.label}</Label>
+                        {renderField(subField)}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  // regular fields:
+                  <div key={field.id} className="grid gap-2">
+                    <Label htmlFor={field.id}>{field.label}</Label>
+                    {renderField(field)}
+                  </div>
+                )
+              )}
             </div>
 
             <DialogFooter className="mt-4">
               <DialogClose asChild>
-                <Button ref={closeButtonRef} variant="outline">Cancel</Button>
+                <Button ref={closeButtonRef} variant="outline">
+                  Cancel
+                </Button>
               </DialogClose>
               <Button type="submit" disabled={loading}>
                 {loading ? "Saving..." : "Save changes"}
@@ -127,5 +164,3 @@ export const AdminPopup = forwardRef<HTMLButtonElement, AdminPopupProps>(
     );
   }
 );
-
-
