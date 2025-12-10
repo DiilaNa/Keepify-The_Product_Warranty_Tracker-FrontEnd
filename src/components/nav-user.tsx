@@ -26,6 +26,9 @@ import { useRef } from "react";
 import { NotificationsSheet } from "./NotifySheet";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { registerAdminThunk } from "@/slices/auth/authThunk";
+import { useAppDispatch } from "@/hooks/hook";
+import { toast } from "sonner";
 
 export function NavUser({
   user,
@@ -38,24 +41,51 @@ export function NavUser({
   };
   role: "ADMIN" | "USER";
 }) {
-
-
   const navigate = useNavigate();
   const { isMobile } = useSidebar();
   const isAdmin = role === "ADMIN";
   const adminPopupRef = useRef<HTMLButtonElement>(null);
   const [unreadCount, setUnreadCount] = React.useState(0);
   const notifyPopupRef = useRef<HTMLButtonElement>(null);
+  const dispatch = useAppDispatch();
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken")
-    localStorage.removeItem("refreshToken")
-    localStorage.removeItem(role)
-    localStorage.clear() 
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem(role);
+    localStorage.clear();
 
-    navigate("/login")
-  }
+    navigate("/login");
+  };
 
+  const handliAdminLogin = async (formData: any) => {
+    const firstname = formData.get("firstname") as string;
+    const lastname = formData.get("lastname") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const confirm = formData.get("confirm") as string;
+
+    if (!firstname || !lastname || !email || !password) {
+      toast.error("All fields are required");
+      return;
+    }
+
+    if (password !== confirm) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    const result = await dispatch(
+      registerAdminThunk({ firstname, lastname, email, password, role: "ADMIN" })
+    );
+
+    if (registerAdminThunk.fulfilled.match(result)) {
+      toast.success("Admin user created successfully");
+      adminPopupRef.current?.click(); 
+    } else {
+      toast.error("Failed to register admin");
+    }
+  };
 
   return (
     <>
@@ -144,7 +174,8 @@ export function NavUser({
 
       <NotificationsSheet
         ref={notifyPopupRef}
-        onUnreadChange={setUnreadCount}     />
+        onUnreadChange={setUnreadCount}
+      />
 
       {isAdmin && (
         <AdminPopup
@@ -185,9 +216,7 @@ export function NavUser({
               placeholder: "********",
             },
           ]}
-          // onSubmit={(formData) => {
-          //   // Call backend /admin/add
-          // }}
+          onSubmit={handliAdminLogin}
         />
       )}
     </>

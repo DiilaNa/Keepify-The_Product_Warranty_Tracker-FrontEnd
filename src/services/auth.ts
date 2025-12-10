@@ -22,3 +22,8 @@ export const refreshTokens = async(refreshToken:string) => {
     const res = await api.post("/auth/refresh",{token: refreshToken});
     return res.data;
 }
+
+export const registerAdmin = async(data:RegistrationDataTypes) => {
+    const res = await api.post("/auth/admin/register",data);
+    return res.data
+}

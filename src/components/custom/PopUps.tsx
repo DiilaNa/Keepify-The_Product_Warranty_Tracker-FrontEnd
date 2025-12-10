@@ -71,11 +71,28 @@ export const AdminPopup = forwardRef<HTMLButtonElement, AdminPopupProps>(
 
       switch (field.type) {
         case "text":
+          return (
+            <Input
+              id={field.id}
+              name={field.id}
+              type="text"
+              placeholder={field.placeholder}
+            />
+          );
         case "password":
+          return (
+            <Input
+              id={field.id}
+              name={field.id}
+              type="password"
+              placeholder={field.placeholder}
+            />
+          );
         case "email":
           return (
             <Input
               id={field.id}
+              type="email"
               name={field.id}
               placeholder={field.placeholder}
             />
