@@ -26,11 +26,30 @@ import { AdminPopup } from "./custom/PopUps";
 import { useRef } from "react";
 import { NotificationsSheet } from "./NotifySheet";
 import { Combobox } from "./custom/combobox";
+import { useAppDispatch, useAppSelector } from "@/hooks/hook";
+import { loadBrandsByCategoryThunk } from "@/slices/brands/brandsThunk";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const notificationRef = useRef<HTMLButtonElement>(null);
   const [unreadCount, setUnreadCount] = React.useState(0);
   const [selectedCategory, setSelectedCategory] = React.useState("");
+  const [selectedBrands, setSelectedBrands] = React.useState("");
+  const { brands } = useAppSelector((state) => state.brands);
+  const dispatch = useAppDispatch();
+
+  const filteredBrands = brands.filter(
+    (b) => b.category.toString() === selectedCategory
+  );
+  
+  React.useEffect(() => {
+    if (selectedCategory) {
+      dispatch(loadBrandsByCategoryThunk(selectedCategory));
+    }
+  }, [selectedCategory,dispatch]);
+  
+  
+  
+
 
   const data = {
     user: {
@@ -123,6 +142,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               component: (
                 <>
                   <Combobox
+                    type="category"
                     placeholder="Select Category"
                     onChange={(val) => setSelectedCategory(val)}
                   />
@@ -138,7 +158,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               id: "brand_id",
               label: "Brand",
               type: "text",
-              component: <Combobox />,
+              component: (
+                <>
+                  <Combobox
+                    type="brand"
+                    placeholder="Selct Brands"
+                    data={filteredBrands}
+                    onChange={(val) => setSelectedBrands(val)}
+                  />
+                  <input type="hidden" name="brands" value={selectedBrands} />
+                </>
+              ),
             },
             {
               type: "row",

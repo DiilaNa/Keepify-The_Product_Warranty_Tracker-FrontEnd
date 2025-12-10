@@ -17,38 +17,48 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { loadCategoryInComboThunk } from "@/slices/category/categoryThunk";
 
 interface ComboboxProps {
+  type: "category" | "brand"; // NEW
   placeholder?: string;
   value?: string;
   onChange?: (value: string) => void;
+  data?: any[];
 }
 
 export function Combobox({
+  type,
   placeholder = "Select...",
   value,
   onChange,
+  data,
 }: ComboboxProps) {
   const dispatch = useAppDispatch();
-  const { categories, loading } = useAppSelector((state) => state.category);
+
+  const { categories } = useAppSelector((state) => state.category);
+  const { brands } = useAppSelector((state) => state.brands);
+
+  const loading = useAppSelector((state) =>
+    type === "category" ? state.category.loading : state.brands.loading
+  );
+
+  const comboData = data ?? (type === "category" ? categories : brands);
+
   const [open, setOpen] = React.useState(false);
   const [internalValue, setInternalValue] = React.useState(value || "");
 
-  // fetch categories on mount
   React.useEffect(() => {
-    dispatch(loadCategoryInComboThunk());
-  }, [dispatch]);
+    if (type === "category") {
+      dispatch(loadCategoryInComboThunk());
+    }
+  }, [dispatch, type, data]);
 
-  // keep internal value in sync with prop
-  React.useEffect(() => {
-    if (value !== undefined) setInternalValue(value);
-  }, [value]);
-
-  const options = categories.map((cat: any) => ({
-    value: cat._id,
-    label: cat.name,
+  const options = comboData.map((item) => ({
+    value: item._id,
+    label: item.name || item.brand_name,
   }));
 
   return (
@@ -79,12 +89,9 @@ export function Combobox({
               {options.map((item) => (
                 <CommandItem
                   key={item.value}
-                  value={item.value}
-                  onSelect={(currentValue: string) => {
-                    const newValue =
-                      currentValue === internalValue ? "" : currentValue;
-                    setInternalValue(newValue);
-                    onChange?.(newValue); // send value to AdminPopup
+                  onSelect={() => {
+                    setInternalValue(item.value);
+                    onChange?.(item.value);
                     setOpen(false);
                   }}
                 >

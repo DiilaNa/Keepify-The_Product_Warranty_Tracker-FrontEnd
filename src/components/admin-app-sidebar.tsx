@@ -158,6 +158,7 @@ export function AdminAppSidebar({
                 component: (
                   <>
                   <Combobox
+                    type="category"
                     placeholder="Select Category"
                     onChange={(val) => setSelectedCategory(val)}
                     />
@@ -190,6 +191,7 @@ export function AdminAppSidebar({
                 label: "Category",
                 component: (
                   <Combobox
+                    type="category"
                     placeholder="Select Category"
                     onChange={(val) => setSelectedCategory(val)}
                   />

@@ -1,13 +1,27 @@
-import { saveBrandsService, type BrandsDataTypes } from "@/services/brands";
+import { loadBrandsByCategory, saveBrandsService, type BrandsDataTypes } from "@/services/brands";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const saveBrandsThunk = createAsyncThunk(
-    "/brands/saveBrand",
-    async(data:BrandsDataTypes,thunkAPI) => {
-        try{
-            return await saveBrandsService(data)
-        }catch(err:any){
-            return thunkAPI.rejectWithValue(err.response?.data?.message || "Failed to save Brands")
-        }
+  "/brands/saveBrand",
+  async (data: BrandsDataTypes, thunkAPI) => {
+    try {
+      return await saveBrandsService(data);
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to save Brands"
+      );
     }
-)
+  }
+);
+export const loadBrandsByCategoryThunk = createAsyncThunk(
+  "brands/loadByCategory",
+  async (categoryId:string, thunkAPI) => {
+    try {
+      const res = await loadBrandsByCategory(categoryId);
+      return res.data.data;
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(err.response?.data?.message);
+    }
+  }
+);
+  
