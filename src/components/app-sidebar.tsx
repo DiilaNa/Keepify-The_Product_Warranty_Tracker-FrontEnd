@@ -46,10 +46,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       dispatch(loadBrandsByCategoryThunk(selectedCategory));
     }
   }, [selectedCategory,dispatch]);
-  
-  
-  
-
 
   const data = {
     user: {
