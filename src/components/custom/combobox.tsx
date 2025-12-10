@@ -42,7 +42,7 @@ export function Combobox({
   const { brands } = useAppSelector((state) => state.brands);
 
   const loading = useAppSelector((state) =>
-    type === "category" ? state.category.loading : state.brands.loading
+    type === "category" ? state.category.loadingCategory : state.brands.loadingBrands
   );
 
   const comboData = data ?? (type === "category" ? categories : brands);
