@@ -3,13 +3,15 @@ import { authReducer } from "../slices/auth/authSlice"; // adjust the path as ne
 import { categoryReducer } from "@/slices/category/categorySlice";
 import { brandsReducer } from "@/slices/brands/brandsSlice";
 import { warrantyReducer } from "@/slices/warranty/warrantySlice";
+import { announcementsReducer } from "@/slices/announcements/announcementsSlice";
 
 const store =  configureStore({
     reducer: {
         auth: authReducer,
         category: categoryReducer,
         brands: brandsReducer,
-        warranty: warrantyReducer
+        warranty: warrantyReducer,
+        announcements: announcementsReducer
 
     },
 

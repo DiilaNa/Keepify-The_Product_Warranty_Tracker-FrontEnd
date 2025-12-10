@@ -28,6 +28,8 @@ import { NotificationsSheet } from "./NotifySheet";
 import { Combobox } from "./custom/combobox";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { loadBrandsByCategoryThunk } from "@/slices/brands/brandsThunk";
+import { toast } from "sonner";
+import { saveWarrantyThunk } from "@/slices/warranty/warrantyThunk";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const notificationRef = useRef<HTMLButtonElement>(null);
@@ -36,16 +38,35 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const [selectedBrands, setSelectedBrands] = React.useState("");
   const { brands } = useAppSelector((state) => state.brands);
   const dispatch = useAppDispatch();
+  const closeButtonRef = React.useRef<HTMLButtonElement>(null);
+  const { loading } = useAppSelector((state) => state.warranty);
 
   const filteredBrands = brands.filter(
     (b) => b.category.toString() === selectedCategory
   );
-  
+
   React.useEffect(() => {
     if (selectedCategory) {
       dispatch(loadBrandsByCategoryThunk(selectedCategory));
     }
-  }, [selectedCategory,dispatch]);
+  }, [selectedCategory, dispatch]);
+
+  const saveWarranty = async (formData: FormData) => {
+    formData.append("category", selectedCategory);
+    formData.append("brand", selectedBrands);
+    try {
+      const result = await dispatch(saveWarrantyThunk(formData));
+
+      if (saveWarrantyThunk.fulfilled.match(result)) {
+        toast.success("saved warranties successfully");
+        closeButtonRef.current?.click();
+      } else {
+        toast.error((result.payload as string) || "adding warrnties failed");
+      }
+    } catch (err: any) {
+      toast.error("warranties saving failed");
+    }
+  };
 
   const data = {
     user: {
@@ -111,7 +132,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           triggerLabel="Add a post"
           title="Add New Warranty"
           description="Fill the details to save a new warranty."
-          onSubmit={(form) => console.log("Add Warranty", form)}
           fields={[
             {
               id: "name",
@@ -162,7 +182,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     data={filteredBrands}
                     onChange={(val) => setSelectedBrands(val)}
                   />
-                  <input type="hidden" name="brands" value={selectedBrands} />
+                  <input type="hidden" name="brandId" value={selectedBrands} />
                 </>
               ),
             },
@@ -174,6 +194,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               ],
             },
           ]}
+          onSubmit={saveWarranty}
+          closeButtonRef={closeButtonRef}
+          loading={loading}
         />
         <NotificationsSheet
           ref={notificationRef}

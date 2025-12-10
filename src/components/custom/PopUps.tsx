@@ -14,7 +14,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { IconCirclePlusFilled } from "@tabler/icons-react";
 import { forwardRef } from "react";
-import { useAppSelector } from "@/hooks/hook";
 
 interface Field {
   id?: string;
@@ -42,6 +41,7 @@ interface AdminPopupProps {
   hideTrigger?: boolean;
   onSubmit?: (data: FormData | any) => void;
   closeButtonRef?: React.RefObject<HTMLButtonElement | null>;
+  loading?: boolean;
 }
 
 // Use forwardRef to expose the button for programmatic click
@@ -55,10 +55,10 @@ export const AdminPopup = forwardRef<HTMLButtonElement, AdminPopupProps>(
       onSubmit,
       hideTrigger,
       closeButtonRef,
+      loading
     },
     ref
   ) => {
-    const { loading } = useAppSelector((state) => state.category);
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
       e.preventDefault();
