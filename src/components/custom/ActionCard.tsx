@@ -12,8 +12,14 @@ import {
   DialogTitle,
   DialogActions,
 } from "@mui/material";
+import type { IAnnouncement } from "@/services/announcements";
 
-export default function ActionAreaCard({ role = "USER" }) {
+interface ActionAreaCardProps {
+  announcement: IAnnouncement;
+  role?: "USER" | "ADMIN";
+}
+
+export default function ActionAreaCard({ announcement,role = "USER" }: ActionAreaCardProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -28,10 +34,10 @@ export default function ActionAreaCard({ role = "USER" }) {
         <DialogTitle sx={{ fontWeight: 700 }}>Announcement Details</DialogTitle>
         <DialogContent dividers>
           <Typography variant="h6" sx={{ mb: 1 }}>
-            Modern Card Title
+            {announcement.title}
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            Full description or details about this announcement goes here.
+            {announcement.content}
           </Typography>
         </DialogContent>
 
@@ -67,8 +73,8 @@ export default function ActionAreaCard({ role = "USER" }) {
             <CardMedia
               component="img"
               height="200"
-              image="https://images.unsplash.com/photo-1503796964332-e25e282e390f"
-              alt="image"
+              image={announcement.img_url}
+              alt={announcement.title}
               sx={{ borderTopLeftRadius: 12, borderTopRightRadius: 12 }}
             />
 
@@ -93,12 +99,13 @@ export default function ActionAreaCard({ role = "USER" }) {
               }}
             >
               <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                Modern Card Title
+                {announcement.title}
               </Typography>
               <CardContent>
                 <Typography variant="body2" color="white" sx={{ mb: 2 }}>
-                  Lizards are a widespread group of squamate reptiles with over
-                  6,000 species.
+                  {announcement.content?.slice(0, 80) ??
+                    "No description available"}
+                  ...
                 </Typography>
 
                 {/* BUTTONS BASED ON ROLE */}

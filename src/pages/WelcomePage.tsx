@@ -4,6 +4,11 @@ import ActionAreaCard from "@/components/custom/ActionCard";
 import { NavBarComponent } from "@/components/custom/NavBar";
 import { Footer } from "@/components/custom/Footer";
 import WhyChooseKeepify from "@/components/about-us";
+import { useAppDispatch, useAppSelector } from "@/hooks/hook";
+import { loadAnnouncementsThunk } from "@/slices/announcements/announcementsThunk";
+import { useEffect } from "react";
+import type { IAnnouncement } from "@/services/announcements";
+import { Button } from "flowbite-react";
 
 const images = [
   "https://images.unsplash.com/photo-1605629713998-167cdc70afa2",
@@ -12,6 +17,22 @@ const images = [
 ];
 
 export default function HeroSlider() {
+  const dispatch = useAppDispatch();
+  const { announcements, loadingAnnouncements, page, totalPages } =
+    useAppSelector((state) => state.announcements);
+
+  const { user } = useAppSelector((state) => state.auth);
+  const role = user?.role || "PUBLIC"; // <---- IMPORTANT
+
+  useEffect(() => {
+    dispatch(
+      loadAnnouncementsThunk({
+        admin: role === "ADMIN",
+        page,
+      })
+    );
+  }, [dispatch, role, page]);
+
   return (
     <>
       <div className="min-h-screen flex flex-col">
@@ -49,9 +70,49 @@ export default function HeroSlider() {
 
         <div className="w-full bg-[#0d0f12] py-16">
           <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8">
-            <ActionAreaCard role="ADMIN"/>
-            <ActionAreaCard />
+            {loadingAnnouncements ? (
+              <p>Loading...</p>
+            ) : (
+              announcements.map((ann: IAnnouncement) => (
+                <ActionAreaCard key={ann._id} announcement={ann} role={role} />
+              ))
+            )}
           </div>
+        </div>
+
+        {/* PAGINATION */}
+        <div className="flex justify-center items-center gap-3 mt-6">
+          <Button
+            disabled={page === 1}
+            onClick={() =>
+              dispatch(
+                loadAnnouncementsThunk({
+                  admin: role === "ADMIN",
+                  page: page - 1,
+                })
+              )
+            }
+          >
+            Prev
+          </Button>
+
+          <span className="text-white">
+            Page {page} / {totalPages}
+          </span>
+
+          <Button
+            disabled={page === totalPages}
+            onClick={() =>
+              dispatch(
+                loadAnnouncementsThunk({
+                  admin: role === "ADMIN",
+                  page: page + 1,
+                })
+              )
+            }
+          >
+            Next
+          </Button>
         </div>
 
         <Footer />
