@@ -3,13 +3,13 @@ import { saveWarrantyThunk } from "./warrantyThunk";
 
 export interface WarrantyState {
   warranties: any[];
-  loading: boolean;
+  loadingWarranties: boolean;
   error: string | null;
 }
 
 const initialState: WarrantyState = {
   warranties: [],
-  loading: false,
+  loadingWarranties: false,
   error: null,
 };
 
@@ -20,15 +20,15 @@ const warrantySlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(saveWarrantyThunk.pending, (state) => {
-        state.loading = true;
+        state.loadingWarranties = true;
         state.error = null;
       })
       .addCase(saveWarrantyThunk.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loadingWarranties = false;
         state.warranties.push(action.payload.data);
       })
       .addCase(saveWarrantyThunk.rejected, (state, action) => {
-        state.loading = false;
+        state.loadingWarranties = false;
         state.error = action.payload as string;
       });
   },

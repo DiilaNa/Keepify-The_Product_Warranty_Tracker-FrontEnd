@@ -1,17 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { loadCategoryInComboThunk, saveCategoryThunk } from "./categoryThunk";
 
-export interface CategoryState{
-    categories: any[];
-    loading: boolean;
-    error: string | null;
+export interface CategoryState {
+  categories: any[];
+  loadingCategory: boolean;
+  error: string | null;
 }
 
 const initialState: CategoryState = {
-    categories: [],
-    loading: false,
-    error: null,
-}
+  categories: [],
+  loadingCategory: false,
+  error: null,
+};
 
 
 const categorySlice = createSlice({
@@ -21,28 +21,28 @@ const categorySlice = createSlice({
     extraReducers: (builder) => {
         builder
           .addCase(saveCategoryThunk.pending, (state) => {
-            state.loading = true;
+            state.loadingCategory = true;
             state.error = null;
           })
           .addCase(saveCategoryThunk.fulfilled, (state, action) => {
-            state.loading = false;
+            state.loadingCategory = false;
             state.categories.push(action.payload.data);
           })
           .addCase(saveCategoryThunk.rejected, (state, action) => {
-            state.loading = false;
+            state.loadingCategory = false;
             state.error = action.payload as string;
           })
 
           .addCase(loadCategoryInComboThunk.pending, (state) => {
-            state.loading = true;
+            state.loadingCategory = true;
             state.error = null;
           })
           .addCase(loadCategoryInComboThunk.fulfilled, (state, action) => {
-            state.loading = false;
+            state.loadingCategory = false;
             state.categories= action.payload;
           })
           .addCase(loadCategoryInComboThunk.rejected, (state, action) => {
-            state.loading = false;
+            state.loadingCategory = false;
             state.error = action.payload as string;
           });
 

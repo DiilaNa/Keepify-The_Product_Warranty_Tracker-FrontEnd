@@ -39,7 +39,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { brands } = useAppSelector((state) => state.brands);
   const dispatch = useAppDispatch();
   const closeButtonRef = React.useRef<HTMLButtonElement>(null);
-  const { loading } = useAppSelector((state) => state.warranty);
+  const { loadingWarranties } = useAppSelector((state) => state.warranty);
 
   const filteredBrands = brands.filter(
     (b) => b.category.toString() === selectedCategory
@@ -196,7 +196,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           ]}
           onSubmit={saveWarranty}
           closeButtonRef={closeButtonRef}
-          loading={loading}
+          loading={loadingWarranties}
         />
         <NotificationsSheet
           ref={notificationRef}

@@ -1,17 +1,17 @@
     import { createSlice } from "@reduxjs/toolkit";
     import { loadBrandsByCategoryThunk, saveBrandsThunk } from "./brandsThunk";
 
-    export interface BrandState{
-        brands: any[];
-        loading:boolean;
-        error:string | null;
+    export interface BrandState {
+      brands: any[];
+      loadingBrands: boolean;
+      error: string | null;
     }
 
-    const initialState:BrandState={
-        brands:[],
-        loading:false,
-        error:null,
-    }
+    const initialState: BrandState = {
+      brands: [],
+      loadingBrands: false,
+      error: null,
+    };
 
     const brandsSlice = createSlice({
         name: "brands",
@@ -20,27 +20,27 @@
         extraReducers: (builder) => {
             builder
               .addCase(saveBrandsThunk.pending, (state) => {
-                state.loading = true;
+                state.loadingBrands = true;
                 state.error = null;
               })
               .addCase(saveBrandsThunk.fulfilled, (state, action) => {
-                state.loading = false;
+                state.loadingBrands = false;
                 state.brands = action.payload;
               })
               .addCase(saveBrandsThunk.rejected, (state, action) => {
-                state.loading = false;
+                state.loadingBrands = false;
                 state.error = action.payload as string;
               })
               .addCase(loadBrandsByCategoryThunk.pending, (state) => {
-                state.loading = true;
+                state.loadingBrands = true;
                 state.error = null;
               })
               .addCase(loadBrandsByCategoryThunk.fulfilled, (state, action) => {
-                state.loading = false;
+                state.loadingBrands = false;
                 state.brands = action.payload;
               })
               .addCase(loadBrandsByCategoryThunk.rejected, (state, action) => {
-                state.loading = false;
+                state.loadingBrands = false;
                 state.error = action.payload as string;
               });
         }

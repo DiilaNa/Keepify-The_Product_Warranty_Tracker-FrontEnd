@@ -1,17 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { saveAnnouncementsThunk } from "./announcementsThunk";
 
-export interface AnnouncemntsState{
-    announcements: any[];
-    loading: boolean;
-    error: string | null;
+export interface AnnouncemntsState {
+  announcements: any[];
+  loadingAnnouncements: boolean;
+  error: string | null;
 }
 
 const initialState: AnnouncemntsState = {
-    announcements: [],
-    loading: false,
-    error: null,
-}
+  announcements: [],
+  loadingAnnouncements: false,
+  error: null,
+};
 
 const announcementSlice = createSlice({
     name: "announcements",
@@ -20,15 +20,15 @@ const announcementSlice = createSlice({
     extraReducers: (builer) => {
         builer
         .addCase(saveAnnouncementsThunk.pending,(state) => {
-            state.loading = true;
+            state.loadingAnnouncements = true;
             state.error = null;
         })
         .addCase(saveAnnouncementsThunk.fulfilled,(state,action) => {
-            state.loading = true;
+            state.loadingAnnouncements = true;
             state.announcements = action.payload;
         })
         .addCase(saveAnnouncementsThunk.rejected,(state,action) => {
-            state.loading = false;
+            state.loadingAnnouncements = false;
             state.error = action.payload as string;
         })
     }

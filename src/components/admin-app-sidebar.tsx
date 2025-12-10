@@ -22,7 +22,7 @@ import { Link } from "react-router-dom";
 import { AdminPopup } from "./custom/PopUps";
 import { Combobox } from "./custom/combobox";
 import { saveCategoryThunk } from "@/slices/category/categoryThunk";
-import { useAppDispatch } from "@/hooks/hook";
+import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { toast } from "sonner";
 import type { BrandsDataTypes } from "@/services/brands";
 import { saveBrandsThunk } from "@/slices/brands/brandsThunk";
@@ -70,6 +70,12 @@ export function AdminAppSidebar({
   const dispatch = useAppDispatch();
   const [selectedCategory, setSelectedCategory] = React.useState("");
   const closeButtonRef = React.useRef<HTMLButtonElement>(null);
+  const { loadingCategory } = useAppSelector((state) => state.category);
+  const { loadingBrands } = useAppSelector((state) => state.brands);
+  const { loadingAnnouncements } = useAppSelector(
+    (state) => state.announcements
+  );
+
 
   const handleAddAnnouncements = async(formdata:FormData) => {
     try{
@@ -157,12 +163,16 @@ export function AdminAppSidebar({
                 label: "Category",
                 component: (
                   <>
-                  <Combobox
-                    type="category"
-                    placeholder="Select Category"
-                    onChange={(val) => setSelectedCategory(val)}
+                    <Combobox
+                      type="category"
+                      placeholder="Select Category"
+                      onChange={(val) => setSelectedCategory(val)}
                     />
-                    <input type="hidden" name="category" value={selectedCategory} />
+                    <input
+                      type="hidden"
+                      name="category"
+                      value={selectedCategory}
+                    />
                   </>
                 ),
                 placeholder: "Smartphones",
@@ -178,6 +188,7 @@ export function AdminAppSidebar({
             ]}
             onSubmit={handleAddAnnouncements}
             closeButtonRef={closeButtonRef}
+            loading={loadingAnnouncements}
           />
         </div>
         <div className="flex mt-5">
@@ -208,6 +219,7 @@ export function AdminAppSidebar({
             ]}
             onSubmit={saveBrands}
             closeButtonRef={closeButtonRef}
+            loading={loadingBrands}
           />
         </div>
         <div className="flex mt-5">
@@ -226,6 +238,7 @@ export function AdminAppSidebar({
             ]}
             onSubmit={handleAddCategory}
             closeButtonRef={closeButtonRef}
+            loading={loadingCategory}
           />
         </div>
       </SidebarContent>
