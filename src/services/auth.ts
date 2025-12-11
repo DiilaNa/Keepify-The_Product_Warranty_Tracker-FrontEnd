@@ -27,3 +27,17 @@ export const registerAdmin = async(data:RegistrationDataTypes) => {
     const res = await api.post("/auth/admin/register",data);
     return res.data
 }
+
+export const loadUsersInTable = async ({
+  page,
+  limit,
+}: {
+  page: number;
+  limit: number;
+}) => {
+  const res = await api.get(
+    `/auth/admin/loadUsers?page=${page}&limit=${limit}`
+  );
+  return res.data;
+};
+  

@@ -1,16 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUserThunk, registerAdminThunk, registerUserThunk } from "./authThunk";
+import { loadUserTableThunk, loginUserThunk, registerAdminThunk, registerUserThunk } from "./authThunk";
 
 export interface AuthState {
-    user: any | null;
-    loading: boolean;
-    error: string | null;
+  user: any[];
+  loading: boolean;
+  page: number;
+  totalPages: number;
+  error: string | null;
 }
 
 const initialState: AuthState = {
-    user: null,
-    loading: false,
-    error: null,
+  user: [],
+  loading: false,
+  page: 1,
+  totalPages: 1,
+  error: null,
 };
 
 const authSlice = createSlice({
@@ -18,7 +22,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-        state.user = null;
+        state.user = [];
         state.error = null;
         state.loading = false;
     },
@@ -26,6 +30,19 @@ const authSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
+      .addCase(loadUserTableThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(loadUserTableThunk.fulfilled, (state,action) => {
+        state.loading = false;
+        state.user = action.payload.data;
+        state.page = action.payload.page;
+        state.totalPages = action.payload.totalPages;
+      })
+      .addCase(loadUserTableThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
       .addCase(registerUserThunk.pending, (state) => {
         state.loading = true;
       })
