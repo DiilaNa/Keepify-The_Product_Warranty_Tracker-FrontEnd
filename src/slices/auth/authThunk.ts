@@ -18,6 +18,7 @@ export const loginUserThunk = createAsyncThunk("/auth/login",
             const res =  await loginUser(data);
             localStorage.setItem("accessToken", res.data.accessToken);
             localStorage.setItem("refreshToken", res.data.refreshToken);
+            localStorage.setItem("role", res.data.roles); 
             return res.data;
         }catch(err:any){
             return thunkAPI.rejectWithValue(err.response?.data?.message || "Login Failed")

@@ -74,7 +74,7 @@ export default function HeroSlider() {
               <p>Loading...</p>
             ) : (
               announcements.map((ann: IAnnouncement) => (
-                <ActionAreaCard key={ann._id} announcement={ann} role={role} />
+                <ActionAreaCard key={ann._id} announcement={ann} />
               ))
             )}
           </div>

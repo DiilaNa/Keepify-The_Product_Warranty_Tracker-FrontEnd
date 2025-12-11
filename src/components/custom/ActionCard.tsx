@@ -16,11 +16,11 @@ import type { IAnnouncement } from "@/services/announcements";
 
 interface ActionAreaCardProps {
   announcement: IAnnouncement;
-  role?: "USER" | "ADMIN";
 }
 
-export default function ActionAreaCard({ announcement,role = "USER" }: ActionAreaCardProps) {
+export default function ActionAreaCard({ announcement}: ActionAreaCardProps) {
   const [open, setOpen] = useState(false);
+  const role = localStorage.getItem("role")
 
   return (
     <>
