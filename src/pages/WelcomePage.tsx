@@ -22,7 +22,9 @@ export default function HeroSlider() {
     useAppSelector((state) => state.announcements);
 
   const { user } = useAppSelector((state) => state.auth);
-  const role = user?.role || "PUBLIC"; // <---- IMPORTANT
+  const currentUser = user[0];
+  const role = currentUser?.role || "PUBLIC";
+  
 
   useEffect(() => {
     dispatch(
