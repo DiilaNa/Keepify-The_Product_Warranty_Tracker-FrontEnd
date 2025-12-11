@@ -96,6 +96,7 @@ const handleLogin = async(e: FormEvent) => {
                     id="password"
                     type="password"
                     required
+                    placeholder="*****"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
@@ -104,7 +105,6 @@ const handleLogin = async(e: FormEvent) => {
                   <Button type="submit" disabled={loading}>
                     {loading ? "Logging in..." : "Login"}
                   </Button>
-                  <Link to="/user">Test</Link>
                   <FieldDescription className="text-center">
                     Don&apos;t have an account?{" "}
                     <Link to="/register">Sign up</Link>
