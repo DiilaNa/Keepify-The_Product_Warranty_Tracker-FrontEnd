@@ -1,4 +1,4 @@
-import { saveWarrantyService } from "@/services/warranty";
+import { loadWarrantiesService, saveWarrantyService } from "@/services/warranty";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const saveWarrantyThunk = createAsyncThunk(
@@ -9,6 +9,26 @@ export const saveWarrantyThunk = createAsyncThunk(
     } catch (err: any) {
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || "Failed to save warrant posts"
+      );
+    }
+  }
+);
+
+
+export const loadWarrantiesThunk = createAsyncThunk(
+  "/warranties/loadwarranties",
+  async (
+    {
+      page = 1,
+      limit = 10,
+    }: { page?: number; limit?: number },
+    thunkAPI
+  ) => {
+    try {
+      return await loadWarrantiesService({ page, limit });
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Failed to load warranties"
       );
     }
   }

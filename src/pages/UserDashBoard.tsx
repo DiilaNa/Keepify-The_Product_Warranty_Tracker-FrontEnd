@@ -4,24 +4,35 @@ import { SectionCards } from "@/components/section-cards";
 import { SiteHeader } from "@/components/site-header";
 import SearchAppBar from "@/components/ui/search";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { useAppDispatch, useAppSelector } from "@/hooks/hook";
+import { loadWarrantiesThunk } from "@/slices/warranty/warrantyThunk";
+import { useEffect } from "react";
 
 export default function UserDashBoard() {
-  const posts = [
-    {
-      id: "123",
-      title: "Apple Watch Warranty",
-      image:
-        "https://imgs.search.brave.com/TzTjzdA9c6vauPpBV1xJIXC0UZSDxnXwrq4HdjaWhL4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wNDQv/NjUxLzU4MS9zbWFs/bC9hLXBlcnNvbi1p/bi1hLWJ1c2luZXNz/LXNoaXJ0LWFkanVz/dHMtYS1zbWFydHdh/dGNoLXBuZy5wbmc",
-      billImage:
-        "https://imgs.search.brave.com/UntvBPju8hwc7ONfP2eCDsr4nytMQ-BH24EXkazVxoQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5nbWFydC5jb20v/ZmlsZXMvMTMvU21h/cnR3YXRjaC1Eb3du/bG9hZC1QTkctSW1h/Z2UucG5n",
-      description: "This is a amazing watch",
+  // const posts = [
+  //   {
+  //     id: "123",
+  //     title: "Apple Watch Warranty",
+  //     image:
+  //       "https://imgs.search.brave.com/TzTjzdA9c6vauPpBV1xJIXC0UZSDxnXwrq4HdjaWhL4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wNDQv/NjUxLzU4MS9zbWFs/bC9hLXBlcnNvbi1p/bi1hLWJ1c2luZXNz/LXNoaXJ0LWFkanVz/dHMtYS1zbWFydHdh/dGNoLXBuZy5wbmc",
+  //     billImage:
+  //       "https://imgs.search.brave.com/UntvBPju8hwc7ONfP2eCDsr4nytMQ-BH24EXkazVxoQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5nbWFydC5jb20v/ZmlsZXMvMTMvU21h/cnR3YXRjaC1Eb3du/bG9hZC1QTkctSW1h/Z2UucG5n",
+  //     description: "This is a amazing watch",
 
-      // ⭐ NEW FIELDS ADDED — MUST EXIST
-      purchase_date: "2024-01-01",
-      expiry_date: "2025-01-01",
-      serial_number: "SN-ABCD-12345",
-    },
-  ];
+  //     // ⭐ NEW FIELDS ADDED — MUST EXIST
+  //     purchase_date: "2024-01-01",
+  //     expiry_date: "2025-01-01",
+  //     serial_number: "SN-ABCD-12345",
+  //   },
+  // ];
+  const dispatch = useAppDispatch();
+  const { warranties, loadingWarranties } = useAppSelector(
+    (state) => state.warranty
+  );
+
+  useEffect(() => {
+    dispatch(loadWarrantiesThunk({ page: 1, limit: 10 }));
+  }, [dispatch]);
 
   const handleEdit = (id: string, data: any) => {
     console.log("Editing Warranty:", id, data);
@@ -53,7 +64,7 @@ export default function UserDashBoard() {
 
               <div className="px-4 lg:px-6">
                 <SearchAppBar />
-                {posts.map((p) => (
+                {/* {posts.map((p) => (
                   <WarrantyCard
                     key={p.id}
                     id={p.id}
@@ -67,7 +78,37 @@ export default function UserDashBoard() {
                     onEdit={(updatedData) => handleEdit(p.id, updatedData)}
                     onDelete={() => handleDelete(p.id)}
                   />
+                ))} */}
+                {loadingWarranties && (
+                  <p className="text-gray-500">Loading warranties...</p>
+                )}
+
+                {/* LOOP REAL DATA */}
+                {warranties.map((p: any) => (
+                  <WarrantyCard
+                    key={p._id}
+                    id={p._id}
+                    title={p.name}
+                    image={
+                      p.image ||
+                      "https://placehold.co/600x400?text=Warranty+Image"
+                    }
+                    billImage={p.bill_image}
+                    description={p.description}
+                    purchase_date={p.purchase_date}
+                    expiry_date={p.expiry_date}
+                    serial_number={p.serial_number}
+                    onEdit={(form) => handleEdit(p._id, form)}
+                    onDelete={() => handleDelete(p._id)}
+                  />
                 ))}
+
+                {/* EMPTY STATE */}
+                {!loadingWarranties && warranties.length === 0 && (
+                  <p className="text-gray-400 text-sm mt-4">
+                    No warranty posts found.
+                  </p>
+                )}
               </div>
             </div>
           </div>

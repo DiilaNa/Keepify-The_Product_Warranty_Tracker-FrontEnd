@@ -8,3 +8,22 @@ export const saveWarrantyService = async(formData:FormData) => {
     });
     return res.data;
 }
+
+
+export const loadWarrantiesService = async ({
+  page,
+  limit,
+}: {
+  page?: number;
+  limit?: number;
+  admin?: boolean;
+}) => {
+  const url = "/warranties/loadwarranties";
+
+  const res = await api.get(url, { params: { page, limit } });
+  return {
+    data: res.data.data,
+    page: res.data.page,
+    totalPages: res.data.totalPages,
+  };
+};
