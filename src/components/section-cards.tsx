@@ -1,6 +1,12 @@
-import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react"
+import { useEffect } from "react";
+import {
+  IconUsers,
+  IconCategory,
+  IconBuildingStore,
+  IconSpeakerphone,
+} from "@tabler/icons-react";
 
-import { Badge } from "@/components/ui/badge"
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardAction,
@@ -8,95 +14,96 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
+import { useAppDispatch, useAppSelector } from "@/hooks/hook";
+import { loadAdminDashboardStats } from "@/slices/features/adminDashBoardSlice";
+
 
 export function SectionCards() {
+  const dispatch = useAppDispatch();
+  const { stats, loading } = useAppSelector((state) => state.adminDashBoard);
+
+  const isAdmin = localStorage.getItem("role")  
+
+  useEffect(() => {
+    if (isAdmin) {
+      dispatch(loadAdminDashboardStats());
+    }
+  }, [dispatch, isAdmin]);
+
+  if (!isAdmin || loading || !stats) return null;
+
   return (
-    <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
-      <Card className="@container/card">
+    <div className="grid grid-cols-1 gap-4 px-4 lg:grid-cols-2 2xl:grid-cols-4">
+      {/* USERS */}
+      <Card>
         <CardHeader>
-          <CardDescription>Total Revenue</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            $1,250.00
+          <CardDescription>Total Users</CardDescription>
+          <CardTitle className="text-3xl font-semibold">
+            {stats.users.totalUsers}
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
-              <IconTrendingUp />
-              +12.5%
-            </Badge>
+            <IconUsers className="text-muted-foreground" />
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Trending up this month <IconTrendingUp className="size-4" />
-          </div>
-          <div className="text-muted-foreground">
-            Visitors for the last 6 months
-          </div>
+        <CardFooter className="flex flex-col items-start text-sm gap-1">
+          <span>Admins: {stats.users.totalAdmins}</span>
+          <span>Users: {stats.users.totalNormalUsers}</span>
         </CardFooter>
       </Card>
-      <Card className="@container/card">
+
+      {/* CATEGORIES */}
+      <Card>
         <CardHeader>
-          <CardDescription>New Customers</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            1,234
+          <CardDescription>Categories</CardDescription>
+          <CardTitle className="text-3xl font-semibold">
+            {stats.categories.totalCategories}
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
-              <IconTrendingDown />
-              -20%
-            </Badge>
+            <IconCategory className="text-muted-foreground" />
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Down 20% this period <IconTrendingDown className="size-4" />
-          </div>
-          <div className="text-muted-foreground">
-            Acquisition needs attention
-          </div>
+        <CardFooter className="text-sm text-muted-foreground">
+          Total active categories
         </CardFooter>
       </Card>
-      <Card className="@container/card">
+
+      {/* BRANDS */}
+      <Card>
         <CardHeader>
-          <CardDescription>Active Accounts</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            45,678
+          <CardDescription>Brands</CardDescription>
+          <CardTitle className="text-3xl font-semibold">
+            {stats.brands.totalBrands}
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
-              <IconTrendingUp />
-              +12.5%
-            </Badge>
+            <IconBuildingStore className="text-muted-foreground" />
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Strong user retention <IconTrendingUp className="size-4" />
-          </div>
-          <div className="text-muted-foreground">Engagement exceed targets</div>
+        <CardFooter className="text-sm text-muted-foreground">
+          Registered brands
         </CardFooter>
       </Card>
-      <Card className="@container/card">
+
+      {/* ANNOUNCEMENTS */}
+      <Card>
         <CardHeader>
-          <CardDescription>Growth Rate</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            4.5%
+          <CardDescription>Announcements</CardDescription>
+          <CardTitle className="text-3xl font-semibold">
+            {stats.announcements.totalAnnouncements}
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
-              <IconTrendingUp />
-              +4.5%
-            </Badge>
+            <IconSpeakerphone className="text-muted-foreground" />
           </CardAction>
         </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Steady performance increase <IconTrendingUp className="size-4" />
-          </div>
-          <div className="text-muted-foreground">Meets growth projections</div>
+        <CardFooter className="flex flex-col items-start text-sm gap-1">
+          <Badge variant="outline">
+            Published: {stats.announcements.publishedAnnouncements}
+          </Badge>
+          <Badge variant="secondary">
+            Unpublished: {stats.announcements.unpublishedAnnouncements}
+          </Badge>
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }
