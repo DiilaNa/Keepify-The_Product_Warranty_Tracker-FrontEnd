@@ -1,4 +1,4 @@
-import { fetchAdminDashboardStats } from "@/services/adminDashborad";
+import { fetchAdminDashboardStats } from "@/services/DashBoard";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export interface AdminDashboardState {

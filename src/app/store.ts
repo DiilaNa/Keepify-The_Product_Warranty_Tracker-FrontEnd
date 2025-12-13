@@ -5,6 +5,7 @@ import { brandsReducer } from "@/slices/brands/brandsSlice";
 import { warrantyReducer } from "@/slices/warranty/warrantySlice";
 import { announcementsReducer } from "@/slices/announcements/announcementsSlice";
 import { adminDashboardSlicereducer } from "@/slices/features/adminDashBoardSlice";
+import { userDashboardSlicereducer } from "@/slices/features/userDashBoardSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     warranty: warrantyReducer,
     announcements: announcementsReducer,
     adminDashBoard: adminDashboardSlicereducer,
+    userDashBoard: userDashboardSlicereducer,
   },
 });
 
