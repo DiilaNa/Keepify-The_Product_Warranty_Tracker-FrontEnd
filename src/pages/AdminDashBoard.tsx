@@ -5,7 +5,7 @@ import SearchAppBar from "@/components/ui/search";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { loadUserTableThunk } from "@/slices/auth/authThunk";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -17,13 +17,20 @@ import {
 
 export default function AdminDashBoard() {
   const dispatch = useAppDispatch();
-  const { user, page, totalPages, loading } = useAppSelector(
+  const { user, page, totalPages, loading, search } = useAppSelector(
     (state) => state.auth
   );
 
   useEffect(() => {
-    dispatch(loadUserTableThunk({ page: 1, limit: 10 }));
-  }, []);
+    dispatch(loadUserTableThunk({ page: 1, limit: 10, search: "" }));
+  }, [dispatch]);
+
+  const handleSearch = useCallback(
+    (value: string) => {
+      dispatch(loadUserTableThunk({ page: 1, limit: 10, search: value }));
+    },
+    [dispatch]
+  );
 
   return (
     <SidebarProvider
@@ -43,7 +50,10 @@ export default function AdminDashBoard() {
               <SectionCards />
 
               <div className="px-4 lg:px-6">
-                <SearchAppBar />
+                <SearchAppBar
+                  placeholder="Search users by name or email…"      
+                  onSearch={handleSearch} 
+                />
 
                 <div className="w-full mt-6">
                   <div className="rounded-xl bg-white/5 dark:bg-gray-900/30 backdrop-blur border border-white/10 shadow-lg overflow-hidden">
@@ -149,7 +159,11 @@ export default function AdminDashBoard() {
                           disabled={page === 1}
                           onClick={() =>
                             dispatch(
-                              loadUserTableThunk({ page: page - 1, limit: 10 })
+                              loadUserTableThunk({
+                                page: page - 1,
+                                limit: 10,
+                                search,
+                              })
                             )
                           }
                           className="px-3 py-1.5 rounded-md text-sm text-gray-300 disabled:opacity-30 hover:bg-gray-700/40 transition"
@@ -167,6 +181,7 @@ export default function AdminDashBoard() {
                                   loadUserTableThunk({
                                     page: pageNum,
                                     limit: 10,
+                                    search,
                                   })
                                 )
                               }
@@ -185,7 +200,11 @@ export default function AdminDashBoard() {
                           disabled={page === totalPages}
                           onClick={() =>
                             dispatch(
-                              loadUserTableThunk({ page: page + 1, limit: 10 })
+                              loadUserTableThunk({
+                                page: page + 1,
+                                limit: 10,
+                                search,
+                              })
                             )
                           }
                           className="px-3 py-1.5 rounded-md text-sm text-gray-300 disabled:opacity-30 hover:bg-gray-700/40 transition"

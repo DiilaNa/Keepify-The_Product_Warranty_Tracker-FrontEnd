@@ -52,9 +52,9 @@ export const registerAdminThunk = createAsyncThunk(
 
 export const loadUserTableThunk = createAsyncThunk(
   "auth/admin/loadUsers",
-  async ({ page, limit }: { page: number; limit: number }, thunkAPI) => {
+  async ({ page, limit ,search}: { page: number; limit: number ; search?:string}, thunkAPI) => {
     try {
-      return await loadUsersInTable({ page, limit });
+      return await loadUsersInTable({ page, limit,search });
     } catch (err: any) {
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || "Loading Failed"

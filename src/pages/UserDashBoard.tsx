@@ -2,7 +2,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { WarrantyCard } from "@/components/custom/Posts";
 import { SectionCards } from "@/components/section-cards";
 import { SiteHeader } from "@/components/site-header";
-import SearchAppBar from "@/components/ui/search";
+// import SearchAppBar from "@/components/ui/search";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { loadWarrantiesThunk } from "@/slices/warranty/warrantyThunk";
@@ -46,7 +46,22 @@ export default function UserDashBoard() {
               <SectionCards />
 
               <div className="px-4 lg:px-6">
-                <SearchAppBar />
+                {/* <SearchAppBar
+                  placeholder="Search warranty by product or user…"
+                  initialValue= ""
+                  onSearch={null}
+                  // onSearch={(value) => {
+                  //   dispatch(setSearch(value));
+                  //   dispatch(
+                  //     loadWarrantyTableThunk({
+                  //       page: 1,
+                  //       limit: 10,
+                  //       search: value,
+                  //     })
+                  //   );
+                  // }}
+                /> */}
+
                 {loadingWarranties && (
                   <p className="text-gray-500">Loading warranties...</p>
                 )}

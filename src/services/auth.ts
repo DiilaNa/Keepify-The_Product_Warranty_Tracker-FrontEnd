@@ -31,13 +31,21 @@ export const registerAdmin = async(data:RegistrationDataTypes) => {
 export const loadUsersInTable = async ({
   page,
   limit,
+  search,
 }: {
   page: number;
   limit: number;
+  search?: string;
 }) => {
-  const res = await api.get(
-    `/auth/admin/loadUsers?page=${page}&limit=${limit}`
-  );
+  const params = new URLSearchParams();
+  params.append("page", page.toString());
+  params.append("limit", limit.toString());
+
+  if(search){
+    params.append("search",search);
+  }
+
+  const res = await api.get(`/auth/admin/loadUsers?${params.toString()}`);
   return res.data;
 };
   

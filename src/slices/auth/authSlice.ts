@@ -7,6 +7,7 @@ export interface AuthState {
   page: number;
   totalPages: number;
   error: string | null;
+  search: string;
 }
 
 const initialState: AuthState = {
@@ -15,6 +16,7 @@ const initialState: AuthState = {
   page: 1,
   totalPages: 1,
   error: null,
+  search: "",
 };
 
 const authSlice = createSlice({
@@ -22,9 +24,13 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-        state.user = [];
-        state.error = null;
-        state.loading = false;
+      state.user = [];
+      state.error = null;
+      state.loading = false;
+    },
+    setSearch(state, action) {
+      state.search = action.payload;
+      state.page = 1;
     },
   },
 
@@ -33,7 +39,7 @@ const authSlice = createSlice({
       .addCase(loadUserTableThunk.pending, (state) => {
         state.loading = true;
       })
-      .addCase(loadUserTableThunk.fulfilled, (state,action) => {
+      .addCase(loadUserTableThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.data;
         state.page = action.payload.page;
@@ -78,4 +84,5 @@ const authSlice = createSlice({
   },
 });
 export const { logout } = authSlice.actions;
+export const { setSearch } = authSlice.actions;
 export const authReducer = authSlice.reducer;

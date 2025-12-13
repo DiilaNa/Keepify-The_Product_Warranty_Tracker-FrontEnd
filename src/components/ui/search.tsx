@@ -1,66 +1,56 @@
-import { styled, alpha } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
+import { Search } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
-    width: "auto",
-  },
-}));
+interface SearchAppBarProps {
+  placeholder?: string;
+  onSearch: (value: string) => void;
+}
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
+export default function SearchAppBar({
+  placeholder = "Search…",
+  onSearch,
+}: SearchAppBarProps) {
+  const [value, setValue] = useState("");
+  const isFirstRender = useRef(true);
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  width: "100%",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    [theme.breakpoints.up("sm")]: {
-      width: "12ch",
-      "&:focus": {
-        width: "20ch",
-      },
-    },
-  },
-}));
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
 
-export default function SearchAppBar() {
+    const timer = setTimeout(() => {
+      onSearch(value.trim());
+    }, 600);
+
+    return () => clearTimeout(timer);
+  }, [value, onSearch]);
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
-        <Toolbar>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
-        </Toolbar>
-     
-    </Box>
+    <div className="w-full max-w-sm">
+      <div className="relative flex items-center">
+        <Search className="absolute left-3 h-4 w-4 text-muted-foreground" />
+
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder={placeholder}
+          className="
+            w-full h-10
+            rounded-lg
+            border border-border
+            bg-background
+            pl-9 pr-3
+            text-sm
+            outline-none
+            transition
+            focus:ring-2 focus:ring-ring
+            focus:border-ring
+            placeholder:text-muted-foreground
+          "
+        />
+      </div>
+    </div>
   );
 }
