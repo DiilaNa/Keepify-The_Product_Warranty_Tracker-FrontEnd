@@ -44,7 +44,6 @@ interface AdminPopupProps {
   loading?: boolean;
 }
 
-// Use forwardRef to expose the button for programmatic click
 export const AdminPopup = forwardRef<HTMLButtonElement, AdminPopupProps>(
   (
     {
@@ -142,10 +141,10 @@ export const AdminPopup = forwardRef<HTMLButtonElement, AdminPopupProps>(
             </DialogHeader>
 
             <div className="grid gap-4 mt-4">
-              {fields.map((field) =>
+              {fields.map((field,i) =>
                 field.type === "row" ? (
                   <div
-                    key={JSON.stringify(field.fields)}
+                    key={i}
                     className="grid grid-cols-2 gap-4"
                   >
                     {field.fields?.map((subField) => (

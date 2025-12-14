@@ -5,8 +5,9 @@ import { SiteHeader } from "@/components/site-header";
 // import SearchAppBar from "@/components/ui/search";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
-import { loadWarrantiesThunk } from "@/slices/warranty/warrantyThunk";
+import { loadWarrantiesThunk, updateWarrantyThunk } from "@/slices/warranty/warrantyThunk";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 export default function UserDashBoard() {
   const dispatch = useAppDispatch();
@@ -16,12 +17,22 @@ export default function UserDashBoard() {
 
   useEffect(() => {
     dispatch(loadWarrantiesThunk({ page: 1, limit: 10 }));
+    
   }, [dispatch]);
 
-  const handleEdit = (id: string, data: any) => {
-    console.log("Editing Warranty:", id, data);
-    // dispatch(updateWarrantyThunk({ id, ...data }))
+
+  const handleEdit = async (id: string, formData: FormData) => {
+    const result = await dispatch(updateWarrantyThunk({ id, formData }));
+
+    if (updateWarrantyThunk.fulfilled.match(result)) {
+      toast.success("Edited successfully");
+      return true;
+    } else {
+      toast.error("Edit update failed");
+      return false;
+    }
   };
+  
 
   const handleDelete = (id: string) => {
     console.log("Delete", id);
@@ -68,6 +79,7 @@ export default function UserDashBoard() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {warranties.map((p: any) => (
+                   
                     <WarrantyCard
                       key={p._id}
                       id={p._id}

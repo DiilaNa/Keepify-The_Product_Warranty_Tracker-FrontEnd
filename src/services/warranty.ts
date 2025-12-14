@@ -21,9 +21,20 @@ export const loadWarrantiesService = async ({
   const url = "/warranties/loadwarranties";
 
   const res = await api.get(url, { params: { page, limit } });
+  
   return {
     data: res.data.data,
     page: res.data.page,
     totalPages: res.data.totalPages,
   };
 };
+
+export const updateWarrantyService = async(
+  id:string,
+  formData: FormData
+) => {
+  const res = await api.put(`/warranties/updateWarranty/${id}`,formData,{
+    headers: {"Content-Type":"multipart/form-data"}
+  });
+  return res.data;
+}

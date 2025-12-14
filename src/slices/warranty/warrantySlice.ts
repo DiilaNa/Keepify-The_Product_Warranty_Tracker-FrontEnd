@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loadWarrantiesThunk, saveWarrantyThunk } from "./warrantyThunk";
+import { loadWarrantiesThunk, saveWarrantyThunk, updateWarrantyThunk } from "./warrantyThunk";
 
 export interface WarrantyState {
   warranties: any[];
@@ -44,6 +44,26 @@ const warrantySlice = createSlice({
         state.warranties.push(action.payload.data);
       })
       .addCase(saveWarrantyThunk.rejected, (state, action) => {
+        state.loadingWarranties = false;
+        state.error = action.payload as string;
+      })
+      .addCase(updateWarrantyThunk.pending, (state) => {
+        state.loadingWarranties = true;
+        state.error = null;
+      })
+      .addCase(updateWarrantyThunk.fulfilled, (state, action) => {
+        state.loadingWarranties = false; 
+        const index = state.warranties.findIndex(
+          (w) => w._id === action.payload.data._id
+        );
+        if (index !== -1) {
+          state.warranties[index] = {
+            ...state.warranties[index], 
+            ...action.payload.data,    
+          };
+        }
+      })
+      .addCase(updateWarrantyThunk.rejected, (state, action) => {
         state.loadingWarranties = false;
         state.error = action.payload as string;
       });

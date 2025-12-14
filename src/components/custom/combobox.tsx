@@ -29,6 +29,89 @@ interface ComboboxProps {
   data?: any[];
 }
 
+// export function Combobox({
+//   type,
+//   placeholder = "Select...",
+//   value,
+//   onChange,
+//   data,
+// }: ComboboxProps) {
+//   const dispatch = useAppDispatch();
+
+//   const { categories } = useAppSelector((state) => state.category);
+//   const { brands } = useAppSelector((state) => state.brands);
+
+//   const loading = useAppSelector((state) =>
+//     type === "category" ? state.category.loadingCategory : state.brands.loadingBrands
+//   );
+
+//   const comboData = data ?? (type === "category" ? categories : brands);
+
+//   const [open, setOpen] = React.useState(false);
+//   const [internalValue, setInternalValue] = React.useState(value || "");
+
+//   React.useEffect(() => {
+//     if (type === "category") {
+//       dispatch(loadCategoryInComboThunk());
+//     }
+//   }, [dispatch, type, data]);
+
+//   const options = comboData.map((item) => ({
+//     value: item._id,
+//     label: item.name || item.brand_name,
+//   }));
+
+//   return (
+//     <Popover open={open} onOpenChange={setOpen}>
+//       <PopoverTrigger asChild>
+//         <Button
+//           variant="outline"
+//           role="combobox"
+//           aria-expanded={open}
+//           className="w-[300px] justify-between"
+//           disabled={loading}
+//         >
+//           {internalValue
+//             ? options.find((o) => o.value === internalValue)?.label
+//             : placeholder}
+//           <ChevronsUpDown className="opacity-50" />
+//         </Button>
+//       </PopoverTrigger>
+//       <PopoverContent className="w-[200px] p-0">
+//         <Command>
+//           <CommandInput
+//             placeholder={`Search ${placeholder}...`}
+//             className="h-9"
+//           />
+//           <CommandList>
+//             <CommandEmpty>No {placeholder} found.</CommandEmpty>
+//             <CommandGroup>
+//               {options.map((item) => (
+//                 <CommandItem
+//                   key={item.value}
+//                   onSelect={() => {
+//                     setInternalValue(item.value);
+//                     onChange?.(item.value);
+//                     setOpen(false);
+//                   }}
+//                 >
+//                   {item.label}
+//                   <Check
+//                     className={cn(
+//                       "ml-auto",
+//                       internalValue === item.value ? "opacity-100" : "opacity-0"
+//                     )}
+//                   />
+//                 </CommandItem>
+//               ))}
+//             </CommandGroup>
+//           </CommandList>
+//         </Command>
+//       </PopoverContent>
+//     </Popover>
+//   );
+// }
+
 export function Combobox({
   type,
   placeholder = "Select...",
@@ -37,17 +120,25 @@ export function Combobox({
   data,
 }: ComboboxProps) {
   const dispatch = useAppDispatch();
-
   const { categories } = useAppSelector((state) => state.category);
   const { brands } = useAppSelector((state) => state.brands);
 
   const loading = useAppSelector((state) =>
-    type === "category" ? state.category.loadingCategory : state.brands.loadingBrands
+    type === "category"
+      ? state.category.loadingCategory
+      : state.brands.loadingBrands
   );
 
   const comboData = data ?? (type === "category" ? categories : brands);
 
   const [open, setOpen] = React.useState(false);
+
+  // --- Fully controlled internal state ---
+  React.useEffect(() => {
+    // whenever value prop changes, sync internalValue
+    setInternalValue(value || "");
+  }, [value]);
+
   const [internalValue, setInternalValue] = React.useState(value || "");
 
   React.useEffect(() => {
@@ -91,7 +182,7 @@ export function Combobox({
                   key={item.value}
                   onSelect={() => {
                     setInternalValue(item.value);
-                    onChange?.(item.value);
+                    onChange?.(item.value); // update parent state
                     setOpen(false);
                   }}
                 >
@@ -111,4 +202,3 @@ export function Combobox({
     </Popover>
   );
 }
-

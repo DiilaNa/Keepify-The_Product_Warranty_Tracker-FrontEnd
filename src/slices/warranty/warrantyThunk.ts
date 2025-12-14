@@ -1,4 +1,4 @@
-import { loadWarrantiesService, saveWarrantyService } from "@/services/warranty";
+import { loadWarrantiesService, saveWarrantyService, updateWarrantyService } from "@/services/warranty";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const saveWarrantyThunk = createAsyncThunk(
@@ -30,6 +30,20 @@ export const loadWarrantiesThunk = createAsyncThunk(
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || "Failed to load warranties"
       );
+    }
+  }
+);
+
+export const updateWarrantyThunk = createAsyncThunk(
+  "/warranty/updateWarranty",
+  async(
+    {id, formData}: {id:string; formData:FormData},
+    {rejectWithValue}
+  ) => {
+    try{
+      return await updateWarrantyService(id,formData);
+    }catch(err:any){
+      return rejectWithValue(err.response?.data?.message)
     }
   }
 );
