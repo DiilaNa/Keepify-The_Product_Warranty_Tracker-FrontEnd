@@ -80,16 +80,27 @@ export default function UserDashBoard() {
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
               <SectionCards />
 
-              <div className="px-4 lg:px-6">
+              <div className="px-4 lg:px-6 flex flex-col flex-1">
                 <SearchAppBar
                   placeholder="Search warranty by name or serial number…"
                   onSearch={handleSearch}
                 />
 
-                {loadingWarranties && (
-                  <p className="text-gray-500">Loading warranties...</p>
+                {/* Loading State */}
+                {loadingWarranties && warranties.length === 0 && (
+                  <div className="flex justify-center items-center w-full py-20">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full max-w-6xl">
+                      {Array.from({ length: 8 }).map((_, i) => (
+                        <div
+                          key={i}
+                          className="animate-pulse bg-gray-800 dark:bg-gray-700 h-60 rounded-xl"
+                        />
+                      ))}
+                    </div>
+                  </div>
                 )}
 
+                {/* Warranty Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {warranties.map((p: any) => (
                     <WarrantyCard
@@ -109,13 +120,47 @@ export default function UserDashBoard() {
                       onDelete={() => handleDelete(p._id)}
                     />
                   ))}
-
-                  {!loadingWarranties && warranties.length === 0 && (
-                    <p className="text-gray-400 text-sm mt-4">
-                      No warranty posts found.
-                    </p>
-                  )}
                 </div>
+
+                {/* Empty State */}
+                {!loadingWarranties && warranties.length === 0 && (
+                  <div className="flex flex-col items-center justify-center py-20 w-full text-center">
+                    <div className="bg-gray-900 rounded-3xl p-10 flex flex-col items-center justify-center shadow-xl border border-gray-800 max-w-sm mx-auto">
+                      <div className="flex items-center justify-center w-24 h-24 mb-6 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 animate-pulse">
+                        <span className="text-4xl">😕</span>
+                      </div>
+                      <h3 className="text-2xl font-bold text-white mb-2">
+                        No posts found
+                      </h3>
+                      {localSearch ? (
+                        <p className="text-gray-400 text-sm md:text-base mb-4">
+                          We couldn’t find any posts matching "
+                          <span className="text-blue-400">{localSearch}</span>".
+                        </p>
+                      ) : (
+                        <p className="text-gray-400 text-sm md:text-base mb-4">
+                          You haven’t added any warranties yet. Start adding
+                          products to track your purchases and warranty expiries
+                          here.
+                        </p>
+                      )}
+                      <button
+                        onClick={() =>
+                          dispatch(
+                            loadWarrantiesThunk({
+                              page: 1,
+                              limit: 10,
+                              search: "",
+                            })
+                          )
+                        }
+                        className="mt-4 px-6 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-medium transition"
+                      >
+                        Show All Warranties
+                      </button>
+                    </div>
+                  </div>
+                )}
 
                 {/* Pagination */}
                 {totalPages > 1 && (
