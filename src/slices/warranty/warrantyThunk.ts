@@ -1,4 +1,4 @@
-import { loadWarrantiesService, saveWarrantyService, updateWarrantyService } from "@/services/warranty";
+import { deleteWarrantyService, loadWarrantiesService, saveWarrantyService, updateWarrantyService } from "@/services/warranty";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const saveWarrantyThunk = createAsyncThunk(
@@ -44,6 +44,18 @@ export const updateWarrantyThunk = createAsyncThunk(
       return await updateWarrantyService(id,formData);
     }catch(err:any){
       return rejectWithValue(err.response?.data?.message)
+    }
+  }
+);
+
+
+export const deleteWarrantyThunk = createAsyncThunk(
+  "warranty/deleteWarranty",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      return await deleteWarrantyService(id);
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data?.message);
     }
   }
 );

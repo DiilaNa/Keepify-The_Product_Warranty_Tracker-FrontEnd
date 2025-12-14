@@ -9,7 +9,6 @@ export const saveWarrantyService = async(formData:FormData) => {
     return res.data;
 }
 
-
 export const loadWarrantiesService = async ({
   page,
   limit,
@@ -38,3 +37,8 @@ export const updateWarrantyService = async(
   });
   return res.data;
 }
+
+export const deleteWarrantyService = async (id: string) => {
+  const res = await api.put(`/warranties/deleteWarranty/${id}`);
+  return res.data;
+};

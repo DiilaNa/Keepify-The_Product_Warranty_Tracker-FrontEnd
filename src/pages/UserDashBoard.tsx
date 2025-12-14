@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 // import SearchAppBar from "@/components/ui/search";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
-import { loadWarrantiesThunk, updateWarrantyThunk } from "@/slices/warranty/warrantyThunk";
+import { deleteWarrantyThunk, loadWarrantiesThunk, updateWarrantyThunk } from "@/slices/warranty/warrantyThunk";
 import { useEffect } from "react";
 import { toast } from "sonner";
 
@@ -28,17 +28,50 @@ export default function UserDashBoard() {
       toast.success("Edited successfully");
       return true;
     } else {
-      toast.error("Edit update failed");
+      toast.error("Edit opreration failed");
       return false;
     }
   };
-  
+  // const handleDelete = async (id: string) => {
+  //   const confirmDelete = window.confirm(
+  //     "Are you sure you want to delete this warranty?"
+  //   );
+  //   if (!confirmDelete) return false; 
 
-  const handleDelete = (id: string) => {
-    console.log("Delete", id);
-    // dispatch(deleteWarrantyThunk(id));
+  //   const result = await dispatch(deleteWarrantyThunk(id));
+
+  //   if (deleteWarrantyThunk.fulfilled.match(result)) {
+  //     toast.success("Warranty deleted successfully");
+  //     return true;
+  //   } else {
+  //     toast.error("Failed to delete warranty");
+  //     return false;
+  //   }
+  // };
+
+
+  const handleDelete = async (id: string) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this warranty?"
+    );
+
+    if (!confirmDelete) {
+      toast.error("Delete operation canceled");
+      return false;
+    }
+
+    const result = await dispatch(deleteWarrantyThunk(id));
+
+    if (deleteWarrantyThunk.fulfilled.match(result)) {
+      toast.success("Warranty deleted successfully");
+      return true;
+    } else {
+      toast.error("Failed to delete warranty");
+      return false;
+    }
   };
 
+  
   return (
     <SidebarProvider
       style={
