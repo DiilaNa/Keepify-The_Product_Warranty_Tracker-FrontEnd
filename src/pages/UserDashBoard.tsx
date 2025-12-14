@@ -2,66 +2,49 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { WarrantyCard } from "@/components/custom/Posts";
 import { SectionCards } from "@/components/section-cards";
 import { SiteHeader } from "@/components/site-header";
-// import SearchAppBar from "@/components/ui/search";
+import SearchAppBar from "@/components/ui/search";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
-import { deleteWarrantyThunk, loadWarrantiesThunk, updateWarrantyThunk } from "@/slices/warranty/warrantyThunk";
-import { useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
+import {
+  deleteWarrantyThunk,
+  loadWarrantiesThunk,
+  updateWarrantyThunk,
+} from "@/slices/warranty/warrantyThunk";
+import { searchPosts } from "@/slices/warranty/warrantySlice";
 
 export default function UserDashBoard() {
   const dispatch = useAppDispatch();
-  const { warranties, loadingWarranties } = useAppSelector(
-    (state) => state.warranty
-  );
+  const { warranties, loadingWarranties, page, totalPages, search } =
+    useAppSelector((state) => state.warranty);
+
+  const [localSearch, setLocalSearch] = useState("");
 
   useEffect(() => {
-    dispatch(loadWarrantiesThunk({ page: 1, limit: 10 }));
-    
-  }, [dispatch]);
-
+    dispatch(loadWarrantiesThunk({ page, limit: 10, search }));
+  }, [dispatch, page, search]);
 
   const handleEdit = async (id: string, formData: FormData) => {
     const result = await dispatch(updateWarrantyThunk({ id, formData }));
-
     if (updateWarrantyThunk.fulfilled.match(result)) {
       toast.success("Edited successfully");
       return true;
     } else {
-      toast.error("Edit opreration failed");
+      toast.error("Edit operation failed");
       return false;
     }
   };
-  // const handleDelete = async (id: string) => {
-  //   const confirmDelete = window.confirm(
-  //     "Are you sure you want to delete this warranty?"
-  //   );
-  //   if (!confirmDelete) return false; 
-
-  //   const result = await dispatch(deleteWarrantyThunk(id));
-
-  //   if (deleteWarrantyThunk.fulfilled.match(result)) {
-  //     toast.success("Warranty deleted successfully");
-  //     return true;
-  //   } else {
-  //     toast.error("Failed to delete warranty");
-  //     return false;
-  //   }
-  // };
-
 
   const handleDelete = async (id: string) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this warranty?"
     );
-
     if (!confirmDelete) {
       toast.error("Delete operation canceled");
       return false;
     }
-
     const result = await dispatch(deleteWarrantyThunk(id));
-
     if (deleteWarrantyThunk.fulfilled.match(result)) {
       toast.success("Warranty deleted successfully");
       return true;
@@ -71,7 +54,15 @@ export default function UserDashBoard() {
     }
   };
 
-  
+  const handleSearch = useCallback(
+    (value: string) => {
+      setLocalSearch(value);
+      dispatch(searchPosts(value));
+      dispatch(loadWarrantiesThunk({ page: 1, limit: 10, search: value }));
+    },
+    [dispatch]
+  );
+
   return (
     <SidebarProvider
       style={
@@ -90,21 +81,10 @@ export default function UserDashBoard() {
               <SectionCards />
 
               <div className="px-4 lg:px-6">
-                {/* <SearchAppBar
-                  placeholder="Search warranty by product or user…"
-                  initialValue= ""
-                  onSearch={null}
-                  // onSearch={(value) => {
-                  //   dispatch(setSearch(value));
-                  //   dispatch(
-                  //     loadWarrantyTableThunk({
-                  //       page: 1,
-                  //       limit: 10,
-                  //       search: value,
-                  //     })
-                  //   );
-                  // }}
-                /> */}
+                <SearchAppBar
+                  placeholder="Search warranty by name or serial number…"
+                  onSearch={handleSearch}
+                />
 
                 {loadingWarranties && (
                   <p className="text-gray-500">Loading warranties...</p>
@@ -112,7 +92,6 @@ export default function UserDashBoard() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {warranties.map((p: any) => (
-                   
                     <WarrantyCard
                       key={p._id}
                       id={p._id}
@@ -131,13 +110,74 @@ export default function UserDashBoard() {
                     />
                   ))}
 
-                  {/* EMPTY STATE */}
                   {!loadingWarranties && warranties.length === 0 && (
                     <p className="text-gray-400 text-sm mt-4">
                       No warranty posts found.
                     </p>
                   )}
                 </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div className="flex justify-center mt-6 gap-2">
+                    <button
+                      disabled={page === 1}
+                      onClick={() =>
+                        dispatch(
+                          loadWarrantiesThunk({
+                            page: page - 1,
+                            limit: 10,
+                            search: localSearch,
+                          })
+                        )
+                      }
+                      className="px-3 py-1.5 rounded-md text-sm text-gray-300 disabled:opacity-30 hover:bg-gray-700/40 transition"
+                    >
+                      Prev
+                    </button>
+
+                    {[...Array(totalPages)].map((_, i) => {
+                      const pageNum = i + 1;
+                      return (
+                        <button
+                          key={pageNum}
+                          onClick={() =>
+                            dispatch(
+                              loadWarrantiesThunk({
+                                page: pageNum,
+                                limit: 10,
+                                search: localSearch,
+                              })
+                            )
+                          }
+                          className={`px-3 py-1.5 rounded-md text-sm transition ${
+                            page === pageNum
+                              ? "bg-blue-600 text-white"
+                              : "text-gray-300 hover:bg-gray-700/40"
+                          }`}
+                        >
+                          {pageNum}
+                        </button>
+                      );
+                    })}
+
+                    <button
+                      disabled={page === totalPages}
+                      onClick={() =>
+                        dispatch(
+                          loadWarrantiesThunk({
+                            page: page + 1,
+                            limit: 10,
+                            search: localSearch,
+                          })
+                        )
+                      }
+                      className="px-3 py-1.5 rounded-md text-sm text-gray-300 disabled:opacity-30 hover:bg-gray-700/40 transition"
+                    >
+                      Next
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

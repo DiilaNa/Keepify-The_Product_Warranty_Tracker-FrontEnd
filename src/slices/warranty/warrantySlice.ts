@@ -12,6 +12,7 @@ export interface WarrantyState {
   page: number;
   totalPages: number;
   error: string | null;
+  search: string;
 }
 
 const initialState: WarrantyState = {
@@ -20,12 +21,18 @@ const initialState: WarrantyState = {
   page: 1,
   totalPages: 1,
   error: null,
+  search: "",
 };
 
 const warrantySlice = createSlice({
   name: "warranty",
   initialState,
-  reducers: {},
+  reducers: {
+    searchPosts(state,action){
+      state.search = action.payload;
+      state.page = 1;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loadWarrantiesThunk.pending, (state) => {
@@ -88,4 +95,5 @@ const warrantySlice = createSlice({
   },
 });
 
+export const { searchPosts } = warrantySlice.actions;
 export const warrantyReducer = warrantySlice.reducer;

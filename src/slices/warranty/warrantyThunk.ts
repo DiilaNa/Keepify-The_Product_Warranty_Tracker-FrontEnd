@@ -21,11 +21,12 @@ export const loadWarrantiesThunk = createAsyncThunk(
     {
       page = 1,
       limit = 10,
-    }: { page?: number; limit?: number },
+      search
+    }: { page?: number; limit?: number; search?:string },
     thunkAPI
   ) => {
     try {
-      return await loadWarrantiesService({ page, limit });
+      return await loadWarrantiesService({ page, limit , search });
     } catch (err: any) {
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || "Failed to load warranties"

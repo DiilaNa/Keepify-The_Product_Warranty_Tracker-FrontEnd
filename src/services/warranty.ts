@@ -12,14 +12,16 @@ export const saveWarrantyService = async(formData:FormData) => {
 export const loadWarrantiesService = async ({
   page,
   limit,
+  search,
 }: {
   page?: number;
   limit?: number;
   admin?: boolean;
+  search?: string
 }) => {
   const url = "/warranties/loadwarranties";
-
-  const res = await api.get(url, { params: { page, limit } });
+  
+  const res = await api.get(url, { params: { page, limit ,search} });
   
   return {
     data: res.data.data,
