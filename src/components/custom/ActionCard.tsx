@@ -12,10 +12,11 @@ import {
   Skeleton,
   Stack,
 } from "@mui/material";
-import type { IAnnouncement } from "@/services/announcements";
-import { editAnnouncement } from "@/slices/announcements/announcementsThunk";
+import { type IAnnouncement } from "@/services/announcements";
+import { editAnnouncement, unPublishAnnouncementThunk } from "@/slices/announcements/announcementsThunk";
 import { useAppDispatch } from "@/hooks/hook";
 import { toast } from "sonner";
+import { ConfirmDialog } from "./ConfirmDialog";
 
 interface ActionAreaCardProps {
   announcement: IAnnouncement;
@@ -26,6 +27,10 @@ export default function ActionAreaCard({ announcement }: ActionAreaCardProps) {
   const [imgLoaded, setImgLoaded] = useState(false);
   const role = localStorage.getItem("role");
   const dispatch = useAppDispatch();
+  const [openPublish, setOpenPublish] = useState(false);
+  const isPublished = announcement.status === "PUBLISHED";
+
+//   const [openDelete, setOpenDelete] = useState(false);
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -40,7 +45,26 @@ export default function ActionAreaCard({ announcement }: ActionAreaCardProps) {
     setImagePreview(null);
     setOpen(false);
   };
-  
+
+  const handleUnpublish = async () => {
+    if (!announcement._id) return;
+
+    const newStatus =
+      announcement.status === "PUBLISHED" ? "UNPUBLISHED" : "PUBLISHED";
+
+    try {
+      await dispatch(
+        unPublishAnnouncementThunk({
+          id: announcement._id,
+          status: newStatus,
+        })
+      ).unwrap();
+      toast.success(`Announcement ${newStatus.toLowerCase()} successfully!`);
+    } catch (err: any) {
+      toast.error(err || "Failed to update status");
+    }
+
+  }
 
   const handleUpdate = async () => {
     const formData = new FormData();
@@ -70,6 +94,18 @@ export default function ActionAreaCard({ announcement }: ActionAreaCardProps) {
 
   return (
     <>
+     <ConfirmDialog
+            open={openPublish}
+            onOpenChange={setOpenPublish}
+            title={isPublished ? "Unpublish Announcement" : "Publish Announcement"}
+            description={
+              isPublished
+                ? "This will hide the announcement from users. Are you sure?"
+                : "This will make the announcement visible to users. Are you sure?"
+            }
+            confirmText={isPublished ? "Unpublish" : "Publish"}
+            onConfirm={handleUnpublish}
+          />
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
@@ -335,9 +371,17 @@ export default function ActionAreaCard({ announcement }: ActionAreaCardProps) {
               justifyContent="center"
               sx={{ mt: "auto" }}
             >
-              <Button size="small" variant="contained" color="warning">
-                Unpublish
+              <Button
+                size="small"
+                variant="contained"
+                color={
+                  announcement.status === "PUBLISHED" ? "warning" : "success"
+                }
+                onClick={()=>setOpenPublish(true)}
+              >
+                {announcement.status === "PUBLISHED" ? "Unpublish" : "Publish"}
               </Button>
+
               <Button
                 size="small"
                 variant="contained"

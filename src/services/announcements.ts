@@ -58,3 +58,14 @@ export const editAnnouncementService = async ({
   });
   return res.data.data;
 };
+
+export const unpublishAnnouncementService = async ({
+  id,
+  status,
+}: {
+  id: string;
+  status: string;
+}) => {
+  const res = await api.patch(`/announcements/status/${id}`, { status });
+  return res.data;
+};
