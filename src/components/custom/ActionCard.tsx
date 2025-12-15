@@ -13,7 +13,11 @@ import {
   Stack,
 } from "@mui/material";
 import { type IAnnouncement } from "@/services/announcements";
-import { editAnnouncement, unPublishAnnouncementThunk } from "@/slices/announcements/announcementsThunk";
+import {
+  deleteAnnouncementsThunk,
+  editAnnouncement,
+  unPublishAnnouncementThunk,
+} from "@/slices/announcements/announcementsThunk";
 import { useAppDispatch } from "@/hooks/hook";
 import { toast } from "sonner";
 import { ConfirmDialog } from "./ConfirmDialog";
@@ -30,7 +34,7 @@ export default function ActionAreaCard({ announcement }: ActionAreaCardProps) {
   const [openPublish, setOpenPublish] = useState(false);
   const isPublished = announcement.status === "PUBLISHED";
 
-//   const [openDelete, setOpenDelete] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -39,6 +43,19 @@ export default function ActionAreaCard({ announcement }: ActionAreaCardProps) {
     title: "",
     description: "",
   });
+
+  const handleDelete = async () => {
+    if (!announcement._id) return;
+    const result = await dispatch(deleteAnnouncementsThunk(announcement._id));
+    if (deleteAnnouncementsThunk.fulfilled.match(result)) {
+      toast.success("Warranty deleted successfully");
+      setOpenDelete(false);
+      return true;
+    } else {
+      toast.error("Failed to delete warranty");
+      return false;
+    }
+  };
 
   const handleClose = () => {
     setImageFile(null);
@@ -63,8 +80,7 @@ export default function ActionAreaCard({ announcement }: ActionAreaCardProps) {
     } catch (err: any) {
       toast.error(err || "Failed to update status");
     }
-
-  }
+  };
 
   const handleUpdate = async () => {
     const formData = new FormData();
@@ -74,9 +90,9 @@ export default function ActionAreaCard({ announcement }: ActionAreaCardProps) {
     if (announcement.category?._id) {
       formData.append("category", announcement.category._id);
     }
-   
+
     if (imageFile) {
-      formData.append("image", imageFile); 
+      formData.append("image", imageFile);
     }
 
     try {
@@ -90,22 +106,29 @@ export default function ActionAreaCard({ announcement }: ActionAreaCardProps) {
       toast.error(error || "Failed to update announcement.");
     }
   };
-  
 
   return (
     <>
-     <ConfirmDialog
-            open={openPublish}
-            onOpenChange={setOpenPublish}
-            title={isPublished ? "Unpublish Announcement" : "Publish Announcement"}
-            description={
-              isPublished
-                ? "This will hide the announcement from users. Are you sure?"
-                : "This will make the announcement visible to users. Are you sure?"
-            }
-            confirmText={isPublished ? "Unpublish" : "Publish"}
-            onConfirm={handleUnpublish}
-          />
+      <ConfirmDialog
+        open={openPublish}
+        onOpenChange={setOpenPublish}
+        title={isPublished ? "Unpublish Announcement" : "Publish Announcement"}
+        description={
+          isPublished
+            ? "This will hide the announcement from users. Are you sure?"
+            : "This will make the announcement visible to users. Are you sure?"
+        }
+        confirmText={isPublished ? "Unpublish" : "Publish"}
+        onConfirm={handleUnpublish}
+      />
+      <ConfirmDialog
+        open={openDelete}
+        onOpenChange={setOpenDelete}
+        title="Are you sure you want to delete this announcement"
+        description="This permanently delete the announcement from your account. Are you sure?"
+        confirmText="Delete ?"
+        onConfirm={handleDelete}
+      />
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
@@ -377,7 +400,7 @@ export default function ActionAreaCard({ announcement }: ActionAreaCardProps) {
                 color={
                   announcement.status === "PUBLISHED" ? "warning" : "success"
                 }
-                onClick={()=>setOpenPublish(true)}
+                onClick={() => setOpenPublish(true)}
               >
                 {announcement.status === "PUBLISHED" ? "Unpublish" : "Publish"}
               </Button>
@@ -396,7 +419,12 @@ export default function ActionAreaCard({ announcement }: ActionAreaCardProps) {
               >
                 Edit
               </Button>
-              <Button size="small" variant="contained" color="error">
+              <Button
+                size="small"
+                variant="contained"
+                color="error"
+                onClick={() => setOpenDelete(true)}
+              >
                 Delete
               </Button>
             </Stack>

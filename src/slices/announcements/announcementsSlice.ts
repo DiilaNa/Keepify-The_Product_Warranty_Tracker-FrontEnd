@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  deleteAnnouncementsThunk,
   editAnnouncement,
   loadAnnouncementsThunk,
   saveAnnouncementsThunk,
@@ -87,7 +88,21 @@ const announcementSlice = createSlice({
       .addCase(unPublishAnnouncementThunk.rejected, (state, action) => {
         state.loadingAnnouncements = false;
         state.error = action.payload as string;
-      });
+      })
+      .addCase(deleteAnnouncementsThunk.pending, (state) => {
+        state.loadingAnnouncements = true;
+        state.error = null;
+      })
+      .addCase(deleteAnnouncementsThunk.fulfilled, (state, action) => {
+        state.announcements = state.announcements.filter(
+          (w) => w._id !== action.meta.arg
+        );
+        state.loadingAnnouncements = false;
+      })
+      .addCase(deleteAnnouncementsThunk.rejected, (state, action) => {
+        state.loadingAnnouncements = false;
+        state.error = action.payload as string;
+      });;
   },
 });
 

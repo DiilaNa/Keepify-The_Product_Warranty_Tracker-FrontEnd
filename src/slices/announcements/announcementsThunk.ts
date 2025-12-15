@@ -1,4 +1,4 @@
-import { editAnnouncementService, loadAnnouncementsService, saveAnnouncementsService, unpublishAnnouncementService } from "@/services/announcements";
+import { deleteAnnouncementsService, editAnnouncementService, loadAnnouncementsService, saveAnnouncementsService, unpublishAnnouncementService } from "@/services/announcements";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const saveAnnouncementsThunk = createAsyncThunk(
@@ -55,3 +55,14 @@ export const unPublishAnnouncementThunk = createAsyncThunk(
     }
   }
 )
+
+export const deleteAnnouncementsThunk = createAsyncThunk(
+  "announcements/deleteAnnouncements",
+  async(id:string,{rejectWithValue}) => {
+    try{
+       return await deleteAnnouncementsService(id);
+    }catch(err:any){
+      return rejectWithValue(err.response?.data?.message || "Failed to delete");
+    }
+  }
+);

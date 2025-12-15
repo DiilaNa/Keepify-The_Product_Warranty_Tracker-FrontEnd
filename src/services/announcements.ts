@@ -69,3 +69,8 @@ export const unpublishAnnouncementService = async ({
   const res = await api.patch(`/announcements/status/${id}`, { status });
   return res.data;
 };
+
+export const deleteAnnouncementsService = async(id:string) => {
+  const res = await api.patch(`/announcements/deleteAnnouncements/${id}`);
+  return res.data;
+};

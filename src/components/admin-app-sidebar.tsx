@@ -76,7 +76,6 @@ export function AdminAppSidebar({
     (state) => state.announcements
   );
 
-
   const handleAddAnnouncements = async(formdata:FormData) => {
     try{
       const result = await dispatch(saveAnnouncementsThunk(formdata));
@@ -136,7 +135,8 @@ export function AdminAppSidebar({
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <Link to="/">
+              <Link to="/"
+              >
                 <IconInnerShadowTop className="!size-5" />
                 <span className="text-base font-semibold">Keepify-Admin</span>
               </Link>
