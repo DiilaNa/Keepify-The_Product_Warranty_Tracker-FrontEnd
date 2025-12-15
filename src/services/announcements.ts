@@ -3,7 +3,7 @@ import api from "./api"
 export interface IAnnouncement {
   _id: string;
   title: string;
-  content: string;
+  description: string;
   status: "PUBLISHED" | "UNPUBLISHED";
   createdAt: string;
   updatedAt?: string;
