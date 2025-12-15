@@ -13,6 +13,9 @@ import {
   Stack,
 } from "@mui/material";
 import type { IAnnouncement } from "@/services/announcements";
+import { editAnnouncement } from "@/slices/announcements/announcementsThunk";
+import { useAppDispatch } from "@/hooks/hook";
+import { toast } from "sonner";
 
 interface ActionAreaCardProps {
   announcement: IAnnouncement;
@@ -22,95 +25,51 @@ export default function ActionAreaCard({ announcement }: ActionAreaCardProps) {
   const [open, setOpen] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
   const role = localStorage.getItem("role");
+  const dispatch = useAppDispatch();
+
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const [editData, setEditData] = useState({
     title: "",
     description: "",
   });
 
-  const handleUpdate = async () => {
-    // await updateAnnouncementAPI(announcement._id, editData);
+  const handleClose = () => {
+    setImageFile(null);
+    setImagePreview(null);
     setOpen(false);
   };
+  
+
+  const handleUpdate = async () => {
+    const formData = new FormData();
+
+    formData.append("title", editData.title);
+    formData.append("content", editData.description);
+    if (announcement.category?._id) {
+      formData.append("category", announcement.category._id);
+    }
+   
+    if (imageFile) {
+      formData.append("image", imageFile); 
+    }
+
+    try {
+      await dispatch(
+        editAnnouncement({ id: announcement._id, data: formData })
+      ).unwrap();
+
+      toast.success("Announcement updated successfully!");
+      setOpen(false);
+    } catch (error: any) {
+      toast.error(error || "Failed to update announcement.");
+    }
+  };
+  
 
   return (
     <>
-      {/* ================= DIALOG ================= */}
-      {/* <Dialog
-        open={open}
-        onClose={() => setOpen(false)}
-        maxWidth="sm"
-        fullWidth
-        PaperProps={{
-          sx: {
-            backgroundColor: "#0d0f12",
-            borderRadius: 3,
-            border: "1px solid rgba(255,255,255,0.08)",
-          },
-        }}
-      >
-        <DialogTitle sx={{ color: "#fff", fontWeight: 700 }}>
-          {announcement.title}
-        </DialogTitle>
-
-        <DialogContent sx={{ color: "#cfcfcf" }}>
-          <Typography variant="body1" sx={{ lineHeight: 1.7 }}>
-            {announcement.description}
-          </Typography>
-        </DialogContent>
-
-        <DialogActions sx={{ px: 3, pb: 2 }}>
-          {role === "ADMIN" && (
-            <Stack direction="row" spacing={1} sx={{ mr: "auto" }}>
-              <Stack spacing={2}>
-                <input
-                  type="text"
-                  value={editData.title}
-                  onChange={(e) =>
-                    setEditData({ ...editData, title: e.target.value })
-                  }
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    borderRadius: "8px",
-                    background: "#111318",
-                    color: "#fff",
-                    border: "1px solid rgba(255,255,255,0.15)",
-                  }}
-                />
-
-                <textarea
-                  value={editData.description}
-                  onChange={(e) =>
-                    setEditData({ ...editData, description: e.target.value })
-                  }
-                  rows={4}
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    borderRadius: "8px",
-                    background: "#111318",
-                    color: "#fff",
-                    border: "1px solid rgba(255,255,255,0.15)",
-                    resize: "none",
-                  }}
-                />
-              </Stack>
-             
-             
-              <Button variant="outlined" color="secondary"
-                onClick={handleUpdate}
-              >
-                Save changes
-              </Button>
-           
-            </Stack>
-          )}
-          <Button variant="contained" onClick={() => setOpen(false)}>
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog> */}
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
@@ -129,9 +88,28 @@ export default function ActionAreaCard({ announcement }: ActionAreaCardProps) {
         </DialogTitle>
 
         <DialogContent sx={{ pt: 2 }}>
-          {/* ===== ADMIN EDIT MODE ===== */}
           {role === "ADMIN" ? (
             <Stack spacing={2}>
+              <Box
+                sx={{
+                  mt: 1.5,
+                  height: 160,
+                  borderRadius: 2,
+                  overflow: "hidden",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                }}
+              >
+                <img
+                  src={imagePreview || announcement.img_url}
+                  alt="preview"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              </Box>
+
               <input
                 type="text"
                 value={editData.title}
@@ -171,9 +149,29 @@ export default function ActionAreaCard({ announcement }: ActionAreaCardProps) {
                   lineHeight: 1.6,
                 }}
               />
+              <Box>
+                <Typography sx={{ color: "#aaa", mb: 0.5, fontSize: 13 }}>
+                  Update Image
+                </Typography>
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+
+                    setImageFile(file);
+                    setImagePreview(URL.createObjectURL(file));
+                  }}
+                  style={{
+                    color: "#ccc",
+                    fontSize: "13px",
+                  }}
+                />
+              </Box>
             </Stack>
           ) : (
-            /* ===== USER VIEW MODE ===== */
             <Typography
               variant="body1"
               sx={{ color: "#cfcfcf", lineHeight: 1.7 }}
@@ -186,7 +184,7 @@ export default function ActionAreaCard({ announcement }: ActionAreaCardProps) {
         <DialogActions sx={{ px: 3, pb: 2 }}>
           <Button
             variant="outlined"
-            onClick={() => setOpen(false)}
+            onClick={handleClose}
             sx={{ color: "#aaa", borderColor: "#444" }}
           >
             Cancel
@@ -208,7 +206,6 @@ export default function ActionAreaCard({ announcement }: ActionAreaCardProps) {
         </DialogActions>
       </Dialog>
 
-      {/* ================= CARD ================= */}
       <Card
         sx={{
           width: "100%",
@@ -256,7 +253,6 @@ export default function ActionAreaCard({ announcement }: ActionAreaCardProps) {
             }}
           />
 
-          {/* TITLE */}
           <Typography
             variant="h5"
             sx={{
@@ -332,7 +328,6 @@ export default function ActionAreaCard({ announcement }: ActionAreaCardProps) {
             </Box>
           )}
 
-          {/* ADMIN BUTTONS */}
           {role === "ADMIN" && (
             <Stack
               direction="row"

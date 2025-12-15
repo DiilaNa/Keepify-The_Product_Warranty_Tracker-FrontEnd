@@ -1,4 +1,4 @@
-import api from "./api"
+import api from "./api";
 
 export interface IAnnouncement {
   _id: string;
@@ -15,15 +15,15 @@ export interface IAnnouncement {
   };
 }
 
-export const saveAnnouncementsService = async(formData:FormData) => {
-    const res = await api.post("/announcements/saveAnnouncement", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+export const saveAnnouncementsService = async (formData: FormData) => {
+  const res = await api.post("/announcements/saveAnnouncement", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 
-    return res.data
-}
+  return res.data;
+};
 
 export const loadAnnouncementsService = async ({
   page,
@@ -42,4 +42,19 @@ export const loadAnnouncementsService = async ({
     page: res.data.page,
     totalPages: res.data.totalPages,
   };
+};
+
+export const editAnnouncementService = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: FormData;
+}) => {
+  const res = await api.put(`/announcements/edit/${id}`, data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return res.data.data;
 };

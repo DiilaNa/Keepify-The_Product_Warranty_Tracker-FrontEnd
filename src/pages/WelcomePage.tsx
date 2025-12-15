@@ -68,25 +68,8 @@ export default function HeroSlider() {
 
         <WhyChooseKeepify />
 
-        {/* <div className="w-full bg-[#0d0f12] py-16">
-          <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8">
-            {loadingAnnouncements ? (
-              <p>Loading...</p>
-            ) : (
-              announcements.map((ann: IAnnouncement) => (
-                <ActionAreaCard key={ann._id} announcement={ann} />
-              ))
-            )}
-          </div>
-        </div> */}
         <div className="w-full bg-[#0d0f12] py-16">
-          <div
-            className="max-w-7xl mx-auto px-4 grid gap-8
-    grid-cols-1
-    sm:grid-cols-2
-    lg:grid-cols-3
-    xl:grid-cols-4"
-          >
+          <div className="max-w-7xl mx-auto px-4 grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {loadingAnnouncements ? (
               <p className="text-gray-400">Loading...</p>
             ) : (

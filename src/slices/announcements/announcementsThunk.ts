@@ -1,4 +1,4 @@
-import { loadAnnouncementsService, saveAnnouncementsService } from "@/services/announcements";
+import { editAnnouncementService, loadAnnouncementsService, saveAnnouncementsService } from "@/services/announcements";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const saveAnnouncementsThunk = createAsyncThunk(
@@ -30,6 +30,17 @@ export const loadAnnouncementsThunk = createAsyncThunk(
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || "Failed to load announcements"
       );
+    }
+  }
+);
+
+export const editAnnouncement = createAsyncThunk(
+  "announcements/edit",
+  async ({ id, data }: { id: string; data: FormData }, { rejectWithValue }) => {
+    try {
+      return await editAnnouncementService({id,data})
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data?.message);
     }
   }
 );

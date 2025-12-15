@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loadAnnouncementsThunk, saveAnnouncementsThunk } from "./announcementsThunk";
+import { editAnnouncement, loadAnnouncementsThunk, saveAnnouncementsThunk } from "./announcementsThunk";
 import type { IAnnouncement } from "@/services/announcements";
 
 
@@ -26,7 +26,7 @@ const announcementSlice = createSlice({
     reducers: {},
     extraReducers: (builer) => {
         builer
-        .addCase(loadAnnouncementsThunk.pending, (state) => {
+          .addCase(loadAnnouncementsThunk.pending, (state) => {
             state.loadingAnnouncements = true;
           })
           .addCase(loadAnnouncementsThunk.fulfilled, (state, action) => {
@@ -49,7 +49,26 @@ const announcementSlice = createSlice({
           .addCase(saveAnnouncementsThunk.rejected, (state, action) => {
             state.loadingAnnouncements = false;
             state.error = action.payload as string;
+          })
+          .addCase(editAnnouncement.pending, (state) => {
+            state.loadingAnnouncements = true;
+            state.error = null;
+          })
+
+          .addCase(editAnnouncement.fulfilled, (state, action) => {
+            const index = state.announcements.findIndex(
+              (a) => a._id === action.payload._id
+            );
+
+            if (index !== -1) {
+              state.announcements[index] = action.payload;
+            }
+          })
+          .addCase(editAnnouncement.rejected, (state, action) => {
+            state.loadingAnnouncements = false;
+            state.error = action.payload as string;
           });
+          
     }
 })
 
