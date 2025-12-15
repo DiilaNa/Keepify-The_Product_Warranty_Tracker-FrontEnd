@@ -63,7 +63,9 @@ const announcementSlice = createSlice({
             if (index !== -1) {
               state.announcements[index] = action.payload;
             }
+            state.loadingAnnouncements = false;
           })
+           
           .addCase(editAnnouncement.rejected, (state, action) => {
             state.loadingAnnouncements = false;
             state.error = action.payload as string;
