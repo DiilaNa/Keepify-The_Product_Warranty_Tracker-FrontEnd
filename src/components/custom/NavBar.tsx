@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { ThemeToggle } from "./DropDown";
 
 export function NavBarComponent() {
   const role = localStorage.getItem("role");
@@ -40,7 +39,7 @@ export function NavBarComponent() {
         )}
         {/* ------------------------------------------------------ */}
 
-        <ThemeToggle />
+      
       </div>
     </nav>
   );

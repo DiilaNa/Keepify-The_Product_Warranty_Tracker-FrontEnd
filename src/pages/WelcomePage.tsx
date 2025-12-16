@@ -10,9 +10,10 @@ import { useEffect } from "react";
 import { Button } from "flowbite-react";
 
 const images = [
-  "https://images.unsplash.com/photo-1605629713998-167cdc70afa2",
-  "https://images.unsplash.com/photo-1503796964332-e25e282e390f",
-  "https://images.unsplash.com/photo-1518156677180-95a2893f3e9f",
+  "/images/1.png",
+  "/images/2.png",
+  "/images/3.png",
+  "/images/4.png",
 ];
 
 export default function HeroSlider() {
@@ -47,16 +48,15 @@ export default function HeroSlider() {
           >
             {images.map((src, i) => (
               <SwiperSlide key={i}>
-                <div className="relative w-full h-[90vh]">
+                <div className="relative w-full h-[70vh] sm:h-[80vh] md:h-[85vh] lg:h-[90vh] flex items-center justify-center bg-black">
                   <img
                     src={src}
                     alt={`Slide ${i}`}
-                    className="w-full h-full object-cover"
+                    className="max-w-full max-h-full object-contain filter brightness-105 contrast-105"
                   />
-                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                    <h1 className="text-white text-4xl md:text-6xl font-bold">
-                      Slide {i + 1}
-                    </h1>
+                  {/* Optional overlay for text readability */}
+                  <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
+                    {/* Add text here if needed */}
                   </div>
                 </div>
               </SwiperSlide>
