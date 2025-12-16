@@ -11,9 +11,14 @@ import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { fetchNotificationThunk, markNotificationReadThunk } from "@/slices/features/NotificationThunk";
 
+interface NotificationsSheetProps {
+  onUnreadChange?: (count: number) => void;
+}
+
 
 export const NotificationsSheet = React.forwardRef<
-  HTMLButtonElement
+  HTMLButtonElement,
+  NotificationsSheetProps
 >((_, ref) => {
   const dispatch = useAppDispatch();
 
