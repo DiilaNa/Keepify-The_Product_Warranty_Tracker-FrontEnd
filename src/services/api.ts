@@ -4,6 +4,7 @@ import { refreshTokens } from "./auth";
 const api = axios.create({
   baseURL:
     "https://keepify-the-product-warranty-tracke-theta.vercel.app/api/v1",
+  withCredentials: true,
 });
 
 const PUBLIC_ENDPOINTS = ["/auth/register", "/auth/login"];
