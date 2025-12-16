@@ -2,9 +2,7 @@ import axios, { AxiosError } from "axios";
 import { refreshTokens } from "./auth";
 
 const api = axios.create({
-  baseURL:
-    "https://keepify-the-product-warranty-tracke-theta.vercel.app/api/v1",
-  withCredentials: true,
+  baseURL: "http://localhost:5000/api/v1",
 });
 
 const PUBLIC_ENDPOINTS = ["/auth/register", "/auth/login"];
