@@ -33,7 +33,6 @@ import { saveWarrantyThunk } from "@/slices/warranty/warrantyThunk";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const notificationRef = useRef<HTMLButtonElement>(null);
-  const [unreadCount, setUnreadCount] = React.useState(0);
   const [selectedCategory, setSelectedCategory] = React.useState("");
   const [selectedBrands, setSelectedBrands] = React.useState("");
   const { brands } = useAppSelector((state) => state.brands);
@@ -108,6 +107,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       },
     ],
   };
+
+  const unreadCount = useAppSelector(
+    (state) => state.notifications.unreadCount
+  );
+  
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
@@ -200,7 +204,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         />
         <NotificationsSheet
           ref={notificationRef}
-          onUnreadChange={setUnreadCount}
         />
 
         <NavMain items={data.navMain} unreadCount={unreadCount} />
