@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { loadAnnouncementsThunk } from "@/slices/announcements/announcementsThunk";
 import { useEffect } from "react";
 import { Button } from "flowbite-react";
+import Chatbot from "@/components/custom/ChatBot";
 
 const images = [
   "/images/1.png",
@@ -114,7 +115,7 @@ export default function HeroSlider() {
             Next
           </Button>
         </div>
-
+        <Chatbot />
         <Footer />
       </div>
     </>

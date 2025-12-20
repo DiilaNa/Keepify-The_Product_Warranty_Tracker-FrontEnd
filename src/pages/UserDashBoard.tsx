@@ -13,6 +13,7 @@ import {
   updateWarrantyThunk,
 } from "@/slices/warranty/warrantyThunk";
 import { searchPosts } from "@/slices/warranty/warrantySlice";
+import Chatbot from "@/components/custom/ChatBot";
 
 export default function UserDashBoard() {
   const dispatch = useAppDispatch();
@@ -228,6 +229,7 @@ export default function UserDashBoard() {
           </div>
         </div>
       </SidebarInset>
+      <Chatbot />
     </SidebarProvider>
   );
 }
