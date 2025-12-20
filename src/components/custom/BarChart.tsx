@@ -43,19 +43,18 @@ const TopProductsBarChart = () => {
           margin={{ top: 20, right: 30, left: 20, bottom: 40 }}
           barCategoryGap={100}
         >
-          {/* Subtle grid lines */}
+         
           <CartesianGrid stroke="#444466" strokeDasharray="3 3" />
 
-          {/* X Axis */}
           <XAxis
             dataKey="_id"
             stroke="#ccc"
             tick={{ fill: "#ccc", fontSize: 12 }}
             tickMargin={10}
-            interval={0} // show all labels
-            angle={-20} // rotate labels if they are long
+            interval={0} 
+            angle={-20}
             textAnchor="end"
-            height={60} // ensure rotated labels fit
+            height={60}
             label={{
               value: "Product Name",
               position: "bottom",
@@ -64,7 +63,6 @@ const TopProductsBarChart = () => {
             }}
           />
 
-          {/* Y Axis */}
           <YAxis
             stroke="#ccc"
             tick={{ fill: "#ccc", fontSize: 12 }}
@@ -77,7 +75,6 @@ const TopProductsBarChart = () => {
             }}
           />
 
-          {/* Tooltip */}
           <Tooltip
             contentStyle={{
               backgroundColor: "#2a2a40",
@@ -88,12 +85,11 @@ const TopProductsBarChart = () => {
             itemStyle={{ color: "#fff" }}
           />
 
-          {/* Bars */}
           <Bar
             dataKey="total"
             fill="#4F46E5"
-            radius={[6, 6, 0, 0]} // rounded top corners
-            isAnimationActive={true} // smooth load animation
+            radius={[6, 6, 0, 0]} 
+            isAnimationActive={true} 
             cursor="pointer"
             maxBarSize={50}
           />

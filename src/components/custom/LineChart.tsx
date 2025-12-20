@@ -39,7 +39,6 @@ const WarrantiesLineChart = () => {
 
   return (
     <div>
-      {/* Chart Title */}
       <h3 style={{ textAlign: "center", marginBottom: "30px" }}>
         Warranties Added Over Time
       </h3>
