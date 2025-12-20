@@ -1,13 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   deleteWarrantyThunk,
+  LineChartThunk,
   loadWarrantiesThunk,
   saveWarrantyThunk,
   updateWarrantyThunk,
 } from "./warrantyThunk";
+import type { LineChartItem } from "@/types/types";
 
 export interface WarrantyState {
   warranties: any[];
+  lineChartData: LineChartItem[];
   loadingWarranties: boolean;
   page: number;
   totalPages: number;
@@ -17,6 +20,7 @@ export interface WarrantyState {
 
 const initialState: WarrantyState = {
   warranties: [],
+  lineChartData: [],
   loadingWarranties: false,
   page: 1,
   totalPages: 1,
@@ -45,6 +49,16 @@ const warrantySlice = createSlice({
         state.totalPages = action.payload.totalPages;
       })
       .addCase(loadWarrantiesThunk.rejected, (state) => {
+        state.loadingWarranties = false;
+      })
+      .addCase(LineChartThunk.pending, (state) => {
+        state.loadingWarranties = true;
+      })
+      .addCase(LineChartThunk.fulfilled, (state, action) => {
+        state.loadingWarranties = false;
+        state.lineChartData = action.payload;
+      })
+      .addCase(LineChartThunk.rejected, (state) => {
         state.loadingWarranties = false;
       })
       .addCase(saveWarrantyThunk.pending, (state) => {

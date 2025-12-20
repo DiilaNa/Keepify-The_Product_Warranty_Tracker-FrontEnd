@@ -1,4 +1,4 @@
-import { deleteWarrantyService, loadWarrantiesService, saveWarrantyService, updateWarrantyService } from "@/services/warranty";
+import { deleteWarrantyService, getLineChartService, loadWarrantiesService, saveWarrantyService, updateWarrantyService } from "@/services/warranty";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const saveWarrantyThunk = createAsyncThunk(
@@ -57,6 +57,18 @@ export const deleteWarrantyThunk = createAsyncThunk(
       return await deleteWarrantyService(id);
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message);
+    }
+  }
+);
+
+export const LineChartThunk = createAsyncThunk(
+  "/warranties/warranties-overtime",
+  async (_, thunkAPI) => {
+    try {
+      const res = await getLineChartService();
+      return res.data;
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(err.response?.data?.message);
     }
   }
 );

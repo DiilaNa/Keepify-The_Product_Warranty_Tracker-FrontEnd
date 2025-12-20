@@ -44,3 +44,9 @@ export const deleteWarrantyService = async (id: string) => {
   const res = await api.put(`/warranties/deleteWarranty/${id}`);
   return res.data;
 };
+
+export const getLineChartService = async() => {
+  const res = await api.get("/warranties/warranties-overtime");
+  console.log(res.data);
+  return res.data;
+}

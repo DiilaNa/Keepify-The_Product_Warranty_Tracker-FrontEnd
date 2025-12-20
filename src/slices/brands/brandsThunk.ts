@@ -1,4 +1,4 @@
-import { loadBrandsByCategory, saveBrandsService, type BrandsDataTypes } from "@/services/brands";
+import { getBarChartService, loadBrandsByCategory, saveBrandsService, type BrandsDataTypes } from "@/services/brands";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const saveBrandsThunk = createAsyncThunk(
@@ -24,4 +24,16 @@ export const loadBrandsByCategoryThunk = createAsyncThunk(
     }
   }
 );
+
+export const BarChartThunk = createAsyncThunk(
+  "/brands/loadBarcher",
+  async(_,thunkAPI) => {
+    try{
+      const res = await getBarChartService();
+      return res.data;
+    }catch(err:any){
+      return thunkAPI.rejectWithValue(err.response?.data?.message)
+    }
+  }
+)
   

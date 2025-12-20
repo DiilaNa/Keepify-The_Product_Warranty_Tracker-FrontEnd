@@ -14,6 +14,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import TopProductsBarChart from "@/components/custom/BarChart";
+import WarrantiesLineChart from "@/components/custom/LineChart";
 
 export default function AdminDashBoard() {
   const dispatch = useAppDispatch();
@@ -48,14 +50,19 @@ export default function AdminDashBoard() {
           <div className="@container/main flex flex-1 flex-col gap-2">
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
               <SectionCards />
+              <hr />
 
-              <div className="px-4 lg:px-6">
+              <WarrantiesLineChart />
+              <hr />
+              <TopProductsBarChart />
+              <hr/>
+              <div className="px-4 lg:px-6 mt-6">
                 <SearchAppBar
-                  placeholder="Search users by name or email…"      
-                  onSearch={handleSearch} 
+                  placeholder="Search users by name or email…"
+                  onSearch={handleSearch}
                 />
 
-                <div className="w-full mt-6">
+                <div className="w-full mt-9">
                   <div className="rounded-xl bg-white/5 dark:bg-gray-900/30 backdrop-blur border border-white/10 shadow-lg overflow-hidden">
                     {!loading && user.length === 0 && (
                       <div className="flex flex-col items-center justify-center py-16 text-gray-400">

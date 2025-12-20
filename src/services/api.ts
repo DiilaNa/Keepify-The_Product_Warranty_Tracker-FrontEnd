@@ -3,7 +3,8 @@ import { refreshTokens } from "./auth";
 
 const api = axios.create({
   baseURL:
-    "https://keepify-the-product-warranty-tracke-lemon.vercel.app/api/v1",
+    // "https://keepify-the-product-warranty-tracke-lemon.vercel.app/api/v1",
+    "http://localhost:5000/api/v1",
 });
 
 const PUBLIC_ENDPOINTS = ["/auth/register", "/auth/login"];
@@ -43,7 +44,6 @@ api.interceptors.response.use(
 
         originalRequest.headers.Authorization = `Bearer ${res.accessToken}`;
         return axios(originalRequest);
-
       } catch (err) {
         localStorage.clear();
         window.location.href = "/login";
@@ -55,4 +55,3 @@ api.interceptors.response.use(
   }
 );
 export default api;
-

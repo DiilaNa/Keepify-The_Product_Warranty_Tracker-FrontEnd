@@ -1,5 +1,5 @@
     import { createSlice } from "@reduxjs/toolkit";
-    import { loadBrandsByCategoryThunk, saveBrandsThunk } from "./brandsThunk";
+    import { BarChartThunk, loadBrandsByCategoryThunk, saveBrandsThunk } from "./brandsThunk";
 
     export interface BrandState {
       brands: any[];
@@ -40,6 +40,18 @@
                 state.brands = action.payload;
               })
               .addCase(loadBrandsByCategoryThunk.rejected, (state, action) => {
+                state.loadingBrands = false;
+                state.error = action.payload as string;
+              })
+              .addCase(BarChartThunk.pending, (state) => {
+                state.loadingBrands = true;
+                state.error = null;
+              })
+              .addCase(BarChartThunk.fulfilled, (state, action) => {
+                state.loadingBrands = false;
+                state.brands = action.payload;
+              })
+              .addCase(BarChartThunk.rejected, (state, action) => {
                 state.loadingBrands = false;
                 state.error = action.payload as string;
               });
