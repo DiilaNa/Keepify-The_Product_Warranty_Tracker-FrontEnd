@@ -1,8 +1,9 @@
     import { createSlice } from "@reduxjs/toolkit";
     import { BarChartThunk, loadBrandsByCategoryThunk, saveBrandsThunk } from "./brandsThunk";
+import type { IBrandsDataTypes } from "@/types/types";
 
     export interface BrandState {
-      brands: any[];
+      brands: IBrandsDataTypes[];
       loadingBrands: boolean;
       error: string | null;
     }

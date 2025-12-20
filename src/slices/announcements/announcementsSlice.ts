@@ -6,7 +6,7 @@ import {
   saveAnnouncementsThunk,
   unPublishAnnouncementThunk,
 } from "./announcementsThunk";
-import type { IAnnouncement } from "@/services/announcements";
+import type { IAnnouncement } from "@/types/types";
 
 interface AnnouncementsState {
   announcements: IAnnouncement[];

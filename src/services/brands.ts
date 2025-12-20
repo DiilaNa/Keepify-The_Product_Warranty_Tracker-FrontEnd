@@ -1,11 +1,9 @@
+import type { IBrandsDataTypes } from "@/types/types";
 import api from "./api";
 
-export type BrandsDataTypes = {
-  category: string;
-  brand_name: string;
-};
 
-export const saveBrandsService = async (data: BrandsDataTypes) => {
+
+export const saveBrandsService = async (data: IBrandsDataTypes) => {
   const res = await api.post("brands/saveBrand", data);
   return res.data;
 };

@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { loadUserTableThunk, loginUserThunk, registerAdminThunk, registerUserThunk } from "./authThunk";
+import type { IUser } from "@/types/types";
 
 export interface AuthState {
-  user: any[];
+  user: IUser[];
   loading: boolean;
   page: number;
   totalPages: number;

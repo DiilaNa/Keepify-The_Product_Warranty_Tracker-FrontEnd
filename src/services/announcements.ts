@@ -1,19 +1,6 @@
 import api from "./api";
 
-export interface IAnnouncement {
-  _id: string;
-  title: string;
-  description: string;
-  status: "PUBLISHED" | "UNPUBLISHED";
-  createdAt: string;
-  updatedAt?: string;
-  img_url: string;
-  ownerId: string;
-  category: {
-    _id: string;
-    name: string;
-  };
-}
+
 
 export const saveAnnouncementsService = async (formData: FormData) => {
   const res = await api.post("/announcements/saveAnnouncement", formData, {

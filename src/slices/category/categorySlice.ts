@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { loadCategoryInComboThunk, saveCategoryThunk } from "./categoryThunk";
+import type { ICategory } from "@/types/types";
 
 export interface CategoryState {
-  categories: any[];
+  categories: ICategory[];
   loadingCategory: boolean;
   error: string | null;
 }

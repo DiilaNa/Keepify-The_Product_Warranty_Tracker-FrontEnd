@@ -6,10 +6,10 @@ import {
   saveWarrantyThunk,
   updateWarrantyThunk,
 } from "./warrantyThunk";
-import type { LineChartItem } from "@/types/types";
+import type { IWarranty, LineChartItem } from "@/types/types";
 
 export interface WarrantyState {
-  warranties: any[];
+  warranties: IWarranty[];
   lineChartData: LineChartItem[];
   loadingWarranties: boolean;
   page: number;
