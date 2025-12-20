@@ -41,7 +41,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { loadingWarranties } = useAppSelector((state) => state.warranty);
 
   const filteredBrands = brands.filter(
-    (b) => b.category.toString() === selectedCategory
+    (b) => b.category === selectedCategory
   );
 
   React.useEffect(() => {
