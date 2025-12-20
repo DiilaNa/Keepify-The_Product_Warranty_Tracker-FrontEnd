@@ -4,12 +4,12 @@ import {
   loginUser,
   registerAdmin,
   registerUser,
-  type RegistrationDataTypes,
 } from "../../services/auth";
+import type { IRegistrationDataTypes } from "@/types/types";
 
 export const registerUserThunk = createAsyncThunk(
   "/auth/register",
-  async (data: RegistrationDataTypes, thunkAPI) => {
+  async (data: IRegistrationDataTypes, thunkAPI) => {
     try {
       return await registerUser(data);
     } catch (err: any) {
@@ -39,7 +39,7 @@ export const loginUserThunk = createAsyncThunk(
 
 export const registerAdminThunk = createAsyncThunk(
   "/auth/admin/register",
-  async (data: RegistrationDataTypes, thunkAPI) => {
+  async (data: IRegistrationDataTypes, thunkAPI) => {
     try {
       return await registerAdmin(data);
     } catch (err: any) {

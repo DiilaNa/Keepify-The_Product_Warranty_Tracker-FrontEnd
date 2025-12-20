@@ -12,7 +12,6 @@ import {
   Skeleton,
   Stack,
 } from "@mui/material";
-import { type IAnnouncement } from "@/services/announcements";
 import {
   deleteAnnouncementsThunk,
   editAnnouncement,
@@ -21,6 +20,7 @@ import {
 import { useAppDispatch } from "@/hooks/hook";
 import { toast } from "sonner";
 import { ConfirmDialog } from "./ConfirmDialog";
+import type { IAnnouncement } from "@/types/types";
 
 interface ActionAreaCardProps {
   announcement: IAnnouncement;

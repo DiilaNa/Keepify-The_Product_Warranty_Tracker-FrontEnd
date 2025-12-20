@@ -24,9 +24,9 @@ import { Combobox } from "./custom/combobox";
 import { saveCategoryThunk } from "@/slices/category/categoryThunk";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { toast } from "sonner";
-import type { BrandsDataTypes } from "@/services/brands";
 import { saveBrandsThunk } from "@/slices/brands/brandsThunk";
 import { saveAnnouncementsThunk } from "@/slices/announcements/announcementsThunk";
+import type { IBrandsDataTypes } from "@/types/types";
 
 export function AdminAppSidebar({
   ...props
@@ -108,7 +108,7 @@ export function AdminAppSidebar({
   const saveBrands = async (formData: FormData) => {
     const brand_name = formData.get("brand_name") as string;
 
-    const data: BrandsDataTypes = {
+    const data: IBrandsDataTypes = {
       brand_name,
       category: selectedCategory,
     };
