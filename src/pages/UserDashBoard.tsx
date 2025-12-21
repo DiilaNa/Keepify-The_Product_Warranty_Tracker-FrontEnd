@@ -117,6 +117,7 @@ export default function UserDashBoard() {
                       purchase_date={p.purchase_date}
                       expiry_date={p.expiry_date}
                       serial_number={p.serial_number}
+                      status={p.status}
                       onEdit={(form) => handleEdit(p._id, form)}
                       onDelete={() => handleDelete(p._id)}
                     />
