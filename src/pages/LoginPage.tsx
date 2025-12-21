@@ -20,6 +20,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { useState, type FormEvent, useEffect } from "react";
 import { googleAuthThunk, loginUserThunk } from "@/slices/auth/authThunk";
 import { toast } from "sonner";
+import { FcGoogle } from "react-icons/fc"; 
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();
@@ -49,12 +50,10 @@ export default function LoginPage() {
   // ---------- Google login ----------
   const handleGoogleRegister = async (credential: string) => {
     const result = await dispatch(googleAuthThunk(credential));
-   
 
     if (googleAuthThunk.fulfilled.match(result)) {
       toast.success("Logged in with Google");
-
-      navigate("/user"); // Google users are always USER
+      navigate("/user");
     } else {
       toast.error("Google login failed");
     }
@@ -67,20 +66,23 @@ export default function LoginPage() {
       // @ts-ignore
       google.accounts.id.initialize({
         client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-
         callback: (response: any) => handleGoogleRegister(response.credential),
       });
-
-      // @ts-ignore
-      google.accounts.id.renderButton(
-        document.getElementById("googleSignIn")!,
-        { theme: "outline", size: "large", width: "auto" }
-      );
-
-      // Optional: prompt Google One Tap
-      // google.accounts.id.prompt();
     }
   }, []);
+
+  // ---------- Trigger Google Sign-In manually ----------
+  const handleGoogleClick = () => {
+    // @ts-ignore
+    if (window.google) {
+      // @ts-ignore
+      google.accounts.id.prompt((notification: any) => {
+        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+          toast.error("Google login cannot be displayed.");
+        }
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-darkBg flex flex-col">
@@ -102,7 +104,6 @@ export default function LoginPage() {
           <CardContent className="p-8">
             <form onSubmit={handleLogin}>
               <FieldGroup className="space-y-6">
-                {/* Email */}
                 <Field>
                   <FieldLabel htmlFor="email" className="text-[#ccc]">
                     Email
@@ -119,7 +120,6 @@ export default function LoginPage() {
                   />
                 </Field>
 
-                {/* Password */}
                 <Field>
                   <div className="flex items-center">
                     <FieldLabel htmlFor="password" className="text-[#ccc]">
@@ -144,25 +144,31 @@ export default function LoginPage() {
                   />
                 </Field>
 
-                {/* Login Button */}
                 <Field>
                   <Button
                     type="submit"
                     disabled={loading}
                     className={cn(
-                      "w-full bg-[#4F46E5] hover:bg-[#6366F1] text-white font-semibold  rounded-lg transition-colors shadow-md hover:shadow-lg"
+                      "w-full bg-[#4F46E5] hover:bg-[#6366F1] text-white font-semibold rounded-lg transition-colors shadow-md hover:shadow-lg"
                     )}
                   >
                     {loading ? "Logging in..." : "Login"}
                   </Button>
                 </Field>
 
-                {/* Google Login Button */}
                 <Field>
-                  <div id="googleSignIn"></div>
+                  <Button
+                    type="button"
+                    onClick={handleGoogleClick}
+                    className={cn(
+                      "w-full flex items-center justify-center gap-3 bg-[#DB4437] hover:bg-[#c33d30] text-white font-semibold rounded-lg transition-colors shadow-md hover:shadow-lg"
+                    )}
+                  >
+                    <FcGoogle className="w-5 h-5" />
+                    Sign in with Google
+                  </Button>
                 </Field>
 
-                {/* Sign up */}
                 <FieldDescription className="text-center text-[#aaa]">
                   Don&apos;t have an account?{" "}
                   <Link
