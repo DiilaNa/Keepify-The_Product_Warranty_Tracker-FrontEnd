@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loadUserTableThunk, loginUserThunk, registerAdminThunk, registerUserThunk } from "./authThunk";
+import { googleAuthThunk, loadUserTableThunk, loginUserThunk, registerAdminThunk, registerUserThunk } from "./authThunk";
 import type { IUser } from "@/types/types";
 
 export interface AuthState {
   user: IUser[];
+  accessToken: string | null;
+  refreshToken: string | null;
   loading: boolean;
   page: number;
   totalPages: number;
@@ -13,6 +15,8 @@ export interface AuthState {
 
 const initialState: AuthState = {
   user: [],
+  accessToken: null,
+  refreshToken: null,
   loading: false,
   page: 1,
   totalPages: 1,
@@ -81,7 +85,24 @@ const authSlice = createSlice({
       .addCase(registerAdminThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-      });
+      })
+      .addCase(googleAuthThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(googleAuthThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = Array.isArray(action.payload.user)
+          ? action.payload.user
+          : [action.payload.user];
+        state.accessToken = action.payload.accessToken;
+        state.refreshToken = action.payload.refreshToken;
+      })
+      .addCase(googleAuthThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      ;
   },
 });
 export const { logout } = authSlice.actions;

@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   loadUsersInTable,
   loginUser,
+  loginUserGoogleService,
   registerAdmin,
   registerUser,
 } from "../../services/auth";
@@ -58,6 +59,19 @@ export const loadUserTableThunk = createAsyncThunk(
     } catch (err: any) {
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || "Loading Failed"
+      );
+    }
+  }
+);
+
+export const googleAuthThunk = createAsyncThunk(
+  "auth/google",
+  async (credential: string, { rejectWithValue }) => {
+    try {
+      return await loginUserGoogleService(credential);
+    } catch (err: any) {
+      return rejectWithValue(
+        err?.response?.data?.message || "Google login failed"
       );
     }
   }

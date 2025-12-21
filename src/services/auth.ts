@@ -43,4 +43,9 @@ export const loadUsersInTable = async ({
   const res = await api.get(`/auth/admin/loadUsers?${params.toString()}`);
   return res.data;
 };
+
+export const loginUserGoogleService = async (credential: string) => {
+  const res = await api.post("/auth/google", { credential });
+  return res.data;
+};
   

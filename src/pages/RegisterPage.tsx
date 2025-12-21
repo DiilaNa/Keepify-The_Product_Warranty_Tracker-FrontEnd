@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { FcGoogle } from "react-icons/fc";
 
 export default function RegisterPage() {
   const dispatch = useAppDispatch();
@@ -48,11 +47,7 @@ export default function RegisterPage() {
       toast.error("Registration failed");
     }
   };
-
-  const handleGoogleRegister = () => {
-    toast.info("Google registration not implemented yet!");
-  };
-
+  
   return (
     <div className="min-h-screen bg-darkBg flex flex-col">
       <NavBarComponent />
@@ -105,7 +100,6 @@ export default function RegisterPage() {
                   </Field>
                 </Field>
 
-                {/* Email */}
                 <Field>
                   <FieldLabel htmlFor="email" className="text-[#ccc]">
                     Email
@@ -121,7 +115,6 @@ export default function RegisterPage() {
                   />
                 </Field>
 
-                {/* Password & Confirm */}
                 <Field className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Field>
                     <FieldLabel htmlFor="password" className="text-[#ccc]">
@@ -159,7 +152,6 @@ export default function RegisterPage() {
                   Must be at least 8 characters long.
                 </FieldDescription>
 
-                {/* Register Button */}
                 <Field>
                   <Button
                     type="submit"
@@ -169,26 +161,6 @@ export default function RegisterPage() {
                     )}
                   >
                     {loading ? "Processing..." : "Create Account"}
-                  </Button>
-                </Field>
-
-                {/* Divider */}
-                <div className="flex items-center my-1">
-                  <hr className="flex-1 border-gray-600/50" />
-                  <span className="mx-2 text-[#888] text-sm">OR</span>
-                  <hr className="flex-1 border-gray-600/50" />
-                </div>
-
-                {/* Google Register */}
-                <Field>
-                  <Button
-                    type="button"
-                    onClick={handleGoogleRegister}
-                    className={cn(
-                      "w-full flex items-center justify-center gap-2 bg-[#fff] hover:bg-[#f0f0f0] text-[#000] font-semibold rounded-lg shadow-md hover:shadow-lg transform transition-all hover:scale-105"
-                    )}
-                  >
-                    <FcGoogle size={24} /> Continue with Google
                   </Button>
                 </Field>
 

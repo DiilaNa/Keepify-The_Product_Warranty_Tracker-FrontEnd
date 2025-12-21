@@ -1,126 +1,3 @@
-// import { cn } from "@/lib/utils";
-// import { Button } from "@/components/ui/button";
-// import {
-//   Card,
-//   CardContent,
-//   CardDescription,
-//   CardHeader,
-//   CardTitle,
-// } from "@/components/ui/card";
-// import {
-//   Field,
-//   FieldDescription,
-//   FieldGroup,
-//   FieldLabel,
-// } from "@/components/ui/field";
-// import { Input } from "@/components/ui/input";
-// import { NavBarComponent } from "@/components/custom/NavBar";
-// import { Link, useNavigate } from "react-router-dom";
-// import { useAppDispatch, useAppSelector } from "@/hooks/hook";
-// import { useState, type FormEvent } from "react";
-// import { loginUserThunk } from "@/slices/auth/authThunk";
-// import { toast } from "sonner";
-
-
-// export default function LoginPage() {
-// const dispatch = useAppDispatch();
-// const navigate = useNavigate();
-// const {loading} = useAppSelector((state) => state.auth);
-
-// const [email,setEmail]= useState("");
-// const[password,setPassword] = useState("");
-
-// const handleLogin = async(e: FormEvent) => {
-//   e.preventDefault();
-
-//   const result = await dispatch(
-//     loginUserThunk({email,password})
-//   );
-
-//   if (loginUserThunk.fulfilled.match(result)) {
-//     const user = result.payload
-  
-//     if(user.roles === "USER"){
-//       toast.success("Login success!");
-//       setTimeout(() => {
-//         navigate("/user");
-//       }, 200); 
-//     }else{
-//       toast.success("Login success as an admin!!");
-//       setTimeout(() => {
-//         navigate("/admin");
-//       }, 200); 
-//     }
-    
-//   } else if (loginUserThunk.rejected.match(result)) {
-//     toast.error("Login  Failed");
-//   }
-// }
-
-//   return (
-//     <div>
-//       <NavBarComponent />
-//       <div className={cn("flex flex-col gap-6 max-w-md mx-auto px-9 mt-28")}>
-//         <Card className="w-full">
-//           <CardHeader>
-//             <CardTitle>Login to your account</CardTitle>
-//             <CardDescription>
-//               Enter your email below to login to your account
-//             </CardDescription>
-//           </CardHeader>
-//           <CardContent className="p-6">
-//             <form onSubmit={handleLogin}>
-//               <FieldGroup>
-//                 <Field>
-//                   <FieldLabel htmlFor="email">Email</FieldLabel>
-//                   <Input
-//                     id="email"
-//                     type="email"
-//                     placeholder="m@example.com"
-//                     required
-//                     value={email}
-//                     onChange={(e) => setEmail(e.target.value)}
-//                     autoComplete="username"
-//                   />
-//                 </Field>
-//                 <Field>
-//                   <div className="flex items-center">
-//                     <FieldLabel htmlFor="password">Password</FieldLabel>
-//                     <a
-//                       href="#"
-//                       className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-//                     >
-//                       Forgot your password?
-//                     </a>
-//                   </div>
-//                   <Input
-//                     id="password"
-//                     type="password"
-//                     required
-//                     placeholder="*****"
-//                     value={password}
-//                     onChange={(e) => setPassword(e.target.value)}
-//                     autoComplete="current-password"
-//                   />
-//                 </Field>
-//                 <Field>
-//                   <Button type="submit" disabled={loading}>
-//                     {loading ? "Logging in..." : "Login"}
-//                   </Button>
-//                   <FieldDescription className="text-center">
-//                     Don&apos;t have an account?{" "}
-//                     <Link to="/register">Sign up</Link>
-//                   </FieldDescription>
-//                 </Field>
-//               </FieldGroup>
-//             </form>
-//           </CardContent>
-//         </Card>
-//       </div>
-//     </div>
-//   );
-// }
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -140,10 +17,9 @@ import { Input } from "@/components/ui/input";
 import { NavBarComponent } from "@/components/custom/NavBar";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
-import { useState, type FormEvent } from "react";
-import { loginUserThunk } from "@/slices/auth/authThunk";
+import { useState, type FormEvent, useEffect } from "react";
+import { googleAuthThunk, loginUserThunk } from "@/slices/auth/authThunk";
 import { toast } from "sonner";
-import { FcGoogle } from "react-icons/fc";
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();
@@ -153,6 +29,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // ---------- Normal login ----------
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -164,28 +41,46 @@ export default function LoginPage() {
       setTimeout(() => {
         navigate(user.roles === "USER" ? "/user" : "/admin");
       }, 200);
-    } else if (loginUserThunk.rejected.match(result)) {
+    } else {
       toast.error("Login Failed");
     }
   };
 
-  // ---------- Google Login Handler ----------
-  const handleGoogleLogin = async () => {
-    try {
-      // Open Google OAuth popup (example using Google Identity Services)
-      // const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  // ---------- Google login ----------
+  const handleGoogleRegister = async (credential: string) => {
+    const result = await dispatch(googleAuthThunk(credential));
+   
 
-      // const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleClientId}&redirect_uri=${window.location.origin}/google-callback&response_type=token&scope=email profile`;
+    if (googleAuthThunk.fulfilled.match(result)) {
+      toast.success("Logged in with Google");
 
-      // window.location.href = googleAuthUrl; // redirect to Google login
-      toast.info(
-        "hi"
-      )
-    } catch (err) {
-      console.error(err);
-      toast.error("Google login failed!");
+      navigate("/user"); // Google users are always USER
+    } else {
+      toast.error("Google login failed");
     }
   };
+
+  // ---------- Initialize Google Sign-In ----------
+  useEffect(() => {
+    // @ts-ignore
+    if (window.google) {
+      // @ts-ignore
+      google.accounts.id.initialize({
+        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+
+        callback: (response: any) => handleGoogleRegister(response.credential),
+      });
+
+      // @ts-ignore
+      google.accounts.id.renderButton(
+        document.getElementById("googleSignIn")!,
+        { theme: "outline", size: "large", width: "auto" }
+      );
+
+      // Optional: prompt Google One Tap
+      // google.accounts.id.prompt();
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-darkBg flex flex-col">
@@ -264,15 +159,7 @@ export default function LoginPage() {
 
                 {/* Google Login Button */}
                 <Field>
-                  <Button
-                    type="button"
-                    onClick={handleGoogleLogin}
-                    className={cn(
-                      "w-full flex items-center justify-center gap-1 bg-[#fff] hover:bg-[#f0f0f0] text-[#000] font-semibold  rounded-lg transition-colors shadow-md hover:shadow-lg"
-                    )}
-                  >
-                    <FcGoogle size={24} /> Continue with Google
-                  </Button>
+                  <div id="googleSignIn"></div>
                 </Field>
 
                 {/* Sign up */}
@@ -293,7 +180,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-
-
-

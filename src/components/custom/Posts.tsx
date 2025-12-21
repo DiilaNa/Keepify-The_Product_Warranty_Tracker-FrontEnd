@@ -243,7 +243,6 @@ export function WarrantyCard({
   const [expiryDate, setExpiryDate] = useState("");
   const [serial, setSerial] = useState(serial_number);
 
-  // 🔑 Detect expired
   const isExpired = status === "EXPIRED";
 
   const formatDate = (dateStr: string) => {
@@ -263,7 +262,7 @@ export function WarrantyCard({
   }, [title, description, purchase_date, expiry_date, serial_number]);
 
   const openEditPopup = () => {
-    if (isExpired) return; // 🔒 block edit if expired
+    if (isExpired) return;
     editBtnRef.current?.click();
   };
 
@@ -279,7 +278,6 @@ export function WarrantyCard({
         }
       `}
     >
-      {/* 🔴 EXPIRED BADGE */}
       {isExpired && (
         <span className="absolute top-3 right-3 z-10 rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white shadow">
           EXPIRED
@@ -319,7 +317,6 @@ export function WarrantyCard({
         </Button>
       </div>
 
-      {/* EDIT POPUP (unchanged) */}
       <AdminPopup
         ref={editBtnRef}
         hideTrigger
