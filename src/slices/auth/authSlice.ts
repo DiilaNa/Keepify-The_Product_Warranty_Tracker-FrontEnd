@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { googleAuthThunk, loadUserTableThunk, loginUserThunk, registerAdminThunk, registerUserThunk } from "./authThunk";
+import {
+  googleAuthThunk,
+  loadUserTableThunk,
+  loginUserThunk,
+  registerAdminThunk,
+  registerUserThunk,
+} from "./authThunk";
 import type { IUser } from "@/types/types";
 
 export interface AuthState {
@@ -101,8 +107,7 @@ const authSlice = createSlice({
       .addCase(googleAuthThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-      })
-      ;
+      });
   },
 });
 export const { logout } = authSlice.actions;

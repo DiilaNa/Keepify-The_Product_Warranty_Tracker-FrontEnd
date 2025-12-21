@@ -17,10 +17,9 @@ import { Input } from "@/components/ui/input";
 import { NavBarComponent } from "@/components/custom/NavBar";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
-import { useState, type FormEvent, useEffect } from "react";
+import { useState, type FormEvent, useEffect, useRef } from "react";
 import { googleAuthThunk, loginUserThunk } from "@/slices/auth/authThunk";
 import { toast } from "sonner";
-import { FcGoogle } from "react-icons/fc"; 
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();
@@ -29,6 +28,8 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const googleButtonRef = useRef<HTMLDivElement>(null);
 
   // ---------- Normal login ----------
   const handleLogin = async (e: FormEvent) => {
@@ -52,37 +53,46 @@ export default function LoginPage() {
     const result = await dispatch(googleAuthThunk(credential));
 
     if (googleAuthThunk.fulfilled.match(result)) {
+      const user = result.payload;
       toast.success("Logged in with Google");
-      navigate("/user");
+      setTimeout(() => {
+        const userRole =
+          user.roles || user.role || localStorage.getItem("role") || "USER";
+        navigate(userRole === "USER" ? "/user" : "/admin");
+      }, 200);
     } else {
-      toast.error("Google login failed");
+      console.error("Google login failed:", result.payload);
+      toast.error(`Google login failed: ${result.payload || "Unknown error"}`);
     }
   };
 
   // ---------- Initialize Google Sign-In ----------
   useEffect(() => {
     // @ts-ignore
-    if (window.google) {
+    if (window.google && googleButtonRef.current) {
       // @ts-ignore
       google.accounts.id.initialize({
         client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
         callback: (response: any) => handleGoogleRegister(response.credential),
       });
-    }
-  }, []);
 
-  // ---------- Trigger Google Sign-In manually ----------
-  const handleGoogleClick = () => {
-    // @ts-ignore
-    if (window.google) {
+      // @ts-ignore
+      google.accounts.id.renderButton(googleButtonRef.current, {
+        theme: "outline",
+        size: "large",
+        width: googleButtonRef.current.offsetWidth,
+        text: "signin_with",
+      });
+
+      // Also enable the One Tap prompt
       // @ts-ignore
       google.accounts.id.prompt((notification: any) => {
         if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-          toast.error("Google login cannot be displayed.");
+          console.warn("Google One Tap not displayed:", notification);
         }
       });
     }
-  };
+  }, []);
 
   return (
     <div className="min-h-screen bg-darkBg flex flex-col">
@@ -157,16 +167,11 @@ export default function LoginPage() {
                 </Field>
 
                 <Field>
-                  <Button
-                    type="button"
-                    onClick={handleGoogleClick}
-                    className={cn(
-                      "w-full flex items-center justify-center gap-3 bg-[#DB4437] hover:bg-[#c33d30] text-white font-semibold rounded-lg transition-colors shadow-md hover:shadow-lg"
-                    )}
-                  >
-                    <FcGoogle className="w-5 h-5" />
-                    Sign in with Google
-                  </Button>
+                  {/* Google Sign-In button container */}
+                  <div
+                    ref={googleButtonRef}
+                    className="w-full flex justify-center"
+                  ></div>
                 </Field>
 
                 <FieldDescription className="text-center text-[#aaa]">

@@ -53,9 +53,12 @@ export const registerAdminThunk = createAsyncThunk(
 
 export const loadUserTableThunk = createAsyncThunk(
   "auth/admin/loadUsers",
-  async ({ page, limit ,search}: { page: number; limit: number ; search?:string}, thunkAPI) => {
+  async (
+    { page, limit, search }: { page: number; limit: number; search?: string },
+    thunkAPI
+  ) => {
     try {
-      return await loadUsersInTable({ page, limit,search });
+      return await loadUsersInTable({ page, limit, search });
     } catch (err: any) {
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || "Loading Failed"
@@ -68,12 +71,30 @@ export const googleAuthThunk = createAsyncThunk(
   "auth/google",
   async (credential: string, { rejectWithValue }) => {
     try {
-      return await loginUserGoogleService(credential);
+      const res = await loginUserGoogleService(credential);
+
+      const data = res.data || res;
+
+      if (!data) {
+        throw new Error("Invalid response structure from Google login");
+      }
+
+      if (data.accessToken) {
+        localStorage.setItem("accessToken", data.accessToken);
+      }
+      if (data.refreshToken) {
+        localStorage.setItem("refreshToken", data.refreshToken);
+      }
+      if (data.user.role) {
+        localStorage.setItem("role", data.user.role);
+      }
+
+      return data;
     } catch (err: any) {
+      console.error("Google auth error:", err);
       return rejectWithValue(
-        err?.response?.data?.message || "Google login failed"
+        err?.response?.data?.message || err.message || "Google login failed"
       );
     }
   }
 );
-  
