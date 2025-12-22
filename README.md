@@ -80,28 +80,28 @@ Additional features:
 ## 🖼 Screenshots
 
 ### Login Page
-![Login Page](/public/assets/Login.png)
+![Login Page](public/Assets/Login.png)
 
 ### Welcome Page
-![Welcome Page](/public/assets/WelcomePage.png)
+![Welcome Page](public/Assets/WelcomePage.png)
 
 ### Add Warranty Form
-![Add Warranty Form](/public/assets/addWarranty.png)
+![Add Warranty Form](public/Assets/addWarranty.png)
 
 ### User Dashboard
-![User Dashboard](/public/assets/user.png)
+![User Dashboard](public/Assets/user.png)
 
 ### Admin Dashboard
-![Admin Dashboard](/public/assets/admin.png)
+![Admin Dashboard](public/Assets/admin.png)
 
 ### Charts and Reports
-![Charts and Reports](/public/assets/charts.png)
+![Charts and Reports](public/Assets/charts.png)
 
 ### Notifications Panel
-![Notifications Panel](/public/assets/notificationsPanel.png)
+![Notifications Panel](public/Assets/notificationsPanel.png)
 
 ### Edit Announcements
-![Edit Announcements](/public/assets/editAnnouncements.png)
+![Edit Announcements](public/Assets/editAnnouncements.png)
 
 ## ⚙️ Setup & Run Instructions
 
