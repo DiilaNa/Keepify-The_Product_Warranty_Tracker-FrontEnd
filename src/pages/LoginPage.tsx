@@ -20,6 +20,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { useState, type FormEvent, useEffect, useRef } from "react";
 import { googleAuthThunk, loginUserThunk } from "@/slices/auth/authThunk";
 import { toast } from "sonner";
+import { IconEye, IconEyeOff } from "@tabler/icons-react";
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();
@@ -28,6 +29,7 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const googleButtonRef = useRef<HTMLDivElement>(null);
 
@@ -142,16 +144,29 @@ export default function LoginPage() {
                       Forgot your password?
                     </Link>
                   </div>
-                  <Input
-                    id="password"
-                    type="password"
-                    required
-                    placeholder="*****"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    autoComplete="current-password"
-                    className="bg-[#2a2a40] border-[#4F46E5] text-[#fff] placeholder:text-[#999] focus:border-[#6366F1] focus:ring-[#6366F1] transition-all"
-                  />
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      required
+                      placeholder="*****"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      autoComplete="current-password"
+                      className="bg-[#2a2a40] border-[#4F46E5] text-[#fff] placeholder:text-[#999] focus:border-[#6366F1] focus:ring-[#6366F1] transition-all pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#999] hover:text-[#fff]"
+                    >
+                      {showPassword ? (
+                        <IconEyeOff className="h-5 w-5" />
+                      ) : (
+                        <IconEye className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
                 </Field>
 
                 <Field>

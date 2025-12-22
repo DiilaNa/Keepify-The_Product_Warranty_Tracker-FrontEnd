@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { IconEye, IconEyeOff } from "@tabler/icons-react";
 
 export default function RegisterPage() {
   const dispatch = useAppDispatch();
@@ -31,6 +32,8 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -120,15 +123,28 @@ export default function RegisterPage() {
                     <FieldLabel htmlFor="password" className="text-[#ccc]">
                       Password
                     </FieldLabel>
-                    <Input
-                      id="password"
-                      type="password"
-                      required
-                      placeholder="********"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="bg-[#2a2a40] border-[#4F46E5] text-[#fff] placeholder:text-[#999] h-11 rounded-lg focus:border-[#6366F1] focus:ring-[#6366F1] focus:ring-1 transition-all"
-                    />
+                    <div className="relative">
+                      <Input
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        required
+                        placeholder="********"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="bg-[#2a2a40] border-[#4F46E5] text-[#fff] placeholder:text-[#999] h-11 rounded-lg focus:border-[#6366F1] focus:ring-[#6366F1] focus:ring-1 transition-all pr-10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#999] hover:text-[#fff]"
+                      >
+                        {showPassword ? (
+                          <IconEyeOff className="h-5 w-5" />
+                        ) : (
+                          <IconEye className="h-5 w-5" />
+                        )}
+                      </button>
+                    </div>
                   </Field>
                   <Field>
                     <FieldLabel
@@ -137,15 +153,28 @@ export default function RegisterPage() {
                     >
                       Confirm Password
                     </FieldLabel>
-                    <Input
-                      id="confirm-password"
-                      type="password"
-                      required
-                      placeholder="********"
-                      value={confirm}
-                      onChange={(e) => setConfirm(e.target.value)}
-                      className="bg-[#2a2a40] border-[#4F46E5] text-[#fff] placeholder:text-[#999] h-11 rounded-lg focus:border-[#6366F1] focus:ring-[#6366F1] focus:ring-1 transition-all"
-                    />
+                    <div className="relative">
+                      <Input
+                        id="confirm-password"
+                        type={showConfirmPassword ? "text" : "password"}
+                        required
+                        placeholder="********"
+                        value={confirm}
+                        onChange={(e) => setConfirm(e.target.value)}
+                        className="bg-[#2a2a40] border-[#4F46E5] text-[#fff] placeholder:text-[#999] h-11 rounded-lg focus:border-[#6366F1] focus:ring-[#6366F1] focus:ring-1 transition-all pr-10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#999] hover:text-[#fff]"
+                      >
+                        {showConfirmPassword ? (
+                          <IconEyeOff className="h-5 w-5" />
+                        ) : (
+                          <IconEye className="h-5 w-5" />
+                        )}
+                      </button>
+                    </div>
                   </Field>
                 </Field>
                 <FieldDescription className="text-[#888] text-sm">
