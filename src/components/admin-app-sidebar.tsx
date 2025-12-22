@@ -31,13 +31,15 @@ import type { IBrandsDataTypes } from "@/types/types";
 export function AdminAppSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
+  const currentUser = useAppSelector((state) => state.auth.currentUser);
 
+  const email = currentUser?.email ?? "";
   const data = {
-    user: {
-      name: "shadcn",
-      email: "m@example.com",
-      avatar: "/avatars/shadcn.jpg",
-    },
+        user: {
+        name: email ? email.split("@")[0] : "User", 
+        email,
+        avatarFallback: email ? email.charAt(0).toUpperCase() : "U",
+      },
     navMain: [
       {
         title: "Dashboard",
@@ -243,7 +245,9 @@ export function AdminAppSidebar({
         </div>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} role={"ADMIN"} />
+        <NavUser 
+          user={data.user}  role={"ADMIN"} 
+        />
       </SidebarFooter>
     </Sidebar>
   );

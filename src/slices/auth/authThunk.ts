@@ -26,6 +26,7 @@ export const loginUserThunk = createAsyncThunk(
   async (data: { email: string; password: string }, thunkAPI) => {
     try {
       const res = await loginUser(data);
+      console.log("Login thunk response:", res);
       localStorage.setItem("accessToken", res.data.accessToken);
       localStorage.setItem("refreshToken", res.data.refreshToken);
       localStorage.setItem("role", res.data.roles);
@@ -87,6 +88,7 @@ export const googleAuthThunk = createAsyncThunk(
       }
       if (data.user.role) {
         localStorage.setItem("role", data.user.role);
+        
       }
 
       return data;

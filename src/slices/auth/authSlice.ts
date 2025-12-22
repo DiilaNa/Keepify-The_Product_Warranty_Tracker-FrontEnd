@@ -9,6 +9,7 @@ import {
 import type { IUser } from "@/types/types";
 
 export interface AuthState {
+  currentUser: IUser | null;
   user: IUser[];
   accessToken: string | null;
   refreshToken: string | null;
@@ -20,6 +21,7 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
+  currentUser: null,
   user: [],
   accessToken: null,
   refreshToken: null,
@@ -76,7 +78,10 @@ const authSlice = createSlice({
       })
       .addCase(loginUserThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload;
+        state.currentUser = action.payload;
+        console.log("Normal auth fulfilled with payload:", action.payload);
+
+        
       })
       .addCase(loginUserThunk.rejected, (state, action) => {
         state.loading = false;
@@ -98,9 +103,8 @@ const authSlice = createSlice({
       })
       .addCase(googleAuthThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = Array.isArray(action.payload.user)
-          ? action.payload.user
-          : [action.payload.user];
+        state.currentUser = action.payload;
+        console.log("Google auth fulfilled with payload:", action.payload);
         state.accessToken = action.payload.accessToken;
         state.refreshToken = action.payload.refreshToken;
       })

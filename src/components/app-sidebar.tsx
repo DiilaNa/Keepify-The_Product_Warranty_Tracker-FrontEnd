@@ -39,7 +39,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const dispatch = useAppDispatch();
   const closeButtonRef = React.useRef<HTMLButtonElement>(null);
   const { loadingWarranties } = useAppSelector((state) => state.warranty);
-
+  const currentUser = useAppSelector((state) => state.auth.currentUser);
+  
   const filteredBrands = brands.filter(
     (b) => b.category === selectedCategory
   );
@@ -66,12 +67,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       toast.error("warranties saving failed");
     }
   };
-
+  const email = currentUser?.email ?? "";
   const data = {
     user: {
-      name: "shadcn",
-      email: "m@example.com",
-      avatar: "/avatars/shadcn.jpg",
+      name: email ? email.split("@")[0] : "User",
+      email,
+      avatarFallback: email ? email.charAt(0).toUpperCase() : "U",
     },
     navMain: [
       {
