@@ -138,7 +138,7 @@ export default function LoginPage() {
                       Password
                     </FieldLabel>
                     <Link
-                      to="/forgot-password"
+                      to=""
                       className="ml-auto text-sm text-[#4F46E5] hover:underline"
                     >
                       Forgot your password?
@@ -149,7 +149,7 @@ export default function LoginPage() {
                       id="password"
                       type={showPassword ? "text" : "password"}
                       required
-                      placeholder="*****"
+                      placeholder="***********"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       autoComplete="current-password"
