@@ -45,6 +45,10 @@ export const loadUsersInTable = async ({
 
 export const loginUserGoogleService = async (credential: string) => {
   const res = await api.post("/auth/google", { credential });
-  console.log("Google login response:", res.data);
+  return res.data;
+};
+
+export const getCurrentUser = async () => {
+  const res = await api.get("/auth/me");
   return res.data;
 };

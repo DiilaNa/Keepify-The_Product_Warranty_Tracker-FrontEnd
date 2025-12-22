@@ -27,19 +27,52 @@ import { toast } from "sonner";
 import { saveBrandsThunk } from "@/slices/brands/brandsThunk";
 import { saveAnnouncementsThunk } from "@/slices/announcements/announcementsThunk";
 import type { IBrandsDataTypes } from "@/types/types";
+import { useEffect } from "react";
+import { loadCurrentUserThunk } from "@/slices/auth/authThunk";
 
 export function AdminAppSidebar({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
-  const currentUser = useAppSelector((state) => state.auth.currentUser);
 
-  const email = currentUser?.email ?? "";
+  const dispatch = useAppDispatch();
+  const [selectedCategory, setSelectedCategory] = React.useState("");
+  const closeButtonRef = React.useRef<HTMLButtonElement>(null);
+  const { loadingCategory } = useAppSelector((state) => state.category);
+  const { loadingBrands } = useAppSelector((state) => state.brands);
+  const { loadingAnnouncements } = useAppSelector(
+    (state) => state.announcements
+  );
+
+  const [currentUser, setCurrentUser] = React.useState<{
+    email: string;
+    firstname: string;
+    lastname: string;
+  } | null>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const result = await dispatch(loadCurrentUserThunk());
+      if (loadCurrentUserThunk.fulfilled.match(result)) {
+        setCurrentUser(result.payload.user); 
+      }
+    };
+
+    if (!currentUser) {
+      fetchUser();
+    }
+  }, [dispatch]);
+
+  const email = currentUser?.email ?? "user@example.com";
+  const name = currentUser
+    ? `${currentUser.firstname} ${currentUser.lastname}`
+    : "User";
+
   const data = {
-        user: {
-        name: email ? email.split("@")[0] : "User", 
-        email,
-        avatarFallback: email ? email.charAt(0).toUpperCase() : "U",
-      },
+    user: {
+      name: name,
+      email,
+      avatarFallback: name.charAt(0).toUpperCase() || "U",
+    },
     navMain: [
       {
         title: "Dashboard",
@@ -68,15 +101,6 @@ export function AdminAppSidebar({
       },
     ],
   };
-
-  const dispatch = useAppDispatch();
-  const [selectedCategory, setSelectedCategory] = React.useState("");
-  const closeButtonRef = React.useRef<HTMLButtonElement>(null);
-  const { loadingCategory } = useAppSelector((state) => state.category);
-  const { loadingBrands } = useAppSelector((state) => state.brands);
-  const { loadingAnnouncements } = useAppSelector(
-    (state) => state.announcements
-  );
 
   const handleAddAnnouncements = async(formdata:FormData) => {
     try{

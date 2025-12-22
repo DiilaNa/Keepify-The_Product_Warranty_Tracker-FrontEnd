@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   googleAuthThunk,
+  loadCurrentUserThunk,
   loadUserTableThunk,
   loginUserThunk,
   registerAdminThunk,
@@ -79,9 +80,6 @@ const authSlice = createSlice({
       .addCase(loginUserThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.currentUser = action.payload;
-        console.log("Normal auth fulfilled with payload:", action.payload);
-
-        
       })
       .addCase(loginUserThunk.rejected, (state, action) => {
         state.loading = false;
@@ -104,14 +102,25 @@ const authSlice = createSlice({
       .addCase(googleAuthThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.currentUser = action.payload;
-        console.log("Google auth fulfilled with payload:", action.payload);
         state.accessToken = action.payload.accessToken;
         state.refreshToken = action.payload.refreshToken;
       })
       .addCase(googleAuthThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+      .addCase(loadCurrentUserThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(loadCurrentUserThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentUser = action.payload.data;
+      })
+      .addCase(loadCurrentUserThunk.rejected, (state) => {
+        state.loading = false;
+        state.currentUser = null;
       });
+      ;
   },
 });
 export const { logout } = authSlice.actions;

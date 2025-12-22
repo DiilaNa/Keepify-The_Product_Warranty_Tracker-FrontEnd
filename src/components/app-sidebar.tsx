@@ -22,13 +22,14 @@ import {
 } from "@/components/ui/sidebar";
 import { Link } from "react-router-dom";
 import { AdminPopup } from "./custom/PopUps";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { NotificationsSheet } from "./NotifySheet";
 import { Combobox } from "./custom/combobox";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { loadBrandsByCategoryThunk } from "@/slices/brands/brandsThunk";
 import { toast } from "sonner";
 import { saveWarrantyThunk } from "@/slices/warranty/warrantyThunk";
+import { loadCurrentUserThunk } from "@/slices/auth/authThunk";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const notificationRef = useRef<HTMLButtonElement>(null);
@@ -38,17 +39,33 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const dispatch = useAppDispatch();
   const closeButtonRef = React.useRef<HTMLButtonElement>(null);
   const { loadingWarranties } = useAppSelector((state) => state.warranty);
-  const currentUser = useAppSelector((state) => state.auth.currentUser);
-  
-  const filteredBrands = brands.filter(
-    (b) => b.category === selectedCategory
-  );
+
+  const [currentUser, setCurrentUser] = React.useState<{
+    email: string;
+    firstname: string;
+    lastname: string;
+  } | null>(null);
+
+  const filteredBrands = brands.filter((b) => b.category === selectedCategory);
 
   React.useEffect(() => {
     if (selectedCategory) {
       dispatch(loadBrandsByCategoryThunk(selectedCategory));
     }
   }, [selectedCategory, dispatch]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const result = await dispatch(loadCurrentUserThunk());
+      if (loadCurrentUserThunk.fulfilled.match(result)) {
+        setCurrentUser(result.payload.user); 
+      }
+    };
+
+    if (!currentUser) {
+      fetchUser();
+    }
+  }, [dispatch]);
 
   const saveWarranty = async (formData: FormData) => {
     formData.append("category", selectedCategory);
@@ -66,12 +83,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       toast.error("warranties saving failed");
     }
   };
-  const email = currentUser?.email ?? "";
+
+
+  const email = currentUser?.email ?? "user@example.com";
+  const name = currentUser
+    ? `${currentUser.firstname} ${currentUser.lastname}`
+    : "User";
   const data = {
     user: {
-      name: email ? email.split("@")[0] : "User",
+      name,
       email,
-      avatarFallback: email ? email.charAt(0).toUpperCase() : "U",
+      avatarFallback: name.charAt(0).toUpperCase() || "U",
     },
     navMain: [
       {
@@ -111,7 +133,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const unreadCount = useAppSelector(
     (state) => state.notifications.unreadCount
   );
-  
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
@@ -202,12 +223,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           closeButtonRef={closeButtonRef}
           loading={loadingWarranties}
         />
-        <NotificationsSheet
-          ref={notificationRef}
-        />
+        <NotificationsSheet ref={notificationRef} />
 
         <NavMain items={data.navMain} unreadCount={unreadCount} />
-        {/* <NavDocuments items={data.documents} /> */}
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
