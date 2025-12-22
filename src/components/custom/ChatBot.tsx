@@ -5,47 +5,20 @@ const Chatbot = () => {
 
   return (
     <>
-      {/* Floating button */}
       <button
         onClick={() => setOpen(!open)}
-        style={{
-          position: "fixed",
-          bottom: "60px",
-          right: "20px",
-          width: "60px",
-          height: "60px",
-          borderRadius: "50%",
-          backgroundColor: "#2d23d9ff",
-          color: "white",
-          fontWeight: "bold",
-          border: "none",
-          cursor: "pointer",
-          zIndex: 9999,
-        }}
+        className="fixed bottom-16 right-5 w-14 h-14 sm:w-12 sm:h-12 rounded-full bg-blue-900 text-white font-bold border-none cursor-pointer z-50 flex items-center justify-center text-xl sm:text-lg"
       >
         💬
       </button>
 
-      {/* Chat iframe */}
       {open && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: "120px",
-            right: "30px",
-            width: "350px",
-            height: "500px",
-            boxShadow: "0 4px 16px rgba(27, 116, 176, 0.2)",
-            borderRadius: "12px",
-            overflow: "hidden",
-            zIndex: 9998,
-          }}
-        >
+        <div className="fixed bottom-32 right-7 w-[90vw] max-w-[450px] h-[70vh] max-h-[500px] sm:w-[85vw] sm:h-[65vh] md:w-[400px] md:h-[450px] lg:w-[450px] lg:h-[500px] shadow-md rounded-xl overflow-hidden z-40 transition-all duration-300">
           <iframe
             src="https://www.chatbase.co/chatbot-iframe/aPGQj0tfz73-P_bO6w9Bj"
             width="100%"
             height="100%"
-            style={{ border: "none" }}
+            className="border-none"
             title="Keepify AI Assistant"
           />
         </div>
