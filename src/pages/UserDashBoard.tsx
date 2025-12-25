@@ -87,7 +87,6 @@ export default function UserDashBoard() {
                   onSearch={handleSearch}
                 />
 
-                {/* Loading State */}
                 {loadingWarranties && warranties.length === 0 && (
                   <div className="flex justify-center items-center w-full py-20">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full max-w-6xl">
@@ -124,42 +123,46 @@ export default function UserDashBoard() {
                   ))}
                 </div>
 
-                {/* Empty State */}
                 {!loadingWarranties && warranties.length === 0 && (
                   <div className="flex flex-col items-center justify-center py-20 w-full text-center">
                     <div className="bg-gray-900 rounded-3xl p-10 flex flex-col items-center justify-center shadow-xl border border-gray-800 max-w-sm mx-auto">
                       <div className="flex items-center justify-center w-24 h-24 mb-6 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 animate-pulse">
-                        <span className="text-4xl">😕</span>
+                        <span className="text-4xl">{search ? "😕" : "📦"}</span>
                       </div>
+
+                      {/* Title */}
                       <h3 className="text-2xl font-bold text-white mb-2">
-                        No posts found
+                        {search ? "No results found" : "No warranties yet"}
                       </h3>
-                      {localSearch ? (
+
+                      {search ? (
                         <p className="text-gray-400 text-sm md:text-base mb-4">
-                          We couldn’t find any posts matching "
-                          <span className="text-blue-400">{localSearch}</span>".
+                          We couldn’t find any warranties matching{" "}
+                          <span className="text-blue-400">"{search}"</span>.
                         </p>
                       ) : (
                         <p className="text-gray-400 text-sm md:text-base mb-4">
-                          You haven’t added any warranties yet. Start adding
-                          products to track your purchases and warranty expiries
-                          here.
+                          You haven’t added any warranties yet. Start tracking
+                          your products and warranty expiry dates here.
                         </p>
                       )}
-                      <button
-                        onClick={() =>
-                          dispatch(
-                            loadWarrantiesThunk({
-                              page: 1,
-                              limit: 10,
-                              search: "",
-                            })
-                          )
-                        }
-                        className="mt-4 px-6 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-medium transition"
+
+                      <h1
+                        // onClick={() =>
+                        //   dispatch(
+                        //     loadWarrantiesThunk({
+                        //       page: 1,
+                        //       limit: 10,
+                        //       search: "",
+                        //     })
+                        //   )
+                        // }
+                        className="mt-4 px-6 py-2 rounded-lg  text-white font-medium transition"
                       >
-                        Show All Warranties
-                      </button>
+                        {search
+                          ? "No Warranties Found "
+                          : "Add Your First Warranty"}
+                      </h1>
                     </div>
                   </div>
                 )}

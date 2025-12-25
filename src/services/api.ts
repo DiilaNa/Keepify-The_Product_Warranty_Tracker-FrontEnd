@@ -3,8 +3,8 @@ import { refreshTokens } from "./auth";
 
 const api = axios.create({
   baseURL:
-      "https://keepify-the-product-warranty-tracke-lemon.vercel.app/api/v1",
-    //  "http://localhost:5000/api/v1",
+       "https://keepify-the-product-warranty-tracke-lemon.vercel.app/api/v1",
+      // "http://localhost:5000/api/v1",
 });
 
 const PUBLIC_ENDPOINTS = ["/auth/register", "/auth/login", "/auth/google"];

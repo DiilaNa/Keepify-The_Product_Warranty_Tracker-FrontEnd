@@ -43,15 +43,14 @@ const TopProductsBarChart = () => {
           margin={{ top: 20, right: 30, left: 20, bottom: 40 }}
           barCategoryGap={100}
         >
-         
           <CartesianGrid stroke="#444466" strokeDasharray="3 3" />
 
           <XAxis
-            dataKey="_id"
+            dataKey="brandName"
             stroke="#ccc"
             tick={{ fill: "#ccc", fontSize: 12 }}
             tickMargin={10}
-            interval={0} 
+            interval={0}
             angle={-20}
             textAnchor="end"
             height={60}
@@ -88,8 +87,8 @@ const TopProductsBarChart = () => {
           <Bar
             dataKey="total"
             fill="#4F46E5"
-            radius={[6, 6, 0, 0]} 
-            isAnimationActive={true} 
+            radius={[6, 6, 0, 0]}
+            isAnimationActive={true}
             cursor="pointer"
             maxBarSize={50}
           />

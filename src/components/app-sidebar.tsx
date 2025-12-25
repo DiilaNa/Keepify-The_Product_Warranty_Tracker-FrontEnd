@@ -28,7 +28,7 @@ import { Combobox } from "./custom/combobox";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { loadBrandsByCategoryThunk } from "@/slices/brands/brandsThunk";
 import { toast } from "sonner";
-import { saveWarrantyThunk } from "@/slices/warranty/warrantyThunk";
+import { loadWarrantiesThunk, saveWarrantyThunk } from "@/slices/warranty/warrantyThunk";
 import { loadCurrentUserThunk } from "@/slices/auth/authThunk";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -75,6 +75,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
       if (saveWarrantyThunk.fulfilled.match(result)) {
         toast.success("saved warranties successfully");
+        dispatch(loadWarrantiesThunk({ page: 1 }));
         closeButtonRef.current?.click();
       } else {
         toast.error((result.payload as string) || "adding warrnties failed");

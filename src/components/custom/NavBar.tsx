@@ -11,7 +11,9 @@ export function NavBarComponent() {
     <nav className="relative flex items-center justify-between px-6 py-4 bg-white dark:bg-gray-900 shadow-md">
       {/* Logo */}
       <div className="text-2xl font-bold text-gray-900 dark:text-white">
+        <Link to="/">
         Keepify
+        </Link>
       </div>
 
       {/* Hamburger button */}
@@ -27,9 +29,9 @@ export function NavBarComponent() {
         <Link to="/" className="hover:text-blue-600 transition">
           Home
         </Link>
-        <Link to="#" className="hover:text-blue-600 transition">
+        <a href="/#about" className="hover:text-blue-600 transition">
           About
-        </Link>
+        </a>
         {accessToken && role === "USER" && (
           <Link to="/user" className="hover:text-blue-600 transition">
             Dashboard
@@ -69,13 +71,12 @@ export function NavBarComponent() {
           >
             Home
           </Link>
-          <Link
-            to="#"
+          <a href="/#about"
             className="hover:text-blue-500 transition py-2 text-gray-900 dark:text-white"
             onClick={() => setMobileMenuOpen(false)}
           >
             About
-          </Link>
+          </a>
           {accessToken && role === "USER" && (
             <Link
               to="/user"
@@ -106,7 +107,6 @@ export function NavBarComponent() {
         </div>
       </div>
 
-      {/* Optional overlay behind menu */}
       {mobileMenuOpen && (
         <div
           className="fixed inset-0 bg-black/30 z-40 md:hidden"

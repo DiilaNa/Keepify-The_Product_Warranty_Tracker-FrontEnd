@@ -65,9 +65,9 @@ const warrantySlice = createSlice({
         state.loadingWarranties = true;
         state.error = null;
       })
-      .addCase(saveWarrantyThunk.fulfilled, (state, action) => {
+      .addCase(saveWarrantyThunk.fulfilled, (state) => {
         state.loadingWarranties = false;
-        state.warranties.push(action.payload.data);
+
       })
       .addCase(saveWarrantyThunk.rejected, (state, action) => {
         state.loadingWarranties = false;

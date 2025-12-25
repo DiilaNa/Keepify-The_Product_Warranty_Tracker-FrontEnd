@@ -25,7 +25,7 @@ export default function WhyChooseKeepify() {
   ];
 
   return (
-    <section className="py-24 bg-[#0d0f12]">
+    <section id="about" className="about py-24 bg-[#0d0f12]">
       <div className="max-w-7xl mx-auto px-6 text-center">
         <h2 className="text-4xl font-extrabold mb-14 text-white tracking-wide">
           Why Choose <span className="text-primary">Keepify?</span>
