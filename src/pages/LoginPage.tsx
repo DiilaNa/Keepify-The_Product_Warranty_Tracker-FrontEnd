@@ -99,6 +99,12 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-darkBg flex flex-col">
       <NavBarComponent />
+      <div className="space-bg">
+        <div className="stars"></div>
+        <div className="stars2"></div>
+        <div className="stars3"></div>
+      </div>
+
       <div className="flex justify-center items-center flex-1 px-4 py-12">
         <Card
           className={cn(

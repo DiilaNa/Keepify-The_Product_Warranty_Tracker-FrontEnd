@@ -53,6 +53,12 @@ export default function RegisterPage() {
   
   return (
     <div className="min-h-screen bg-darkBg flex flex-col">
+      <div className="space-bg">
+        <div className="stars"></div>
+        <div className="stars2"></div>
+        <div className="stars3"></div>
+      </div>
+
       <NavBarComponent />
       <div className="flex justify-center items-center flex-1 px-4 py-8">
         <Card
@@ -165,7 +171,9 @@ export default function RegisterPage() {
                       />
                       <button
                         type="button"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
                         className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#999] hover:text-[#fff]"
                       >
                         {showConfirmPassword ? (

@@ -136,3 +136,110 @@ input:autofill {
     -webkit-text-fill-color: #fff !important;
 }
 
+/*-------------------Space Back Ground-------------------------*/
+
+.space-bg {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at bottom, #0b0d1a 0%, #000 100%);
+  overflow: hidden;
+  z-index: 0;
+}
+
+.stars,
+.stars2,
+.stars3 {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+  animation: moveStars linear infinite;
+}
+
+/* Small stars */
+.stars {
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, #fff, transparent),
+    radial-gradient(1px 1px at 100px 200px, #fff, transparent),
+    radial-gradient(1px 1px at 300px 400px, #fff, transparent),
+    radial-gradient(1px 1px at 500px 600px, #fff, transparent);
+  animation-duration: 120s;
+  opacity: 0.6;
+}
+
+.stars2 {
+  background-image:
+    radial-gradient(2px 2px at 50px 80px, #ddd, transparent),
+    radial-gradient(2px 2px at 200px 300px, #ddd, transparent),
+    radial-gradient(2px 2px at 600px 500px, #ddd, transparent);
+  animation-duration: 180s;
+  opacity: 0.4;
+}
+
+.space-bg {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at bottom, #020617 0%, #000 100%);
+  overflow: hidden;
+  z-index: 0;
+}
+
+.stars,
+.stars2,
+.stars3 {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  animation: moveStars linear infinite;
+}
+
+.stars {
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, #ffffff, transparent),
+    radial-gradient(1px 1px at 80px 120px, #ffffff, transparent),
+    radial-gradient(1px 1px at 140px 60px, #ffffff, transparent),
+    radial-gradient(1px 1px at 180px 190px, #ffffff, transparent);
+  animation-duration: 100s;
+  opacity: 0.9;
+}
+
+.stars2 {
+  background-image:
+    radial-gradient(2px 2px at 40px 50px, #e5e7eb, transparent),
+    radial-gradient(2px 2px at 100px 160px, #e5e7eb, transparent),
+    radial-gradient(2px 2px at 160px 20px, #e5e7eb, transparent);
+  animation-duration: 160s;
+  opacity: 0.6;
+}
+
+.stars3 {
+  background-image:
+    radial-gradient(3px 3px at 120px 140px, #d1d5db, transparent);
+  animation-duration: 220s;
+  opacity: 0.35;
+}
+
+@keyframes moveStars {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-2000px);
+  }
+}
+
+.stars::after,
+.stars2::after,
+.stars3::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  animation: twinkle 6s infinite alternate;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; }
+}
+
