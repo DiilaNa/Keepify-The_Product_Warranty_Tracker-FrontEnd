@@ -39,6 +39,27 @@ export default function HeroSlider() {
     <>
       <div className="min-h-screen flex flex-col">
         <NavBarComponent />
+        <SwiperSlide>
+          <div className="relative w-full h-[70vh] sm:h-[80vh] md:h-[85vh] lg:h-[90vh] bg-black">
+            <video
+              className="w-full h-full object-cover"
+              src="/Assets/To KEEPIFY.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+            />
+            {/* Optional overlay */}
+            <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+              {/* Hero text / CTA if needed */}
+            </div>
+          </div>
+        </SwiperSlide>
+
+        <hr />
+
+        <WhyChooseKeepify />
+
         <div>
           <Swiper
             modules={[Navigation, Autoplay]}
@@ -64,10 +85,6 @@ export default function HeroSlider() {
             ))}
           </Swiper>
         </div>
-
-        <hr />
-
-        <WhyChooseKeepify />
 
         <div className="w-full bg-[#0d0f12] py-16">
           <div className="max-w-7xl mx-auto px-4 grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
