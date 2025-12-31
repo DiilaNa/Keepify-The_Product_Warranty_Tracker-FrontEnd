@@ -9,6 +9,8 @@ import { loadAnnouncementsThunk } from "@/slices/announcements/announcementsThun
 import { useEffect } from "react";
 import { Button } from "flowbite-react";
 import Chatbot from "@/components/custom/ChatBot";
+import { motion } from "framer-motion";
+
 
 const images = [
   "/images/1.png",
@@ -40,26 +42,49 @@ export default function HeroSlider() {
       <div className="min-h-screen flex flex-col">
         <NavBarComponent />
         <SwiperSlide>
-          <div className="relative w-full h-[70vh] sm:h-[80vh] md:h-[85vh] lg:h-[90vh] bg-black">
+          <div className="relative w-full h-[70vh] sm:h-[80vh] md:h-[85vh] lg:h-[90vh]">
             <video
-              className="w-full h-full object-cover"
+              id="heroVideo"
+              className="w-full h-full object-cover filter brightness-90 transition-all duration-300"
               src="/Assets/To KEEPIFY.mp4"
               autoPlay
               muted
               loop
               playsInline
             />
-            {/* Optional overlay */}
-            <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-              {/* Hero text / CTA if needed */}
+
+            <div className="absolute inset-0 bg-black/30 flex items-center justify-end flex-col gap-5 p-3 sm:p-8 md:p-12 lg:p-16">
+              <a href="/login" className="self-center sm:self-center">
+                <motion.button
+                  whileHover={{
+                    scale: 1.1,
+                    boxShadow: "0 0 25px rgba(59, 130, 246, 0.7)",
+                    background:
+                      "linear-gradient(45deg, #1e3a8a, #3b82f6, #60a5fa, #1e3a8a)",
+                    transition: { duration: 0.3 },
+                  }}
+                  className="px-4 sm:px-7 md:px-7 py-2 sm:py-3 md:py-4 bg-blue-600 text-white font-bold text-base sm:text-lg md:text-xl rounded-lg shadow-lg transition duration-300"
+                  onMouseEnter={() => {
+                    const video = document.getElementById(
+                      "heroVideo"
+                    ) as HTMLVideoElement;
+                    if (video) video.classList.add("blur-sm");
+                  }}
+                  onMouseLeave={() => {
+                    const video = document.getElementById(
+                      "heroVideo"
+                    ) as HTMLVideoElement;
+                    if (video) video.classList.remove("blur-sm");
+                  }}
+                >
+                  Get Started
+                </motion.button>
+              </a>
             </div>
           </div>
         </SwiperSlide>
-
         <hr />
-
         <WhyChooseKeepify />
-
         <div>
           <Swiper
             modules={[Navigation, Autoplay]}
@@ -85,7 +110,6 @@ export default function HeroSlider() {
             ))}
           </Swiper>
         </div>
-
         <div className="w-full bg-[#0d0f12] py-16">
           <div className="max-w-7xl mx-auto px-4 grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {loadingAnnouncements ? (
@@ -97,7 +121,6 @@ export default function HeroSlider() {
             )}
           </div>
         </div>
-
         {/* PAGINATION */}
         <div className="flex justify-center items-center gap-3 mt-6">
           <Button
