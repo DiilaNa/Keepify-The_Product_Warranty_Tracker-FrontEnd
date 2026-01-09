@@ -25,12 +25,14 @@ const WarrantiesLineChart = () => {
     dispatch(LineChartThunk());
   }, [dispatch]);
 
-  const chartData = lineChartData.map((item) => ({
-    month: new Date(0, item._id - 1).toLocaleString("default", {
-      month: "short",
-    }),
-    total: item.total,
-  }));
+  const chartData = [...lineChartData]
+    .sort((a, b) => a.year - b.year || a.month - b.month)
+    .map((item) => ({
+      month: `${new Date(0, item.month - 1).toLocaleString("default", {
+        month: "short",
+      })} ${item.year}`,
+      total: item.total,
+    }));
 
 
   if (loadingWarranties) {
@@ -43,7 +45,10 @@ const WarrantiesLineChart = () => {
         Warranties Added Over Time
       </h3>
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={chartData}>
+        <LineChart
+          data={chartData}
+          margin={{ top: 20, right: 30, bottom: 20, left: 25 }}
+        >
           <CartesianGrid stroke="#33334d" strokeDasharray="3 3" />
 
           <XAxis
@@ -52,7 +57,7 @@ const WarrantiesLineChart = () => {
             tick={{ fill: "#ccc", fontSize: 12 }}
             interval={0}
             tickMargin={10}
-            angle={-20}
+            angle={-2}
             textAnchor="end"
             label={{
               position: "insideBottom",
@@ -79,7 +84,7 @@ const WarrantiesLineChart = () => {
               borderRadius: "8px",
               border: "none",
               color: "#fff",
-              marginTop:90
+              marginTop: 90,
             }}
             itemStyle={{ color: "#fff" }}
           />
