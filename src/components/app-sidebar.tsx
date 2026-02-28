@@ -89,7 +89,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   };
 
   const downloadPDF = async () => {
-    console.log("HIIIIIIIIIIIIIIIIII");
     handleDownloadReport();
   };
 

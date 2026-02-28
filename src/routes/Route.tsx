@@ -1,3 +1,4 @@
+import { ElegantSpinner } from "@/components/custom/Spinner";
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -10,7 +11,7 @@ const AdminDashBoard = lazy(() => import("../pages/AdminDashBoard"));
 export default function Router(){
     return (
       <BrowserRouter>
-        <Suspense fallback={<div>Loading ...</div>}>
+        <Suspense fallback={<ElegantSpinner />}>
           <Routes>
             <Route path="/" element={<WelcomePage />} />
             <Route path="/register" element={<Register />} />
