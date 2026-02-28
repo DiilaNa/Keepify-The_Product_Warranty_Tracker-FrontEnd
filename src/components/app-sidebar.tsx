@@ -3,7 +3,6 @@ import {
   IconDashboard,
   IconHelp,
   IconInnerShadowTop,
-  IconListDetails,
   IconNotification,
   IconReport,
 } from "@tabler/icons-react";
@@ -28,8 +27,12 @@ import { Combobox } from "./custom/combobox";
 import { useAppDispatch, useAppSelector } from "@/hooks/hook";
 import { loadBrandsByCategoryThunk } from "@/slices/brands/brandsThunk";
 import { toast } from "sonner";
-import { loadWarrantiesThunk, saveWarrantyThunk } from "@/slices/warranty/warrantyThunk";
+import {
+  loadWarrantiesThunk,
+  saveWarrantyThunk,
+} from "@/slices/warranty/warrantyThunk";
 import { loadCurrentUserThunk } from "@/slices/auth/authThunk";
+import { handleDownloadReport } from "@/services/warranty";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const notificationRef = useRef<HTMLButtonElement>(null);
@@ -58,7 +61,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const fetchUser = async () => {
       const result = await dispatch(loadCurrentUserThunk());
       if (loadCurrentUserThunk.fulfilled.match(result)) {
-        setCurrentUser(result.payload.user); 
+        setCurrentUser(result.payload.user);
       }
     };
 
@@ -85,6 +88,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     }
   };
 
+  const downloadPDF = async () => {
+    console.log("HIIIIIIIIIIIIIIIIII");
+    handleDownloadReport();
+  };
 
   const email = currentUser?.email ?? "user@example.com";
   const name = currentUser
@@ -103,9 +110,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         icon: IconDashboard,
       },
       {
-        title: "Posts",
+        title: "Reports",
         url: "#",
-        icon: IconListDetails,
+        icon: IconReport,
+        onClick: downloadPDF,
       },
       {
         title: "Notifications",
@@ -132,7 +140,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   };
 
   const unreadCount = useAppSelector(
-    (state) => state.notifications.unreadCount
+    (state) => state.notifications.unreadCount,
   );
 
   return (
