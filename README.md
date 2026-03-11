@@ -11,7 +11,7 @@ Backend API (Vercel):
 👉 https://keepify-the-product-warranty-tracke-lemon.vercel.app/
 
 Back End Respository (Git Hub): 
- 👉 https://keepify-the-product-warranty-tracke-lemon.vercel.app/
+ 👉 https://github.com/DiilaNa/Keepify-The_Product_Warranty_Tracker-BackEnd.git
 
 ## 🛠 Technologies & Tools Used
 
