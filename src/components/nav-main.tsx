@@ -1,4 +1,5 @@
 import { type Icon } from "@tabler/icons-react";
+import { Link } from "react-router-dom";
 
 import {
   SidebarGroup,
@@ -34,17 +35,20 @@ export function NavMain({
                 tooltip={item.title}
                 onClick={item.onClick}
                 className="relative flex items-center gap-2"
+                asChild
               >
-                <div className="flex items-center justify-center gap-2">
-                  {item.icon && <item.icon />}
-                  <span>{item.title}</span>
-                </div>
-                {/* Show unread badge only for notifications */}
-                {item.showUnread && unreadCount > 0 && (
-                  <span className="flex items-center justify-center bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
-                    {unreadCount}
-                  </span>
-                )}
+                <Link to={item.url || "#"}>
+                  <div className="flex items-center justify-center gap-2">
+                    {item.icon && <item.icon />}
+                    <span>{item.title}</span>
+                  </div>
+                  {/* Show unread badge only for notifications */}
+                  {item.showUnread && unreadCount > 0 && (
+                    <span className="flex items-center justify-center bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+                      {unreadCount}
+                    </span>
+                  )}
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

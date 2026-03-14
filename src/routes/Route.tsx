@@ -7,6 +7,7 @@ const LoginPage = lazy(() => import("../pages/LoginPage"))
 const WelcomePage = lazy(() => import("../pages/WelcomePage"));
 const UserDashBoard = lazy(() => import("../pages/UserDashBoard"));
 const AdminDashBoard = lazy(() => import("../pages/AdminDashBoard"));
+const AiSuggestionsPage = lazy(() => import("../pages/AiSuggestionsPage"));
 
 export default function Router(){
     return (
@@ -18,6 +19,7 @@ export default function Router(){
             <Route path="/login" element={<LoginPage />} />
             <Route path="/user" element={<UserDashBoard />} />
             <Route path="/admin" element={<AdminDashBoard />} />
+            <Route path="/ai-suggestions" element={<AiSuggestionsPage />} />
           </Routes>
         </Suspense>
       </BrowserRouter>

@@ -1,10 +1,10 @@
 import * as React from "react";
 import {
   IconDashboard,
-  IconHelp,
   IconInnerShadowTop,
   IconNotification,
   IconReport,
+  IconSparkles,
 } from "@tabler/icons-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -105,7 +105,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     navMain: [
       {
         title: "Dashboard",
-        url: "#",
+        url: "/user",
         icon: IconDashboard,
       },
       {
@@ -124,9 +124,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     ],
     navSecondary: [
       {
-        title: "Get Help",
-        url: "#",
-        icon: IconHelp,
+        title: "Get AI Suggestions",
+        url: "/ai-suggestions",
+        icon: IconSparkles,
       },
     ],
     documents: [
